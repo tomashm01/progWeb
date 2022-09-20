@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 enum DificultadPista {
 	INFANTIL,
@@ -10,7 +9,7 @@ enum DificultadPista {
 }
 
 public class Pista {
-	private String nombre = UUID.randomUUID().toString();
+	private String nombre;
 	private boolean isReserved;
 	private DificultadPista dificultad;
 	private Integer maxKarts;
@@ -104,16 +103,19 @@ public class Pista {
 		return kartsDisponibles;
 	}
 	
-	public void asociarKartAPista(Kart kart) {
+	public boolean asociarKartAPista(Kart kart) {
 		if(kart.getIsAdult()) {
 			if(this.getDificultad().equals("FAMILIAR") || this.getDificultad().equals("ADULTOS")) {
 				this.listaKarts.add(kart);
+				return true;
 			}
 		}else {
 			if(this.getDificultad().equals("FAMILIAR") || this.getDificultad().equals("INFANTIL")) {
 				this.listaKarts.add(kart);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 }

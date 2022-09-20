@@ -1,6 +1,7 @@
 package entities;
 
-//import java.time.Period;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Usuario {
@@ -77,9 +78,21 @@ public class Usuario {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	/**
-	public Integer calcularAntiguedad(){
-		return Period.between(this.fechaInscipcion.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), java.time.LocalDate.now()).getYears();
+		
+	@Override
+	public String toString() {
+		return "Usuario [nombreApellidos=" + nombreApellidos + ", fechaNacimiento=" + fechaNacimiento
+				+ ", fechaInscipcion=" + fechaInscipcion + ", correo=" + correo + "]";
 	}
+
+
+	/*
+		Calcula los anios que lleva registrado el usuario
 	*/
+	public Integer calcularAntiguedad(){
+		Date fechaActual = new Date();
+		Integer diferencia = (int) (fechaActual.getTime() - fechaInscipcion.getTime());
+		return (diferencia / (1000 * 60 * 60 * 24))/365;
+	}
+
 }
