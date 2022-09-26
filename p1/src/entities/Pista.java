@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 enum DificultadPista {
 	INFANTIL,
@@ -9,6 +10,14 @@ enum DificultadPista {
 }
 
 public class Pista {
+	private UUID id;
+	public UUID getId() {
+		return id;
+	}
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
 	private String nombre;
 	private boolean isReserved;
 	private DificultadPista dificultad;

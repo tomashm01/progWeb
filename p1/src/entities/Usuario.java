@@ -3,8 +3,11 @@ package entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class Usuario {
+	
+	private UUID id;
 	
 	private String nombreApellidos;
 	
