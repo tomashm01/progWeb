@@ -8,15 +8,6 @@ import java.util.UUID;
 public class Usuario {
 	
 	private UUID id;
-	
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
 
 	private String nombreApellidos;
 	
@@ -35,6 +26,15 @@ public class Usuario {
 		this.fechaInscipcion = fechaInscipcion;
 		this.correo = correo;
 	}
+	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
 
 	/**
 	 * @return the nombreApellidos
