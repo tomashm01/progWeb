@@ -9,6 +9,15 @@ public class Usuario {
 	
 	private UUID id;
 	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+
 	private String nombreApellidos;
 	
 	private Date fechaNacimiento;
@@ -20,6 +29,7 @@ public class Usuario {
 	public Usuario() {}
 	
 	public Usuario(String nombreApellidos, Date fechaNacimiento, Date fechaInscipcion, String correo) {
+		this.id=UUID.randomUUID();
 		this.nombreApellidos = nombreApellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaInscipcion = fechaInscipcion;

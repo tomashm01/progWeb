@@ -26,7 +26,7 @@ public class Pista {
 	public Pista() {
 	}
 	public Pista(String nombre, boolean isReserved, DificultadPista dificultad, Integer maxKarts) {
-		
+		this.id=UUID.randomUUID();
 		this.nombre = nombre;
 		this.isReserved = isReserved;
 		this.dificultad = dificultad;
