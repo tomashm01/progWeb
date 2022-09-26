@@ -1,30 +1,32 @@
 package factory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import entities.Usuario;
 
 public abstract class ReservaAbstracta {
 	
-	protected UUID id;
-	protected UUID idUser;
+	public static int MAX_RANDOM = 999999;
+	protected Integer id;
+	protected Integer idUser;
 	protected float precio;
-	protected Date fecha;
+	protected LocalDate fecha;
 	protected Integer minutos;
-	protected UUID idPista;
+	protected Integer idPista;
 	protected float descuento;
 	protected ArrayList<Usuario> participantes;
+	protected static ArrayList<Usuario> usuarios;
 	
 	public ReservaAbstracta() {
 	
 	}
 	
-	public ReservaAbstracta(UUID idUser, float precio, Date fecha, Integer minutos, UUID idPista,
+	public ReservaAbstracta(Integer idUser, float precio, LocalDate fecha, Integer minutos, Integer idPista,
 			float descuento) {
 		super();
-		this.id = UUID.randomUUID();
+		this.id = (int) Math.random();
 		this.idUser = idUser;
 		this.precio = precio;
 		this.fecha = fecha;
@@ -32,32 +34,33 @@ public abstract class ReservaAbstracta {
 		this.idPista = idPista;
 		this.descuento = descuento;
 		this.participantes = null;
+		this.usuarios = obtenerUsuarios();
 	}
 
 	/**
 	 * @return the id
 	 */
-	public UUID getId() {
+	public Integer getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(UUID id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	/**
 	 * @return the idUser
 	 */
-	public UUID getIdUser() {
+	public Integer getIdUser() {
 		return idUser;
 	}
 	/**
 	 * @param idUser the idUser to set
 	 */
-	public void setIdUser(UUID idUser) {
+	public void setIdUser(Integer idUser) {
 		this.idUser = idUser;
 	}
 	/**
@@ -75,13 +78,13 @@ public abstract class ReservaAbstracta {
 	/**
 	 * @return the fecha
 	 */
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 	/**
 	 * @param fecha the fecha to set
 	 */
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	/**
@@ -99,13 +102,13 @@ public abstract class ReservaAbstracta {
 	/**
 	 * @return the idPista
 	 */
-	public UUID getIdPista() {
+	public Integer getIdPista() {
 		return idPista;
 	}
 	/**
 	 * @param idPista the idPista to set
 	 */
-	public void setIdPista(UUID idPista) {
+	public void setIdPista(Integer idPista) {
 		this.idPista = idPista;
 	}
 	/**
@@ -133,6 +136,16 @@ public abstract class ReservaAbstracta {
 	 */
 	public void setParticipantes(ArrayList<Usuario> participantes) {
 		this.participantes = participantes;
+	}
+	
+	static ArrayList<Usuario> obtenerUsuarios() {
+		// AQUI VA LA FUENTE DE DATOS
+		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2004, 1, 1), null, "juan@uco.es");
+		Usuario usuario2 = new Usuario();
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+		usuarios.add(usuario1);
+		usuarios.add(usuario2);
+		return usuarios;
 	}
 
 	@Override

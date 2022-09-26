@@ -1,25 +1,34 @@
 package entities;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import factory.ReservaAbstracta;
 
 public class Usuario {
 	
-	private UUID id;
+	private Integer id;
 	private String nombreApellidos;
-	private Date fechaNacimiento;	
-	private Date fechaInscipcion;
+	private LocalDate fechaNacimiento;	
+	private LocalDate fechaInscipcion;
 	private String correo;
 	private ArrayList<ReservaAbstracta> reservas; 
 	
 	public Usuario() {}
 	
-	public Usuario(String nombreApellidos, Date fechaNacimiento, Date fechaInscipcion, String correo) {
-		this.id=UUID.randomUUID();
+	public Usuario(Integer id) {
+		this.id = id;
+		
+	}
+	
+	public Usuario(String nombreApellidos, LocalDate fechaNacimiento, LocalDate fechaInscipcion, String correo) {
+		//this.id=UUID.randomUUID();
+		this.id = 111111;
 		this.nombreApellidos = nombreApellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaInscipcion = fechaInscipcion;
@@ -27,11 +36,11 @@ public class Usuario {
 		this.reservas = null;
 	}
 	
-	public UUID getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -53,28 +62,28 @@ public class Usuario {
 	/**
 	 * @return the fechaNacimiento
 	 */
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
 	/**
 	 * @param fechaNacimiento the fechaNacimiento to set
 	 */
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	/**
 	 * @return the fechaInscipcion
 	 */
-	public Date getFechaInscipcion() {
+	public LocalDate getFechaInscipcion() {
 		return fechaInscipcion;
 	}
 
 	/**
 	 * @param fechaInscipcion the fechaInscipcion to set
 	 */
-	public void setFechaInscipcion(Date fechaInscipcion) {
+	public void setFechaInscipcion(LocalDate fechaInscipcion) {
 		this.fechaInscipcion = fechaInscipcion;
 	}
 
@@ -107,20 +116,34 @@ public class Usuario {
 		this.reservas = reservas;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Usuario [nombreApellidos=" + nombreApellidos + ", fechaNacimiento=" + fechaNacimiento
-				+ ", fechaInscipcion=" + fechaInscipcion + ", correo=" + correo + "]";
+		return "Usuario [id=" + id + ", nombreApellidos=" + nombreApellidos + ", fechaNacimiento=" + fechaNacimiento
+				+ ", fechaInscipcion=" + fechaInscipcion + ", correo=" + correo + ", reservas=" + reservas + "]";
 	}
-
 
 	/*
 		Calcula los anios que lleva registrado el usuario
 	*/
-	public Integer calcularAntiguedad(){
-		Date fechaActual = new Date();
-		Integer diferencia = (int) (fechaActual.getTime() - fechaInscipcion.getTime());
-		return (diferencia / (1000 * 60 * 60 * 24))/365;
+	public long calcularAntiguedad(){
+		//Date fechaActual = new Date();
+		//long diferencia = fechaActual.getTime() - fechaInscipcion.getTime();
+		//return (diferencia / (1000 * 60 * 60 * 24))/365;
+		return 0;
+	}
+	
+	/**
+	 * Calcula si el usuario es mayor de edad*/
+	public boolean isMayorEdad(){
+		LocalDate fechaActual = LocalDate.now();
+		int anioActual = fechaActual.getYear();
+		int anioUsuario = fechaNacimiento.getYear();
+		long res = (anioActual - anioUsuario);
+		System.out.println(res);
+		return (res)>17;
+		
+		
 	}
 
 }
