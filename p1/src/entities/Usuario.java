@@ -1,21 +1,20 @@
 package entities;
 
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import factory.ReservaAbstracta;
 
 public class Usuario {
 	
 	private UUID id;
-
 	private String nombreApellidos;
-	
-	private Date fechaNacimiento;
-	
+	private Date fechaNacimiento;	
 	private Date fechaInscipcion;
-	
 	private String correo;
+	private ArrayList<ReservaAbstracta> reservas; 
 	
 	public Usuario() {}
 	
@@ -25,6 +24,7 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaInscipcion = fechaInscipcion;
 		this.correo = correo;
+		this.reservas = null;
 	}
 	
 	public UUID getId() {
@@ -91,7 +91,22 @@ public class Usuario {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
+	
 		
+	/**
+	 * @return the reservas
+	 */
+	public ArrayList<ReservaAbstracta> getReservas() {
+		return reservas;
+	}
+
+	/**
+	 * @param reservas the reservas to set
+	 */
+	public void setReservas(ArrayList<ReservaAbstracta> reservas) {
+		this.reservas = reservas;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [nombreApellidos=" + nombreApellidos + ", fechaNacimiento=" + fechaNacimiento

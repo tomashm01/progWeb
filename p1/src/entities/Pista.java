@@ -11,28 +11,30 @@ enum DificultadPista {
 
 public class Pista {
 	private UUID id;
+	private String nombre;
+	private boolean isAvailable;
+	private DificultadPista dificultad;
+	private Integer maxKarts;
+	private ArrayList<Kart> listaKarts;
+	
+	public Pista() {
+	}
+	public Pista(String nombre, boolean isAvailable, DificultadPista dificultad, Integer maxKarts) {
+		this.id=UUID.randomUUID();
+		this.nombre = nombre;
+		this.isAvailable = isAvailable;
+		this.dificultad = dificultad;
+		this.maxKarts = maxKarts;
+		this.listaKarts = null;
+	}
+	
 	public UUID getId() {
 		return id;
 	}
 	public void setId(UUID id) {
 		this.id = id;
 	}
-
-	private String nombre;
-	private boolean isReserved;
-	private DificultadPista dificultad;
-	private Integer maxKarts;
-	private ArrayList<Kart> listaKarts = new ArrayList<Kart>();
-	public Pista() {
-	}
-	public Pista(String nombre, boolean isReserved, DificultadPista dificultad, Integer maxKarts) {
-		this.id=UUID.randomUUID();
-		this.nombre = nombre;
-		this.isReserved = isReserved;
-		this.dificultad = dificultad;
-		this.maxKarts = maxKarts;
-		this.listaKarts = null;
-	}
+	
 	/**
 	 * @return the nombre
 	 */
@@ -48,14 +50,14 @@ public class Pista {
 	/**
 	 * @return the isReserved
 	 */
-	public boolean isReserved() {
-		return isReserved;
+	public boolean isAvailable() {
+		return isAvailable;
 	}
 	/**
 	 * @param isReserved the isReserved to set
 	 */
-	public void setReserved(boolean isReserved) {
-		this.isReserved = isReserved;
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
 	}
 	/**
 	 * @return the dificultad
@@ -95,7 +97,7 @@ public class Pista {
 	}
 	@Override
 	public String toString() {
-		return "Pista [nombre=" + nombre + ", isReserved=" + isReserved + ", dificultad=" + dificultad + ", maxKarts="
+		return "Pista [nombre=" + nombre + ", isReserved=" + isAvailable + ", dificultad=" + dificultad + ", maxKarts="
 				+ maxKarts + ", listaKarts=" + listaKarts + "]";
 	}
 	
