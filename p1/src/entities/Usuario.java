@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import factory.ReservaAbstracta;
 
+//Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
+
 public class Usuario {
 	
 	public static final int MAX_RANDOM = 999999999;
@@ -16,13 +18,15 @@ public class Usuario {
 	private String email;
 	private ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>(); 
 	
-	public Usuario() {}
+	public Usuario() {
+		this.id=(int) (Math.random()*MAX_RANDOM);
+	}
 	
 	public Usuario(Integer id) {
 		this.id = id;
 	}
 		
-	public Usuario(Integer id, String fullName, LocalDate birthdayDate, LocalDate inscriptionDate, String email) {
+	public Usuario(String fullName, LocalDate birthdayDate, LocalDate inscriptionDate, String email) {
 		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.fullName = fullName;
 		this.birthdayDate = birthdayDate;

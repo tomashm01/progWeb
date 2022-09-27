@@ -2,7 +2,7 @@ package factory;
 
 import java.time.LocalDate;
 
-
+//Es una reserva que realiza un adulto, pero en la que solo participan niños en una pista infantil.
 
 public class ReservaInfantil extends ReservaAbstracta{
 	public ReservaInfantil() {

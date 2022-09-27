@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import entities.enums.DificultadPista;
 import entities.enums.EstadoKart;
 
-
+//Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
 public class Pista {
 	
@@ -18,10 +18,11 @@ public class Pista {
 	private ArrayList<Kart> kartsList=new ArrayList<Kart>();
 	
 	public Pista() {
+		this.id=(int) (Math.random()*MAX_RANDOM);
 	}
 
-	public Pista(Integer id, String name, boolean isAvailable, DificultadPista difficulty, Integer maxKarts) {
-		this.id = id;
+	public Pista(String name, boolean isAvailable, DificultadPista difficulty, Integer maxKarts) {
+		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.name = name;
 		this.isAvailable = isAvailable;
 		this.difficulty = difficulty;
@@ -60,6 +61,9 @@ public class Pista {
 	}
 	public ArrayList<Kart> getKartsList() {
 		return kartsList;
+	}
+	public void setKartsList(ArrayList<Kart> newList) {
+		kartsList=newList;
 	}
 	
 	@Override

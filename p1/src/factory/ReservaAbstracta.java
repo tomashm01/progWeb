@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import entities.Usuario;
 
+//Esta clase representa las reservas que los usuarios hacen de las pistas durante un tiempo determinado
+
 public abstract class ReservaAbstracta {
 	
 	public static final int MAX_RANDOM = 999999999;
@@ -137,7 +139,7 @@ public abstract class ReservaAbstracta {
 	
 	static ArrayList<Usuario> obtenerUsuarios() {
 		// AQUI VA LA FUENTE DE DATOS
-		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2003, 1, 1), null, "juan@uco.es");
+		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2003, 1, 1), LocalDate.of(2022, 1, 1), "juan@uco.es");
 		Usuario usuario2 = new Usuario();
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		usuarios.add(usuario1);

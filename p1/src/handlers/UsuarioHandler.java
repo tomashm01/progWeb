@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import entities.Usuario;
 
-public class UserHandler {
+//Esta clase será la encargada de gestionar la información de los usuarios que hacen reservas.
+
+public class UsuarioHandler {
 
 	private static ArrayList<Usuario> usersList=new ArrayList<Usuario>();
-	private static UserHandler instance = null;
+	private static UsuarioHandler instance = null;
 	
-	public static UserHandler getInstance() {
-        if(UserHandler.instance == null) {
-            UserHandler.instance = new UserHandler();
+	public static UsuarioHandler getInstance() {
+        if(UsuarioHandler.instance == null) {
+            UsuarioHandler.instance = new UsuarioHandler();
         }
-        return UserHandler.instance;
+        return UsuarioHandler.instance;
     }
 
 	/**
@@ -31,9 +33,9 @@ public class UserHandler {
 	 * @param newUser
 	 * @return boolean
 	 */
-	public boolean existUser(int id) {
+	public boolean existUser(Integer id) {
 		for(Usuario user:usersList) {
-			if(id==user.getId()) return true;
+			if(user.getId().equals(id)) return true;
 		}
 		return false;
 	}
@@ -43,9 +45,21 @@ public class UserHandler {
 	 * @param id
 	 * @return
 	 */
-	public Usuario getUserByID(int id) {
+	public Usuario getUserByID(Integer id) {
 		for(Usuario user:usersList) {
-			if(id==user.getId()) return user;
+			if(user.getId().equals(id)) return user;
+		}
+		return null;
+	}
+	
+	/**
+	 * Devuelve el id de usuario a partir de su correo
+	 * @param email
+	 * @return
+	 */
+	public Integer getIdByEmail(String email) {
+		for(Usuario user:usersList) {
+			if(user.getEmail().equals(email)) return user.getId();
 		}
 		return null;
 	}
@@ -63,9 +77,9 @@ public class UserHandler {
 	 * @param id
 	 * @return
 	 */
-	public boolean removeUser(int id){
+	public boolean removeUser(Integer id){
 		for(int i=0;i<usersList.size();i++) {
-			if(usersList.get(i).getId() == id){
+			if(usersList.get(i).getId().equals(id)){
 				usersList.remove(i);
 				return true;
 			} 
@@ -80,12 +94,14 @@ public class UserHandler {
 	 */
 	public boolean editUser(Usuario user){
 		for(int i=0;i<usersList.size();i++){
-			if(usersList.get(i).getId() == user.getId()){
+			if(usersList.get(i).getId().equals(user.getId())){
 				usersList.set(i, user);
 				return true;
 			}
 		}
 		return false;
 	}
+	
+	//TODO: implementar metodo para leer de fchero csv, escribir en fichero csv y añadir csv
 
 }
