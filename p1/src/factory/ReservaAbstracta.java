@@ -1,6 +1,5 @@
 package factory;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -140,7 +139,7 @@ public abstract class ReservaAbstracta {
 	
 	static ArrayList<Usuario> obtenerUsuarios() {
 		// AQUI VA LA FUENTE DE DATOS
-		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2004, 1, 1), null, "juan@uco.es");
+		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2003, 1, 1), null, "juan@uco.es");
 		Usuario usuario2 = new Usuario();
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		usuarios.add(usuario1);

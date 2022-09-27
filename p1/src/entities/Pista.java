@@ -6,7 +6,7 @@ import java.util.UUID;
 enum DificultadPista {
 	INFANTIL,
 	FAMILIAR,
-	ADULTOS
+	ADULTOS;
 }
 
 public class Pista {
@@ -106,7 +106,7 @@ public class Pista {
 		ArrayList<Kart> kartsDisponibles= new ArrayList<Kart>();
 		
 		for(int i=0;i<this.listaKarts.size();i++) {
-			if(this.listaKarts.get(i).getEstado().equals("DISPONIBLE")) {
+			if( this.listaKarts.get(i).getEstado() == EstadoKart.DISPONIBLE ) {
 				kartsDisponibles.add(listaKarts.get(i));
 			}
 		}
@@ -116,12 +116,12 @@ public class Pista {
 	
 	public boolean asociarKartAPista(Kart kart) {
 		if(kart.getIsAdult()) {
-			if(this.getDificultad().equals("FAMILIAR") || this.getDificultad().equals("ADULTOS")) {
+			if(this.getDificultad() == DificultadPista.FAMILIAR || this.getDificultad() == DificultadPista.ADULTOS ) {
 				this.listaKarts.add(kart);
 				return true;
 			}
 		}else {
-			if(this.getDificultad().equals("FAMILIAR") || this.getDificultad().equals("INFANTIL")) {
+			if(this.getDificultad() == DificultadPista.FAMILIAR  || this.getDificultad() == DificultadPista.INFANTIL ) {
 				this.listaKarts.add(kart);
 				return true;
 			}

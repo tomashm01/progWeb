@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
 
 import factory.*;
 
@@ -10,6 +9,7 @@ public class Main {
 		int opcion=0;
 		Scanner s=new Scanner(System.in);
 		ReservaInfantil r = new ReservaInfantil(111111, 10, LocalDate.of(1992, 1, 1), null, null, opcion);
+
 		/*do{
 			System.out.println("Introduce una opcion");
 			opcion=s.nextInt();
@@ -27,6 +27,7 @@ public class Main {
 				
 		}while(opcion!=0);
 */
+		s.close();
 	}
 
 }

@@ -1,12 +1,8 @@
 package entities;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import factory.ReservaAbstracta;
 
@@ -127,23 +123,15 @@ public class Usuario {
 		Calcula los anios que lleva registrado el usuario
 	*/
 	public long calcularAntiguedad(){
-		//Date fechaActual = new Date();
-		//long diferencia = fechaActual.getTime() - fechaInscipcion.getTime();
-		//return (diferencia / (1000 * 60 * 60 * 24))/365;
-		return 0;
+		Period periodo = Period.between(fechaInscipcion, LocalDate.now());
+		return periodo.getYears();
 	}
 	
 	/**
 	 * Calcula si el usuario es mayor de edad*/
 	public boolean isMayorEdad(){
-		LocalDate fechaActual = LocalDate.now();
-		int anioActual = fechaActual.getYear();
-		int anioUsuario = fechaNacimiento.getYear();
-		long res = (anioActual - anioUsuario);
-		System.out.println(res);
-		return (res)>17;
-		
-		
+		Period periodo = Period.between(fechaNacimiento,LocalDate.now());
+		return periodo.getYears() > 17;
 	}
 
 }
