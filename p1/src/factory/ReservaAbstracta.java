@@ -7,7 +7,7 @@ import entities.Usuario;
 
 public abstract class ReservaAbstracta {
 	
-	public static int MAX_RANDOM = 999999;
+	public static final int MAX_RANDOM = 999999999;
 	protected Integer id;
 	protected Integer idUser;
 	protected float precio;
@@ -15,8 +15,8 @@ public abstract class ReservaAbstracta {
 	protected Integer minutos;
 	protected Integer idPista;
 	protected float descuento;
-	protected ArrayList<Usuario> participantes;
-	protected static ArrayList<Usuario> usuarios;
+	protected ArrayList<Usuario> participantes=new ArrayList<Usuario>();
+	protected ArrayList<Usuario> usuarios=new ArrayList<Usuario>();
 	
 	public ReservaAbstracta() {
 	
@@ -25,15 +25,13 @@ public abstract class ReservaAbstracta {
 	public ReservaAbstracta(Integer idUser, float precio, LocalDate fecha, Integer minutos, Integer idPista,
 			float descuento) {
 		super();
-		this.id = (int) Math.random();
+		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.idUser = idUser;
 		this.precio = precio;
 		this.fecha = fecha;
 		this.minutos = minutos;
 		this.idPista = idPista;
 		this.descuento = descuento;
-		this.participantes = null;
-		this.usuarios = obtenerUsuarios();
 	}
 
 	/**

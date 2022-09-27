@@ -8,28 +8,26 @@ import factory.ReservaAbstracta;
 
 public class Usuario {
 	
+	public static final int MAX_RANDOM = 999999999;
 	private Integer id;
-	private String nombreApellidos;
-	private LocalDate fechaNacimiento;	
-	private LocalDate fechaInscipcion;
-	private String correo;
-	private ArrayList<ReservaAbstracta> reservas; 
+	private String fullName;
+	private LocalDate birthdayDate;	
+	private LocalDate inscriptionDate;
+	private String email;
+	private ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>(); 
 	
 	public Usuario() {}
 	
 	public Usuario(Integer id) {
 		this.id = id;
-		
 	}
-	
-	public Usuario(String nombreApellidos, LocalDate fechaNacimiento, LocalDate fechaInscipcion, String correo) {
-		//this.id=UUID.randomUUID();
-		this.id = 111111;
-		this.nombreApellidos = nombreApellidos;
-		this.fechaNacimiento = fechaNacimiento;
-		this.fechaInscipcion = fechaInscipcion;
-		this.correo = correo;
-		this.reservas = null;
+		
+	public Usuario(Integer id, String fullName, LocalDate birthdayDate, LocalDate inscriptionDate, String email) {
+		this.id = (int) (Math.random()*MAX_RANDOM);
+		this.fullName = fullName;
+		this.birthdayDate = birthdayDate;
+		this.inscriptionDate = inscriptionDate;
+		this.email = email;
 	}
 	
 	public Integer getId() {
@@ -40,98 +38,64 @@ public class Usuario {
 		this.id = id;
 	}
 
-
-	/**
-	 * @return the nombreApellidos
-	 */
-	public String getNombreApellidos() {
-		return nombreApellidos;
+	public String getFullName() {
+		return fullName;
 	}
 
-	/**
-	 * @param nombreApellidos the nombreApellidos to set
-	 */
-	public void setNombreApellidos(String nombreApellidos) {
-		this.nombreApellidos = nombreApellidos;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
-	/**
-	 * @return the fechaNacimiento
-	 */
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
+	public LocalDate getBirthdayDate() {
+		return birthdayDate;
 	}
 
-	/**
-	 * @param fechaNacimiento the fechaNacimiento to set
-	 */
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setBirthdayDate(LocalDate birthdayDate) {
+		this.birthdayDate = birthdayDate;
 	}
 
-	/**
-	 * @return the fechaInscipcion
-	 */
-	public LocalDate getFechaInscipcion() {
-		return fechaInscipcion;
+	public LocalDate getInscriptionDate() {
+		return inscriptionDate;
 	}
 
-	/**
-	 * @param fechaInscipcion the fechaInscipcion to set
-	 */
-	public void setFechaInscipcion(LocalDate fechaInscipcion) {
-		this.fechaInscipcion = fechaInscipcion;
+	public void setInscriptionDate(LocalDate inscriptionDate) {
+		this.inscriptionDate = inscriptionDate;
 	}
 
-	/**
-	 * @return the correo
-	 */
-	public String getCorreo() {
-		return correo;
+	public String getEmail() {
+		return email;
 	}
 
-	/**
-	 * @param correo the correo to set
-	 */
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	
-		
+
 	/**
 	 * @return the reservas
 	 */
-	public ArrayList<ReservaAbstracta> getReservas() {
-		return reservas;
+	public ArrayList<ReservaAbstracta> getReserves() {
+		return reservesList;
 	}
-
-	/**
-	 * @param reservas the reservas to set
-	 */
-	public void setReservas(ArrayList<ReservaAbstracta> reservas) {
-		this.reservas = reservas;
-	}
-
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombreApellidos=" + nombreApellidos + ", fechaNacimiento=" + fechaNacimiento
-				+ ", fechaInscipcion=" + fechaInscipcion + ", correo=" + correo + ", reservas=" + reservas + "]";
+		return "Usuario [id=" + id + ", fullName=" + fullName + ", birthdayDate=" + birthdayDate + ", inscriptionDate="
+				+ inscriptionDate + ", email=" + email + ", reservesList=" + reservesList + "]";
 	}
 
 	/*
 		Calcula los anios que lleva registrado el usuario
 	*/
-	public long calcularAntiguedad(){
-		Period periodo = Period.between(fechaInscipcion, LocalDate.now());
-		return periodo.getYears();
+	public long antiquity(){
+		Period period = Period.between(inscriptionDate, LocalDate.now());
+		return period.getYears();
 	}
 	
 	/**
 	 * Calcula si el usuario es mayor de edad*/
 	public boolean isMayorEdad(){
-		Period periodo = Period.between(fechaNacimiento,LocalDate.now());
-		return periodo.getYears() > 17;
+		Period period = Period.between(inscriptionDate,LocalDate.now());
+		return period.getYears() > 17;
 	}
 
 }

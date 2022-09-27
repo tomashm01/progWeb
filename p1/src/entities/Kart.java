@@ -1,103 +1,84 @@
 package entities;
 
-import java.util.UUID;
+import entities.enums.EstadoKart;
 
-enum EstadoKart {
-	DISPONIBLE,
-	RESERVADO,
-	MANTENIMIENTO
-}
 
 public class Kart {
 	
+	public static int numKarts=0;
 	private Integer id;
 	private boolean isAdult;
-	private EstadoKart estado;
-	private UUID idUser;
-	private UUID idPista;
+	private EstadoKart state;
+	private Integer idUser;
+	private Integer idPista;
 	
-	public Kart() {}
+	public Kart(){
+		Kart.numKarts++;
+		this.id = Kart.numKarts;
+	}
 	
-	public Kart(Integer id, boolean isAdult, EstadoKart estado, UUID idUser, UUID idPista) {
-		this.id = id;
+	public Kart(boolean isAdult, EstadoKart state, Integer idUser, Integer idPista) {
+		Kart.numKarts++;
+		this.id = Kart.numKarts;
 		this.isAdult = isAdult;
-		this.estado = estado;
+		this.state = state;
 		this.idUser = idUser;
 		this.idPista = idPista;
 	}
-	
-	/**
-	 * @return the id
-	 */
+
+	public static int getNumKarts() {
+		return numKarts;
+	}
+
+	public static void setNumKarts(int numKarts) {
+		Kart.numKarts = numKarts;
+	}
+
 	public Integer getId() {
 		return id;
 	}
-	/**
-	 * @param id the id to set
-	 */
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	/**
-	 * @return the tipo
-	 */
-	public boolean getIsAdult() {
+
+	public boolean isAdult() {
 		return isAdult;
 	}
-	/**
-	 * @param tipo the tipo to set
-	 */
-	public void setTipo(boolean tipo) {
-		this.isAdult = tipo;
-	}
-	/**
-	 * @return the estado
-	 */
-	public EstadoKart getEstado() {
-		return estado;
-	}
-	/**
-	 * @param estado the estado to set
-	 */
-	public void setEstado(EstadoKart estado) {
-		this.estado = estado;
-	}
-	
-	
-	/**
-	 * @return the idUser
-	 */
-	public UUID getIdUser() {
-		return idUser;
-	}
-	/**
-	 * @param idUser the idUser to set
-	 */
-	public void setIdUser(UUID idUser) {
-		this.idUser = idUser;
-	}
 
-	/**
-	 * @param isAdult the isAdult to set
-	 */
 	public void setAdult(boolean isAdult) {
 		this.isAdult = isAdult;
 	}
-	
-	/**
-	 * @return the idPista
-	 */
-	public UUID getIdPista() {
+
+	public EstadoKart getState() {
+		return state;
+	}
+
+	public void setState(EstadoKart state) {
+		this.state = state;
+	}
+
+	public Integer getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
+	}
+
+	public Integer getIdPista() {
 		return idPista;
 	}
-	/**
-	 * @param idPista the idPista to set
-	 */
-	public void setIdPista(UUID idPista) {
+
+	public void setIdPista(Integer idPista) {
 		this.idPista = idPista;
 	}
+
 	@Override
 	public String toString() {
-		return "Kart [id=" + id + ", tipo=" + isAdult + ", estado=" + estado + "]";
+		return "Kart [id=" + id + ", isAdult=" + isAdult + ", state=" + state + ", idUser=" + idUser + ", idPista="
+				+ idPista + "]";
 	}
+	
+	
 }

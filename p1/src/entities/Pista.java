@@ -1,113 +1,79 @@
 package entities;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-enum DificultadPista {
-	INFANTIL,
-	FAMILIAR,
-	ADULTOS;
-}
+import entities.enums.DificultadPista;
+import entities.enums.EstadoKart;
+
+
 
 public class Pista {
-	private UUID id;
-	private String nombre;
+	
+	public static final int MAX_RANDOM = 999999999;
+	private Integer id;
+	private String name;
 	private boolean isAvailable;
-	private DificultadPista dificultad;
+	private DificultadPista difficulty;
 	private Integer maxKarts;
-	private ArrayList<Kart> listaKarts;
+	private ArrayList<Kart> kartsList=new ArrayList<Kart>();
 	
 	public Pista() {
 	}
-	public Pista(String nombre, boolean isAvailable, DificultadPista dificultad, Integer maxKarts) {
-		this.id=UUID.randomUUID();
-		this.nombre = nombre;
+
+	public Pista(Integer id, String name, boolean isAvailable, DificultadPista difficulty, Integer maxKarts) {
+		this.id = id;
+		this.name = name;
 		this.isAvailable = isAvailable;
-		this.dificultad = dificultad;
+		this.difficulty = difficulty;
 		this.maxKarts = maxKarts;
-		this.listaKarts = null;
 	}
-	
-	public UUID getId() {
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(UUID id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	/**
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
-	/**
-	 * @return the isReserved
-	 */
 	public boolean isAvailable() {
 		return isAvailable;
 	}
-	/**
-	 * @param isReserved the isReserved to set
-	 */
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	/**
-	 * @return the dificultad
-	 */
-	public DificultadPista getDificultad() {
-		return dificultad;
+	public DificultadPista getDifficulty() {
+		return difficulty;
 	}
-	/**
-	 * @param dificultad the dificultad to set
-	 */
-	public void setDificultad(DificultadPista dificultad) {
-		this.dificultad = dificultad;
+	public void setDifficulty(DificultadPista difficulty) {
+		this.difficulty = difficulty;
 	}
-	/**
-	 * @return the maxKarts
-	 */
 	public Integer getMaxKarts() {
 		return maxKarts;
 	}
-	/**
-	 * @param maxKarts the maxKarts to set
-	 */
 	public void setMaxKarts(Integer maxKarts) {
 		this.maxKarts = maxKarts;
 	}
-	/**
-	 * @return the listaKarts
-	 */
-	public ArrayList<Kart> getListaKarts() {
-		return listaKarts;
-	}
-	/**
-	 * @param listaKarts the listaKarts to set
-	 */
-	public void setListaKarts(ArrayList<Kart> listaKarts) {
-		this.listaKarts = listaKarts;
-	}
-	@Override
-	public String toString() {
-		return "Pista [nombre=" + nombre + ", isReserved=" + isAvailable + ", dificultad=" + dificultad + ", maxKarts="
-				+ maxKarts + ", listaKarts=" + listaKarts + "]";
+	public ArrayList<Kart> getKartsList() {
+		return kartsList;
 	}
 	
+	@Override
+	public String toString() {
+		return "Pista [id=" + id + ", name=" + name + ", isAvailable=" + isAvailable + ", difficulty=" + difficulty
+				+ ", maxKarts=" + maxKarts + "]";
+	}
 	public ArrayList<Kart> consultarKartsDisponibles() {
 		
 		ArrayList<Kart> kartsDisponibles= new ArrayList<Kart>();
 		
-		for(int i=0;i<this.listaKarts.size();i++) {
-			if( this.listaKarts.get(i).getEstado() == EstadoKart.DISPONIBLE ) {
-				kartsDisponibles.add(listaKarts.get(i));
+		for(int i=0;i<this.kartsList.size();i++) {
+			if( this.kartsList.get(i).getState() == EstadoKart.DISPONIBLE ) {
+				kartsDisponibles.add(kartsList.get(i));
 			}
 		}
 		
@@ -115,14 +81,14 @@ public class Pista {
 	}
 	
 	public boolean asociarKartAPista(Kart kart) {
-		if(kart.getIsAdult()) {
-			if(this.getDificultad() == DificultadPista.FAMILIAR || this.getDificultad() == DificultadPista.ADULTOS ) {
-				this.listaKarts.add(kart);
+		if(kart.isAdult()) {
+			if(this.getDifficulty() == DificultadPista.FAMILIAR || this.getDifficulty() == DificultadPista.ADULTOS ) {
+				this.kartsList.add(kart);
 				return true;
 			}
 		}else {
-			if(this.getDificultad() == DificultadPista.FAMILIAR  || this.getDificultad() == DificultadPista.INFANTIL ) {
-				this.listaKarts.add(kart);
+			if(this.getDifficulty() == DificultadPista.FAMILIAR  || this.getDifficulty() == DificultadPista.INFANTIL ) {
+				this.kartsList.add(kart);
 				return true;
 			}
 		}
