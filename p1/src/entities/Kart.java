@@ -26,6 +26,16 @@ public class Kart {
 		this.idUser = idUser;
 		this.idPista = idPista;
 	}
+	
+	//constructor para kart sin pista ni usuario asignado
+	public Kart(boolean isAdult, EstadoKart state) {
+		Kart.numKarts++;
+		this.id = Kart.numKarts;
+		this.isAdult = isAdult;
+		this.state = state;
+		this.idUser = -1;
+		this.idPista = -1;
+	}
 
 	public static int getNumKarts() {
 		return numKarts;

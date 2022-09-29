@@ -1,12 +1,33 @@
 package factory;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import entities.Usuario;
 
 //Es una reserva que realiza un adulto, pero en la que solo participan niños en una pista infantil.
 
 public class ReservaInfantil extends ReservaAbstracta{
+	
+	private int numChilds=0;
+	
+	@Override
+	public String toString() {
+		return "ReservaInfantil [idUser=" + idUser + ", precio=" + precio + ", fecha=" + fecha + ", minutos=" + minutos
+				+ ", idPista=" + idPista + ", descuento=" + descuento + ",numChilds=" + numChilds + "]";
+	}
+	
+
 	public ReservaInfantil() {
 		super();
+	}
+
+	public int getNumChilds() {
+		return numChilds;
+	}
+
+	public void setNumChilds(int numChilds) {
+		this.numChilds = numChilds;
 	}
 
 	/**
@@ -20,26 +41,10 @@ public class ReservaInfantil extends ReservaAbstracta{
 	 * @param descuento
 	 */
 	
-	public ReservaInfantil(Integer idUser, float precio, LocalDate fecha, Integer minutos, Integer idPista, float descuento) {
+	public ReservaInfantil(Integer idUser,ArrayList<Usuario> participantes, float precio, LocalDate fecha, Integer minutos, Integer idPista, float descuento) {
 		super(idUser, precio, fecha, minutos, idPista, descuento);
-		try {
-			
-		    usuarios.forEach((e) -> {
-		    	if(e.getId() != null && e.getId().equals(idUser)) {
-		    		if(!e.isMayorEdad()) {
-			    		
-			    	}
-		     	}
-		    	
-		     });
-			
-		} catch (Exception e) {
-			System.out.println(e + "El usuario no es mayor de edad");
-		}
+		super.participantes=participantes;
+		numChilds=participantes.size();
 	}
-	
-
-	
-	
 
 }

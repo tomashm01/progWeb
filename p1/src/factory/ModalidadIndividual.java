@@ -1,5 +1,7 @@
 package factory;
 
+import java.util.ArrayList;
+
 public class ModalidadIndividual extends ModalidadAbstracta{
 
 	@Override
