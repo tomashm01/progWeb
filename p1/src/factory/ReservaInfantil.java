@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import entities.Usuario;
+import entities.enums.DificultadPista;
 
 //Es una reserva que realiza un adulto, pero en la que solo participan niños en una pista infantil.
 
@@ -13,8 +14,8 @@ public class ReservaInfantil extends ReservaAbstracta{
 	
 	@Override
 	public String toString() {
-		return "ReservaInfantil [idUser=" + idUser + ", precio=" + precio + ", fecha=" + fecha + ", minutos=" + minutos
-				+ ", idPista=" + idPista + ", descuento=" + descuento + ",numChilds=" + numChilds + "]";
+		return "ReservaInfantil [idUser=" + idUser + ", precio=" + price + ", fecha=" + date + ", minutos=" + time
+				+ ", idPista=" + idPista + ", descuento=" + discount + ",numChilds=" + numChilds + "]";
 	}
 	
 
@@ -43,8 +44,16 @@ public class ReservaInfantil extends ReservaAbstracta{
 	
 	public ReservaInfantil(Integer idUser,ArrayList<Usuario> participantes, float precio, LocalDate fecha, Integer minutos, Integer idPista, float descuento) {
 		super(idUser, precio, fecha, minutos, idPista, descuento);
-		super.participantes=participantes;
+		super.players=participantes;
 		numChilds=participantes.size();
 	}
+
+	public DificultadPista type(){
+		return DificultadPista.INFANTIL;
+	}
+
+	public  boolean validate(){
+		return allChilds();
+	};
 
 }
