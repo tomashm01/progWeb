@@ -6,7 +6,17 @@ import java.util.ArrayList;
 import entities.Usuario;
 
 //Esta clase representa las reservas que los usuarios hacen de las pistas durante un tiempo determinado
-
+/*
+Reserva
+	bono (X reservas)
+		RF
+		RI
+		RA
+	individual (1 reserva)
+		RF
+		RI
+		RA
+*/
 public abstract class ReservaAbstracta {
 	
 	public static final int MAX_RANDOM = 999999999;
@@ -139,7 +149,7 @@ public abstract class ReservaAbstracta {
 	
 	static ArrayList<Usuario> obtenerUsuarios() {
 		// AQUI VA LA FUENTE DE DATOS
-		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2003, 1, 1), LocalDate.of(2022, 1, 1), "juan@uco.es");
+		Usuario usuario1 = new Usuario("Juan Higuera", LocalDate.of(2003, 1, 1), LocalDate.of(2021, 10, 1), "juan@uco.es");
 		Usuario usuario2 = new Usuario();
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		usuarios.add(usuario1);
@@ -147,14 +157,49 @@ public abstract class ReservaAbstracta {
 		return usuarios;
 	}
 
+	public int getNumChilds() {
+		int numChilds=0;
+		for(Usuario user : participantes){
+			if( ! user.isMayorEdad()){
+				numChilds++;
+			}
+		}
+		return numChilds;
+	}	
+	
+	public boolean existAdultInParticipant() {
+		for(Usuario user : participantes){
+			if(user.isMayorEdad()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean allChilds() {
+		for(Usuario user : participantes){
+			if( user.isMayorEdad()){
+				return false;
+			}
+		}
+		return true;
+	}	
+
+	public boolean allAdults() {
+		for(Usuario user : participantes){
+			if( ! user.isMayorEdad()){
+				return false;
+			}
+		}
+		return true;
+	}	
+	
+	
 	@Override
 	public String toString() {
 		return "ReservaAbstracta [idUser=" + idUser + ", precio=" + precio + ", fecha=" + fecha + ", minutos=" + minutos
 				+ ", idPista=" + idPista + ", descuento=" + descuento + "]";
-	}
-
-	
-	
+	}	
 	
 }
 
