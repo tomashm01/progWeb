@@ -87,11 +87,13 @@ public class Pista {
 	public boolean asociarKartAPista(Kart kart) {
 		if(kart.isAdult()) {
 			if(this.getDifficulty() == DificultadPista.FAMILIAR || this.getDifficulty() == DificultadPista.ADULTOS ) {
+				kart.setIdPista(id);
 				this.kartsList.add(kart);
 				return true;
 			}
 		}else {
 			if(this.getDifficulty() == DificultadPista.FAMILIAR  || this.getDifficulty() == DificultadPista.INFANTIL ) {
+				kart.setIdPista(id);
 				this.kartsList.add(kart);
 				return true;
 			}
@@ -100,4 +102,3 @@ public class Pista {
 	}
 	
 }
-
