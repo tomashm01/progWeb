@@ -34,12 +34,12 @@ public class ReservaHandler {
 		Pista pista=CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user=UsuarioHandler.getInstance().getUserByID(reserve.getId());
 		
-		if( ! UsuarioHandler.getInstance().existUser(reserve.getId()) 					&&
-			! pista.isAvailable() 														&& 
-			! pista.getDifficulty().equals(reserve.type())								&& 
-			! (pista.getMaxKarts() >= reserve.getPlayers().size())						&&
-			! (reserve.getPlayers().size() <= pista.consultarKartsDisponibles().size())	&&
-			! reserve.validate() 														&& 
+		if( ! UsuarioHandler.getInstance().existUser(reserve.getId()) 					||
+			! pista.isAvailable() 														|| 
+			! pista.getDifficulty().equals(reserve.type())								|| 
+			! (pista.getMaxKarts() >= reserve.getPlayers().size())						||
+			! (reserve.getPlayers().size() <= pista.consultarKartsDisponibles().size())	||
+			! reserve.validate() 														|| 
 			reserve.getPlayers().size()==0
 		) return false;
 		
