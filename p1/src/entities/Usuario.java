@@ -24,17 +24,18 @@ public class Usuario implements Serializable {
 	
 	public Usuario() {
 		this.id=(int) (Math.random()*MAX_RANDOM);
+		this.inscriptionDate = LocalDate.now();
 	}
 	
 	public Usuario(Integer id) {
 		this.id = id;
 	}
 		
-	public Usuario(String fullName, LocalDate birthdayDate, LocalDate inscriptionDate, String email) {
+	public Usuario(String fullName, LocalDate birthdayDate, String email) {
 		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.fullName = fullName;
 		this.birthdayDate = birthdayDate;
-		this.inscriptionDate = inscriptionDate;
+		this.inscriptionDate = LocalDate.now();
 		this.email = email;
 	}
 	

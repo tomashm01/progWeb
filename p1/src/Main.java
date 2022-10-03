@@ -11,7 +11,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
 import entities.Usuario;
+import handlers.CircuitHandler;
+import handlers.ReservaHandler;
+import handlers.UsuarioHandler;
 
 public class Main {
 
@@ -25,15 +31,18 @@ public class Main {
 		loadFilesPath();
 		
 		System.out.println(users_file);
+		
+		//Declaración de handlers
+		UsuarioHandler userHandler = new UsuarioHandler();
+		ReservaHandler reserveHandler = new ReservaHandler();
+		CircuitHandler circuitHandler = new CircuitHandler();
 
 		// Prueba de escritura en ficheros
 
 	    ArrayList<Usuario> lista = new ArrayList<Usuario>();
 
-	     lista.add(new Usuario("Usuario1", LocalDate.of(2001, 10, 5), LocalDate.of(2022, 10, 10),
-					"usuario@email.com"));
-	     lista.add(new Usuario("Usuario2", LocalDate.of(2000, 10, 5), LocalDate.of(2022, 10, 10),
-					"usuario2@email.com"));
+	     lista.add(new Usuario("Usuario1", LocalDate.of(2022, 10, 10),"usuario@email.com"));
+	     lista.add(new Usuario("Usuario2", LocalDate.of(2022, 10, 10),"usuario2@email.com"));
 
 		//Prueba de lectura desde ficheros
 	     writeFile(lista, users_file);
@@ -41,36 +50,95 @@ public class Main {
 	     for (Usuario usuario : loadFile(users_file)) {
 	         System.out.println(usuario);
 	     }   
-
+	     
 		// Menú
-		int opcion = 0;
+		int mainSelect = 0;
+		int subMainSelect = 0;
 
-		Scanner s = new Scanner(System.in);
-
+		Scanner input = new Scanner(System.in);
 		do {
 			mainMenu();
-			opcion = s.nextInt();
-			s.nextLine();
-			switch (opcion) {
-			case 0: // Salir
-				System.out.println("Hasta luego!");
+			mainSelect = input.nextInt();
+			
+			switch (mainSelect) {
+				case 0: // Salir
+					
+					System.out.println("Saliendo del sistema");
 				break;
-			case 1:
-				userMenu();
+				
+				case 1:
+					
+					userMenu();
+					subMainSelect = input.nextInt();
+					
+					
+					if (subMainSelect == 1) {
+						//Declaracion de variables
+						Usuario user = new Usuario();
+						int year, month, day;
+						
+						
+						System.out.println("Ha seleccionado la opcion anyadir usuario, introduzca los siguientes datos:");
+						System.out.println("Nombre de usuario:");
+						
+						user.setFullName(input.nextLine());
+						while(input.hasNext()) input.next();
+						
+						System.out.println("Fecha de nacimiento:");
+						System.out.println("Año(YYYY):");
+						year = input.nextInt();
+						while(input.hasNext()) input.next();
+						
+						System.out.println("Mes(MM):");
+						month = input.nextInt();
+						while(input.hasNext()) input.next();
+						
+						System.out.println("Dia(DD):");
+						day = input.nextInt();
+						while(input.hasNext()) input.next();
+						
+						user.setBirthdayDate(LocalDate.of(year, month, day));
+						
+						
+						System.out.println("Correo electronico");
+						user.setEmail(input.nextLine());
+						while(input.hasNext()) input.next();
+						
+						System.out.println("Anyadiendo usuario...");
+						userHandler.addUser(user);
+						System.out.println("El usuario ha sido anyadido correctamente.");
+					}
+					
 				break;
-			case 2:
-				circuitMenu();
+					
+				case 2:
+				
+					circuitMenu();
+					subMainSelect = input.nextInt();
+					
+					if (subMainSelect == 2) {
+						
+					}
+					
 				break;
-			case 3:
-				reserveMenu();
+					
+				case 3:
+					
+					
+					reserveMenu();
+					subMainSelect = input.nextInt();
+					
+					if (subMainSelect == 3) {
+						
+					}
+					
 				break;
-			default:
-				break;
+				
 			}
+			
+		} while (mainSelect != 0);
 
-		} while (opcion != 0);
-
-		s.close();
+		input.close();
 
 	}
 
