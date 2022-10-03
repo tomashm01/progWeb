@@ -1,5 +1,5 @@
 package entities;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -8,8 +8,12 @@ import factory.ReservaAbstracta;
 
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
-public class Usuario {
+public class Usuario implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int MAX_RANDOM = 999999999;
 	private Integer id;
 	private String fullName;
