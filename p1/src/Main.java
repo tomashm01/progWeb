@@ -11,8 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+
 
 import entities.Usuario;
 import handlers.CircuitHandler;
@@ -32,11 +31,20 @@ public class Main {
 		
 		System.out.println(users_file);
 		
+	
+		
+		
 		//Declaración de handlers
 		UsuarioHandler userHandler = new UsuarioHandler();
 		ReservaHandler reserveHandler = new ReservaHandler();
 		CircuitHandler circuitHandler = new CircuitHandler();
+		
+		//Valores basura
+		
 
+		userHandler.addUser(new Usuario("Usuario1", LocalDate.of(2022, 10, 10),"usuario@email.com"));
+		userHandler.addUser(new Usuario("Usuario2", LocalDate.of(2022, 10, 10),"usuario2@email.com"));
+		
 		// Prueba de escritura en ficheros
 
 	    ArrayList<Usuario> lista = new ArrayList<Usuario>();
@@ -52,8 +60,11 @@ public class Main {
 	     }   
 	     
 		// Menú
+	    // Declaracion de variables
+	     
 		int mainSelect = 0;
 		int subMainSelect = 0;
+		
 
 		Scanner input = new Scanner(System.in);
 		do {
@@ -72,18 +83,20 @@ public class Main {
 					subMainSelect = input.nextInt();
 					input.nextLine();
 					
-					
+					//AÑADIR USUARIO
 					if (subMainSelect == 1) {
 						//Declaracion de variables
-						Usuario user = new Usuario();
+						Usuario u1 = new Usuario();
 						int year, month, day;
 						
 						
 						System.out.println("Ha seleccionado la opcion anyadir usuario, introduzca los siguientes datos:");
-						System.out.println("Nombre de usuario:");
 						
-						user.setFullName(input.nextLine());
+						System.out.println("Nombre completo:");
+						u1.setFullName(input.nextLine());
+							
 						
+				
 						
 						System.out.println("Fecha de nacimiento:");
 						System.out.println("Año(YYYY):");
@@ -109,21 +122,101 @@ public class Main {
 						
 						
 						
-						user.setBirthdayDate(LocalDate.of(year, month, day));
+						u1.setBirthdayDate(LocalDate.of(year, month, day));
 						
 						
-						System.out.println("Correo electronico");
-						user.setEmail(input.nextLine());
+						System.out.println("Correo electronico:");
+						u1.setEmail(input.nextLine());
 						
 						
 						System.out.println("Anyadiendo usuario...");
-						userHandler.addUser(user);
+						userHandler.addUser(u1);
 						System.out.println("El usuario ha sido anyadido correctamente.");
 						System.out.println("Mostrando usuario...");
 						for( Usuario us: userHandler.getAllUsers()){
 							System.out.println(us);
 						}
 					}
+					
+					//MODIFICAR USUARIO
+					else if (subMainSelect == 2) {
+						//Declaracion de variables
+						Usuario u2 = new Usuario();
+						Usuario u3 = new Usuario();
+						int year, month, day, id;
+						
+						System.out.println("Estos son los usuarios disponibles para modificar.");
+						for( Usuario us: userHandler.getAllUsers()){
+							System.out.println(us);
+						}
+						
+						System.out.println("Selecciona el id del usuario que quieres modificar.");
+						id = input.nextInt();
+						input.nextLine();
+						u2 = userHandler.getUserByID(id);
+						System.out.println(u2);
+						
+						System.out.println("Introduce los nuevos datos del usuario:");
+						System.out.println("Nombre completo:");
+						u3.setFullName(input.nextLine());
+						
+						
+							
+						
+						System.out.println("Fecha de nacimiento:");
+						System.out.println("Año(YYYY):");
+						year = input.nextInt();
+						input.nextLine();
+						
+						
+						do {
+							System.out.println("Mes(MM):");
+							month = input.nextInt();
+							input.nextLine();
+						}
+						while(month>12 || month < 1);
+						
+						
+						do {
+							System.out.println("Dia(DD):");
+							day = input.nextInt();
+							input.nextLine();
+						}
+						while(day > 31 || day < 1);
+						
+						u3.setBirthdayDate(LocalDate.of(year, month, day));
+						
+						
+						System.out.println("Correo electronico:");
+						u3.setEmail(input.nextLine());
+						/*
+						userHandler.removeUser(u2.getId());
+						u3.setId(id);
+						userHandler.addUser(u3);
+						*/
+						//userHandler.editUser()
+						System.out.println("Mostrando el nuevo usuario...");
+						
+						for( Usuario us: userHandler.getAllUsers()){
+							System.out.println(us);
+						}
+					}
+					
+					
+					else if (subMainSelect == 3) {
+						
+						System.out.println("Estos son los usuarios de la lista.");
+						for( Usuario us: userHandler.getAllUsers()){
+							System.out.println(us);
+						}
+						
+					}
+					else if (subMainSelect == 5) {
+						System.out.println("Selecciona el id del usuario que quieres modificar.");
+						System.out.println(userHandler.getUserByID(input.nextInt()));
+						input.nextLine();
+					}
+					
 					
 				break;
 					
@@ -215,6 +308,7 @@ public class Main {
 		System.out.println("0) Salir");
 		System.out.println("-> Introduce una opcion: ");
 	}
+	
 
 	public static void writeFile(ArrayList<Usuario> list, String path) {
 
