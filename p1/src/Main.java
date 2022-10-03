@@ -70,6 +70,7 @@ public class Main {
 					
 					userMenu();
 					subMainSelect = input.nextInt();
+					input.nextLine();
 					
 					
 					if (subMainSelect == 1) {
@@ -82,31 +83,46 @@ public class Main {
 						System.out.println("Nombre de usuario:");
 						
 						user.setFullName(input.nextLine());
-						while(input.hasNext()) input.next();
+						
 						
 						System.out.println("Fecha de nacimiento:");
 						System.out.println("Año(YYYY):");
 						year = input.nextInt();
-						while(input.hasNext()) input.next();
+						input.nextLine();
 						
-						System.out.println("Mes(MM):");
-						month = input.nextInt();
-						while(input.hasNext()) input.next();
 						
-						System.out.println("Dia(DD):");
-						day = input.nextInt();
-						while(input.hasNext()) input.next();
+						
+						do {
+							System.out.println("Mes(MM):");
+							month = input.nextInt();
+							input.nextLine();
+						}
+						while(month>12 || month < 1);
+						
+						
+						do {
+							System.out.println("Dia(DD):");
+							day = input.nextInt();
+							input.nextLine();
+						}
+						while(day > 31 || day < 1);
+						
+						
 						
 						user.setBirthdayDate(LocalDate.of(year, month, day));
 						
 						
 						System.out.println("Correo electronico");
 						user.setEmail(input.nextLine());
-						while(input.hasNext()) input.next();
+						
 						
 						System.out.println("Anyadiendo usuario...");
 						userHandler.addUser(user);
 						System.out.println("El usuario ha sido anyadido correctamente.");
+						System.out.println("Mostrando usuario...");
+						for( Usuario us: userHandler.getAllUsers()){
+							System.out.println(us);
+						}
 					}
 					
 				break;
