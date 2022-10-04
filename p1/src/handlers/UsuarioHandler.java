@@ -1,13 +1,21 @@
 package handlers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import entities.Usuario;
 
 //Esta clase será la encargada de gestionar la información de los usuarios que hacen reservas.
 
 public class UsuarioHandler {
-
+	public static String users_file;
 	private static ArrayList<Usuario> usersList=new ArrayList<Usuario>();
 	private static UsuarioHandler instance = null;
 	
@@ -115,6 +123,44 @@ public class UsuarioHandler {
 		for( Usuario us: getAllUsers()){
 			System.out.println(count + ") " + us.getFullName());
 			count ++;
+		}
+	}
+	
+	public static void loadUserFile() {
+		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		try {
+			FileInputStream fis = new FileInputStream(users_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			usersList = (ArrayList<Usuario>) ois.readObject();
+
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public static void loadFilesPath() {
+		Properties prop = new Properties();
+		String filename = "src/data.properties";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
+			prop.load(reader);
+
+			String path = "datos/";
+			users_file = path + prop.getProperty("users_file");
+
+			// Captura de excepciones
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
+		} catch (IOException e) {
+			System.out.println("ERROR: No se ha podido leer el fichero");
 		}
 	}
 	//TODO: implementar metodo para leer de fchero csv, escribir en fichero csv y añadir csv

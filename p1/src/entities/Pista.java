@@ -10,6 +10,10 @@ import entities.enums.EstadoKart;
 
 public class Pista implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int MAX_RANDOM = 999999999;
 	private Integer id;
 	private String name;

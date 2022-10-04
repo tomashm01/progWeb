@@ -1,6 +1,14 @@
 package handlers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import entities.Kart;
 import entities.Pista;
@@ -9,18 +17,84 @@ import entities.enums.DificultadPista;
 //Esta clase será la que gestione las instalaciones y material necesario para dar servicio.
 
 public class CircuitHandler {
-	
+	public static String karts_file;
+	public static String pistas_file;
 	private static ArrayList<Pista> pistaList=new ArrayList<Pista>();
 	private static ArrayList<Kart> kartList=new ArrayList<Kart>();
 	private static CircuitHandler instance = null;
 	
 	public static CircuitHandler getInstance() {
         if(CircuitHandler.instance == null) {
+        	loadFilesPath();
+        	pistaList = loadPistaFile();
+        	kartList = loadKartFile();
         	CircuitHandler.instance = new CircuitHandler();
         }
         return CircuitHandler.instance;
     }
 	
+	
+	public static void loadFilesPath() {
+		Properties prop = new Properties();
+		String filename = "src/data.properties";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
+			prop.load(reader);
+
+			String path = "datos/";
+			karts_file = path + prop.getProperty("karts_file");
+			pistas_file = path + prop.getProperty("pistas_file");
+
+			// Captura de excepciones
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
+		} catch (IOException e) {
+			System.out.println("ERROR: No se ha podido leer el fichero");
+		}
+	}
+
+    public static ArrayList<Pista> loadPistaFile() {
+		ArrayList<Pista> lista = new ArrayList<Pista>();
+		try {
+			FileInputStream fis = new FileInputStream(pistas_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			lista = (ArrayList<Pista>) ois.readObject();
+
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+
+	public static ArrayList<Kart> loadKartFile() {
+		ArrayList<Kart> lista = new ArrayList<Kart>();
+		try {
+			FileInputStream fis = new FileInputStream(karts_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			if(lista instanceof ArrayList<Kart>) {
+				lista = (ArrayList<Kart>) ois.readObject();	
+			}
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 	
 	/**
 	 * Dar de alta a un kart, comprobando que no está registrado previamente.
@@ -240,6 +314,7 @@ public class CircuitHandler {
 			count ++;
 		}
 	}
+	
 
 
 	/**

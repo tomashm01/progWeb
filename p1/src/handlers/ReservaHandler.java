@@ -1,7 +1,15 @@
 package handlers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import entities.Pista;
 import entities.Usuario;
@@ -9,12 +17,13 @@ import factory.ReservaAbstracta;
 
 
 public class ReservaHandler {
-	
+	public static String reserves_file;
 	private static ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>();
 	private static ReservaHandler instance = null;
 	
 	public static ReservaHandler getInstance() {
         if(ReservaHandler.instance == null) {
+        	reservesList = loadReserveFile();
         	ReservaHandler.instance = new ReservaHandler();
         }
         return ReservaHandler.instance;
@@ -163,5 +172,44 @@ public class ReservaHandler {
 	
 	public ArrayList<ReservaAbstracta> getAllReserves(){
 		return reservesList;
+	}
+	
+	public static ArrayList<ReservaAbstracta> loadReserveFile() {
+		ArrayList<ReservaAbstracta> lista = new ArrayList<ReservaAbstracta>();
+		try {
+			loadFilesPath();
+			FileInputStream fis = new FileInputStream(reserves_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			lista = (ArrayList<ReservaAbstracta>) ois.readObject();
+
+			ois.close();
+			fis.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public static void loadFilesPath() {
+		Properties prop = new Properties();
+		String filename = "src/data.properties";
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
+			prop.load(reader);
+
+			String path = "datos/";
+			reserves_file = path + prop.getProperty("reserves_file");
+
+			// Captura de excepciones
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
+		} catch (IOException e) {
+			System.out.println("ERROR: No se ha podido leer el fichero");
+		}
 	}
 }

@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -18,38 +18,15 @@ import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
 import factory.ReservaAbstracta;
+import factory.ReservaFamiliar;
 import handlers.*;
 
 
 public class Main {
 
-	public static String users_file;
-	public static String reserves_file;
-	public static String karts_file;
-	public static String pistas_file;
+
 	Kart nuevo = new Kart();
 	public static void main(String[] args) {
-
-		// Gestión del fichero properties
-		loadFilesPath();
-
-		System.out.println(users_file);
-
-		UsuarioHandler.getInstance().addUser(new Usuario("Usuario1", LocalDate.of(2022, 10, 10), "usuario@email.com"));
-		UsuarioHandler.getInstance().addUser(new Usuario("Usuario2", LocalDate.of(2022, 10, 10), "usuario2@email.com"));
-
-		// Prueba de escritura en ficheros
-		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-
-		lista.add(new Usuario("Usuario1", LocalDate.of(2022, 10, 10), "usuario@email.com"));
-		lista.add(new Usuario("Usuario2", LocalDate.of(2022, 10, 10), "usuario2@email.com"));
-
-		// Prueba de lectura desde ficheros
-		writeFile();
-
-		for (Usuario usuario : loadUserFile()) {
-			System.out.println(usuario);
-		}
 
 		// Menú
 		// Declaracion de variables
@@ -58,6 +35,7 @@ public class Main {
 		int mainSelect = 0;
 		int subMainSelect = 0;
 		LocalDate date = LocalDate.now();
+		
 
 		Scanner input = new Scanner(System.in);
 		do {
@@ -66,7 +44,8 @@ public class Main {
 			input.nextLine();
 			switch (mainSelect) {
 			case 0: // Salir
-
+				// TO DO
+				//writeFile();
 				System.out.println("Saliendo del sistema");
 				break;
 
@@ -82,7 +61,7 @@ public class Main {
 					email="";
 					date=LocalDate.now();
 
-					System.out.println("Ha seleccionado la opcion anyadir usuario, introduzca los siguientes datos:");
+					System.out.println("Ha seleccionado la opcion añadir usuario, introduzca los siguientes datos:");
 
 					System.out.println("Nombre completo:");
 					fullName = input.nextLine();
@@ -142,7 +121,7 @@ public class Main {
 				}
 
 				else if (subMainSelect == 3) {
-
+					
 					System.out.println("Estos son los usuarios de la lista.");
 					for (Usuario us : UsuarioHandler.getInstance().getAllUsers()) {
 						System.out.println(us);
@@ -151,11 +130,21 @@ public class Main {
 				} else if (subMainSelect == 4) {
 					System.out.println("Estos son los nombres de los usuarios de la lista.");
 					UsuarioHandler.getInstance().printNameUsers();
-
+					valid=false;
 					System.out.println("Selecciona el nombre del usuario que quieres borrar.");
-					UsuarioHandler.getInstance()
-							.removeUser(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()).getId());
-					input.nextLine();
+					while (!valid) {
+						try {
+							int id =input.nextInt();
+							input.nextLine();
+							if(UsuarioHandler.getInstance().existUser(id)){
+								UsuarioHandler.getInstance()
+								.removeUser(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()).getId());
+								valid=true;
+							}
+						} catch (Exception e) {
+							System.out.println("Formato de id no correcto o id no existente");
+						}
+					}
 
 				} else if (subMainSelect == 5) {
 
@@ -242,9 +231,40 @@ public class Main {
 
 				reserveMenu();
 				subMainSelect = input.nextInt();
+				input.nextLine();
 
-				if (subMainSelect == 3) {
-
+				if (subMainSelect == 1) {
+					UsuarioHandler.getInstance().printNameUsers();
+					System.out.println("Introduce el ID del usuario encargado de la reserva");
+					int idUser=input.nextInt();
+					input.nextLine();
+					int tipoReserva=0;
+					
+					System.out.println("Introduce el tiempo que quieras estar");
+					int time=input.nextInt();
+					
+					do {
+						System.out.println("Que tipo de reserva quieres?");
+						System.out.println("1.Tipo familiar");
+						System.out.println("2.Tipo adultos");
+						System.out.println("3.Tipo infantil");
+						tipoReserva=input.nextInt();
+						input.nextLine();
+					}while(tipoReserva>3 || tipoReserva<0);
+					System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
+					while (!valid) {
+						try {
+							date = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+							valid = true;
+						} catch (Exception e) {
+							System.out.println("Formato de fecha no válido,vuelva a intentarlo:");
+						}
+					}
+					if(tipoReserva==1) {
+						//ReservaAbstracta resFamiliar=new ReservaAbstracta(idUser,ReservaHandler.getInstance().calculatePrice(time),date,time,time,time);
+					}
+					
+					System.out.println();
 				}
 
 				break;
@@ -325,21 +345,32 @@ public class Main {
 			FileOutputStream fileOut = new FileOutputStream(pathUser);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(UsuarioHandler.getInstance().getAllUsers());
+			fileOut.close();
 			
 			fileOut = new FileOutputStream(pathReserve);
 			objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(ReservaHandler.getInstance().getAllReserves());
+			if (ReservaHandler.getInstance().getAllReserves() != null) {
+				objectOut.writeObject(ReservaHandler.getInstance().getAllReserves());
+			}
+			fileOut.close();
 			
 			fileOut = new FileOutputStream(pathPista);
 			objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(CircuitHandler.getInstance().getAllPistas());
+			if (CircuitHandler.getInstance().getAllPistas() != null) {
+				objectOut.writeObject(CircuitHandler.getInstance().getAllPistas());
+			}
+
+			fileOut.close();
 			
 			fileOut = new FileOutputStream(pathKart);
 			objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(CircuitHandler.getInstance().getAllKarts());
+			if (CircuitHandler.getInstance().getAllKarts() != null) {
+				objectOut.writeObject(CircuitHandler.getInstance().getAllKarts());
+			}
+			fileOut.close();
 			
 			objectOut.close();
-			System.out.println("El objeto se ha guardado correctamente en el fichero");
+			System.out.println("OK: Se han guardados los cambios");
 
 		} catch (FileNotFoundException ex) {
 			System.out.println("ERROR: No se ha encontrado el fichero");
@@ -349,104 +380,5 @@ public class Main {
 		}
 	}
 
-	public static ArrayList<Usuario> loadUserFile() {
-		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-		try {
-			FileInputStream fis = new FileInputStream(users_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			lista = (ArrayList<Usuario>) ois.readObject();
-
-			ois.close();
-			fis.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return lista;
-	}
-	
-	public static ArrayList<ReservaAbstracta> loadReserveFile() {
-		ArrayList<ReservaAbstracta> lista = new ArrayList<ReservaAbstracta>();
-		try {
-			FileInputStream fis = new FileInputStream(reserves_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			lista = (ArrayList<ReservaAbstracta>) ois.readObject();
-
-			ois.close();
-			fis.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return lista;
-	}
-	
-    public static ArrayList<Pista> loadPistaFile() {
-		ArrayList<Pista> lista = new ArrayList<Pista>();
-		try {
-			FileInputStream fis = new FileInputStream(pistas_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			lista = (ArrayList<Pista>) ois.readObject();
-
-			ois.close();
-			fis.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return lista;
-	}
-	
-	public static ArrayList<Kart> loadKartFile() {
-		ArrayList<Kart> lista = new ArrayList<Kart>();
-		try {
-			FileInputStream fis = new FileInputStream(karts_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			lista = (ArrayList<Kart>) ois.readObject();
-
-			ois.close();
-			fis.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return lista;
-	}
-
-
-	public static void loadFilesPath() {
-		Properties prop = new Properties();
-		String filename = "src/data.properties";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-			prop.load(reader);
-
-			String path = "datos/";
-			users_file = path + prop.getProperty("users_file");
-			reserves_file = path + prop.getProperty("reserves_file");
-			karts_file = path + prop.getProperty("karts_file");
-			pistas_file = path + prop.getProperty("pistas_file");
-
-			// Captura de excepciones
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
-			System.out.println("ERROR: No se ha podido leer el fichero");
-		}
-	}
 }

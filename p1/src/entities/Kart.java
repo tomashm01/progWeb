@@ -8,6 +8,10 @@ import entities.enums.EstadoKart;
 
 public class Kart implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static int numKarts=0;
 	private Integer id;
 	private boolean isAdult;

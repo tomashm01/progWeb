@@ -142,7 +142,9 @@ public abstract class ReservaAbstracta {
 	public String toString() {
 		return "ReservaAbstracta [idUser=" + idUser + ", precio=" + price + ", fecha=" + date + ", minutos=" + time
 				+ ", idPista=" + idPista + ", descuento=" + discount + "]";
-	}	
+	}
+	
+	
 	
 }
 
