@@ -5,11 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class Main {
 
 		// Menú
 		// Declaracion de variables
-		String fullName, email, aux;
+		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
 		int subMainSelect = 0;
@@ -82,7 +80,6 @@ public class Main {
 					valid=false;
 					fullName="";
 					email="";
-					aux="";
 					date=LocalDate.now();
 
 					System.out.println("Ha seleccionado la opcion anyadir usuario, introduzca los siguientes datos:");
@@ -113,7 +110,6 @@ public class Main {
 					valid=false;
 					fullName="";
 					email="";
-					aux="";
 					date=LocalDate.now();
 					
 					System.out.println("Selecciona el id del usuario que quieres modificar.");
@@ -194,12 +190,6 @@ public class Main {
 				}
 				
 				if(subMainSelect == 2) {
-					/*
-					
-
-					
-					
-					*/
 					int adult, id;
 					Kart k;
 					ArrayList<EstadoKart> state = new ArrayList<EstadoKart>();

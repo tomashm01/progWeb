@@ -1,8 +1,6 @@
 package handlers;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 
 import entities.Pista;
@@ -93,9 +91,7 @@ public class ReservaHandler {
 	
 	
 	public boolean modifyReserve(int idReserva,int opcion) {
-		ReservaAbstracta reserve= getReserveByID(idReserva);
-		LocalDate date=LocalDateTime.now().toLocalDate();
-		Period period = Period.between(reserve.getDate(),date);
+		//TODO
 		
 		return true;
 	}
