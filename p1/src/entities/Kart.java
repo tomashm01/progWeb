@@ -1,10 +1,12 @@
 package entities;
 
+import java.io.Serializable;
+
 import entities.enums.EstadoKart;
 
 //Clase que representa a un vehículo que utilizan los usuarios para recorrer las pistas.
 
-public class Kart {
+public class Kart implements Serializable{
 	
 	public static int numKarts=0;
 	private Integer id;

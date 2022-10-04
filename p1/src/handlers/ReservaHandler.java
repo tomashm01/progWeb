@@ -164,4 +164,8 @@ public class ReservaHandler {
 		}
 		return null;
 	}
+	
+	public ArrayList<ReservaAbstracta> getAllReserves(){
+		return reservesList;
+	}
 }

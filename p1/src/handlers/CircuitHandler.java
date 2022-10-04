@@ -224,6 +224,22 @@ public class CircuitHandler {
 		}
 		return pistasFree;
 	}
+	
+	
+	/**
+	 * Imprimir todos los karts registrados
+	 * @param 
+	 * @return void 
+	 */
+	
+	public void printAllKarts() {
+		int count = 0;
+		
+		for( Kart k: getAllKarts()){
+			System.out.println(count + ") " + k);
+			count ++;
+		}
+	}
 
 
 	/**
@@ -243,5 +259,9 @@ public class CircuitHandler {
 //			}
 //		}
 		return kartsPista;
+	}
+	
+	public ArrayList<Pista> getAllPistas(){
+		return pistaList;
 	}	
 }
