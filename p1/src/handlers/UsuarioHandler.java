@@ -102,6 +102,21 @@ public class UsuarioHandler {
 		return false;
 	}
 	
+	
+	/**
+	 * Imprimir todos los id registrados
+	 * @param 
+	 * @return void 
+	 */
+	
+	public void printNameUsers() {
+		int count = 0;
+		
+		for( Usuario us: getAllUsers()){
+			System.out.println(count + ") " + us.getFullName());
+			count ++;
+		}
+	}
 	//TODO: implementar metodo para leer de fchero csv, escribir en fichero csv y añadir csv
 
 }

@@ -211,12 +211,32 @@ public class Main {
 						}
 						
 					}
+					else if(subMainSelect == 4) {
+						System.out.println("Estos son los nombres de los usuarios de la lista.");
+						userHandler.printNameUsers();
+						
+						System.out.println("Selecciona el nombre del usuario que quieres borrar.");
+						userHandler.removeUser(userHandler.getAllUsers().get(input.nextInt()).getId());
+						input.nextLine();
+						
+					}
 					else if (subMainSelect == 5) {
-						System.out.println("Selecciona el id del usuario que quieres modificar.");
-						System.out.println(userHandler.getUserByID(input.nextInt()));
+						
+						System.out.println("Estos son los nombres de los usuarios de la lista.");
+						userHandler.printNameUsers();
+						
+						System.out.println("Selecciona el nombre del usuario que quieres ver.");
+						System.out.println(userHandler.getAllUsers().get(input.nextInt()));
 						input.nextLine();
 					}
-					
+					else if(subMainSelect == 6) {
+						mainMenu();
+						mainSelect = input.nextInt();
+					}
+					else if(subMainSelect == 0) {
+						input.close();
+						return;
+					}
 					
 				break;
 					
@@ -225,7 +245,7 @@ public class Main {
 					circuitMenu();
 					subMainSelect = input.nextInt();
 					
-					if (subMainSelect == 2) {
+					if (subMainSelect == 1) {
 						
 					}
 					
