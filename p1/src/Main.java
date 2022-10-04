@@ -246,7 +246,7 @@ public class Main {
 					subMainSelect = input.nextInt();
 					
 					if (subMainSelect == 1) {
-						
+						System.out.println("Introduce los datos para anyadir un kart");
 					}
 					
 				break;
