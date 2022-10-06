@@ -8,7 +8,6 @@ public class ReservaInfantil extends ReservaAbstracta{
 	
 	public ReservaInfantil() {};
 	
-	//TODO (en todas las reservas) id y discount creo que no deberia de ir en el constructor, pero no me deja llamar a funciones sin poner super arriba del todo
 	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id, 0,numChilds);
 	}

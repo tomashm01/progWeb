@@ -2,9 +2,6 @@ package entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-
-import factory.ReservaAbstracta;
 
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
@@ -18,7 +15,6 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int MAX_RANDOM = 999999999;
 	private Integer id;
-	private ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>();
 	
 	public Usuario() {
 		this.id=(int) (Math.random()*MAX_RANDOM);
@@ -94,18 +90,10 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
-	public ArrayList<ReservaAbstracta> getReservesList() {
-		return reservesList;
-	}
-
-	public void setReservesList(ArrayList<ReservaAbstracta> reservesList) {
-		this.reservesList = reservesList;
-	}
-
 	@Override
 	public String toString() {
 		return "Usuario [fullName=" + fullName + ", birthdayDate=" + birthdayDate + ", inscriptionDate="
-				+ inscriptionDate + ", email=" + email + ", id=" + id + ", reservesList=" + reservesList + "]";
+				+ inscriptionDate + ", email=" + email + ", id=" + id + "]";
 	}
 
 	/*

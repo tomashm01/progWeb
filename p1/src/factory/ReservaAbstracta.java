@@ -1,5 +1,7 @@
 package factory;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import entities.enums.DificultadPista;
 
 public abstract class ReservaAbstracta {
@@ -16,9 +18,7 @@ public abstract class ReservaAbstracta {
 	protected Integer id;
 	public static final int MAX_RANDOM = 999999999;
 
-	public ReservaAbstracta() {
-		
-	}
+	public ReservaAbstracta() {}
 	//TODO no existe generador de ids en reserva
 	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
 		this.idUser = idUser;
@@ -31,7 +31,19 @@ public abstract class ReservaAbstracta {
 		this.numAdults = numAdults;
 		this.numChilds = numChilds;
 	}
-
+	
+	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds,ArrayList<ReservaAbstracta> array) {
+		this.idUser = idUser;
+		this.date = date;
+		this.time = time;
+		this.idPista = idPista;
+		this.price = price;
+		this.discount = discount;
+		this.id = id;
+		this.numAdults = numAdults;
+		this.numChilds = numChilds;
+	}
+	
 	
 	public abstract DificultadPista getType();
 	

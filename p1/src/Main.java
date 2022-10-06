@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
+import factory.ModalidadBono;
+import factory.ModalidadIndividual;
+import factory.ReservaAdultos;
+import factory.ReservaFamiliar;
 import factory.ReservaInfantil;
 import handlers.CircuitHandler;
 import handlers.ReservaHandler;
@@ -26,18 +30,30 @@ public class Main {
 			CircuitHandler.getInstance().addKart(aux);
 			CircuitHandler.getInstance().getPistaByID(5).asociarKartAPista(aux); 
 		}
-	
-		for(Kart it: CircuitHandler.getInstance().getKartsByIDPista(5))
-			System.out.println(it);
+		for(int i=35;i<40;i++) {
+			Kart aux = new Kart(true,EstadoKart.DISPONIBLE);
+			CircuitHandler.getInstance().addKart(aux);
+			CircuitHandler.getInstance().getPistaByID(2).asociarKartAPista(aux); 
+		}
+		for(int i=35;i<40;i++) {
+			Kart aux = new Kart(true,EstadoKart.DISPONIBLE);
+			CircuitHandler.getInstance().addKart(aux);
+			CircuitHandler.getInstance().getPistaByID(1).asociarKartAPista(aux); 
+		}
 		
 		UsuarioHandler.getInstance().addUser(new Usuario(2,"Alvaro",LocalDate.of(2000,12,31),"alvaro@gmail.com",LocalDate.of(2019, 1, 1)));
-		UsuarioHandler.getInstance().addUser(new Usuario("Juan",LocalDate.of(2006,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
+		UsuarioHandler.getInstance().addUser(new Usuario(1,"Juan",LocalDate.of(2000,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
 		
+		ReservaAdultos ra= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
+		ReservaFamiliar mf=new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
+		ReservaInfantil mi = new ModalidadBono().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
+		
+		ReservaHandler.getInstance().addReservaIndividual(mi);
+		ReservaHandler.getInstance().addReservaIndividual(mf);
+		ReservaHandler.getInstance().addReservaIndividual(ra);
 		
 
-		ReservaInfantil  res = new ReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
-		ReservaHandler.getInstance().addReservaIndividual(res);
-
+		
 		// Menú
 		// Declaracion de variables
 	/*
