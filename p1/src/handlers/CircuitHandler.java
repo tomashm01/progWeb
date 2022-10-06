@@ -81,9 +81,9 @@ public class CircuitHandler {
 			FileInputStream fis = new FileInputStream(karts_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			if(lista instanceof ArrayList<?>) {
-				lista = (ArrayList<Kart>) ois.readObject();	
-			}
+			
+			lista = (ArrayList<Kart>) ois.readObject();	
+			
 			ois.close();
 			fis.close();
 		} catch (IOException ioe) {

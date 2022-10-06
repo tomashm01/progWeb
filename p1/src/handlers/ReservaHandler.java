@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -37,32 +38,69 @@ public class ReservaHandler {
 	 * @return boolean
 	 */
 	public boolean addReservaIndividual(ReservaAbstracta reserve) {
-
+		
+		if(! CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
+			System.out.println("El id de la pista no existe");
+			return false;
+		}		
+		if( ! UsuarioHandler.getInstance().existUser(reserve.getId())) {
+			System.out.println("El usuario que va a reservar no existe en la bd");
+			return false;
+		}
+		
 		Pista pista=CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user=UsuarioHandler.getInstance().getUserByID(reserve.getId());
 		
-		if( ! UsuarioHandler.getInstance().existUser(reserve.getId()) 					||
-			! pista.isAvailable() 														|| 
-			! pista.getDifficulty().equals(reserve.type())								|| 
-			! (pista.getMaxKarts() >= reserve.getNumPlayers()							||
-			! (reserve.getNumPlayers()	 <= pista.consultarKartsDisponibles().size())	||
-			! (reserve.validate()) 														|| 
-			(reserve.getNumPlayers()) == 0))
+		if(! UsuarioHandler.getInstance().getUserByID(reserve.getIdUser()).isMayorEdad()) {
+			System.out.println("El responsble de la reserva no es mayor de edad");
 			return false;
-		
-		/* kart1.idUser=idUser1;
-		
-		for(int i=0;i < reserve.getPlayers().size();i++){
-			Integer id = reserve.getPlayers().get(i).getId();
-			
-			
-			
 		}
-		*/
+		if(! pista.isAvailable()) {
+			System.out.println("La pista no está disponible para reservas");
+			return false;
+		}
+		if(! pista.getDifficulty().equals(reserve.getType())) {
+			System.out.println("La dificultad de la pista no coincide con la dificultad de la reserva");
+			return false;
+		}
+		if(! (pista.getMaxKarts() >= reserve.getNumPlayers())){
+			System.out.println("Hay más personas que el numero máximo permitido en la pista");
+			return false;
+		}		
+		if(	(reserve.getNumPlayers()<= pista.consultarKartsDisponibles().size())) {
+			System.out.println("No hay suficientes karts disponibles para todos los reservantes");
+			return false;
+		}
+		if(reserve.validate()){
+			System.out.println("Los integrantes de la reserva no están permitidos en el tipo de pista seleccionado");
+			return false;
+		}
+		if(reserve.getNumPlayers() == 0) {
+			System.out.println("No se ha reservado para nadie");
+			return false;			
+		}
+		for( ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(),reserve.getDate())) {
+			LocalDateTime t11 = t1.getDate();
+			LocalDateTime t12 = t1.getDate().plus(t1.getTime(),ChronoUnit.MINUTES);
+			LocalDateTime t21 = reserve.getDate();
+			LocalDateTime t22 = reserve.getDate().plus(reserve.getTime(),ChronoUnit.MINUTES);
+			
+			if ( !( (t12.isBefore(t21) && t12.isBefore(t22)) ||(t11.isAfter(t21) && t11.isAfter(t22)) ) ) {
+				System.out.println("Ya hay una reserva en el intervalo que se quiere reservar, en esa misma pista");
+				return false;
+			}
+		}
+		
+		//TODO si el tipo de reserva del usuario es tipo bono, ver que se puede añadir más a su tipo.
+		
+
+		
+		//TODO si la reserva es de bono, añadirla al bono del usuario
+
+		
 		reserve.setId((int) (Math.random()*ReservaAbstracta.MAX_RANDOM));
 		reserve.setDiscount( (user.antiquity() > 2) ?  0.10f : 0f);
 		reservesList.add(reserve);
-
 		return true;
         
 	}

@@ -1,7 +1,6 @@
 package factory;
 import java.time.LocalDateTime;
 import entities.enums.DificultadPista;
-import handlers.UsuarioHandler;
 
 //Es una reserva que realiza un adulto, en la que participan tanto adultos como niños en una pista de tipo de familiar
 
@@ -14,14 +13,12 @@ public class ReservaFamiliar extends ReservaAbstracta{
 		super(idUser,  date,  time,  idPista,  price, discount,  id, numAdults,numChilds);
 	}
 
-	public DificultadPista type(){
+	public DificultadPista getType(){
 		return DificultadPista.FAMILIAR;
 	}
 
 	public  boolean validate(){
-		return (numAdults > 0 && 
-				UsuarioHandler.getInstance().existUser(idUser) &&
-				UsuarioHandler.getInstance().getUserByID(idUser).isMayorEdad());
+		return (numAdults > 0);
 	}
 
 	@Override

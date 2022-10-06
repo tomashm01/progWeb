@@ -32,7 +32,7 @@ public abstract class ReservaAbstracta {
 		this.numChilds = numChilds;
 	}
 
-	public abstract DificultadPista type();
+	public abstract DificultadPista getType();
 	
 	public abstract boolean validate();
 	

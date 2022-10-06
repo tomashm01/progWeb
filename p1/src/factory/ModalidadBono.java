@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class ModalidadBono extends ModalidadAbstracta{
 
 	private ArrayList<ReservaAbstracta> bonoList=new ArrayList<ReservaAbstracta>();
+	int id;
+	
 	
 	@Override
 	public ReservaInfantil createReservaInfantil() {
