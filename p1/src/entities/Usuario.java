@@ -111,15 +111,15 @@ public class Usuario implements Serializable {
 	/*
 		Calcula los años que lleva registrado el usuario
 	*/
-	public long antiquity(){
+	public int antiquity(){
 		Period period = Period.between(inscriptionDate, LocalDate.now());
-		return period.getYears();
+		return (int)period.getYears();
 	}
 	
 	/**
 	 * Calcula si el usuario es mayor de edad*/
 	public boolean isMayorEdad(){
-		Period period = Period.between(inscriptionDate,LocalDate.now());
+		Period period = Period.between(birthdayDate,LocalDate.now());
 		return period.getYears() > 17;
 	}
 

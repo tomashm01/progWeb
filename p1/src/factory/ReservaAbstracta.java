@@ -19,7 +19,7 @@ public abstract class ReservaAbstracta {
 	public ReservaAbstracta() {
 		
 	}
-
+	//TODO no existe generador de ids en reserva
 	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
 		this.idUser = idUser;
 		this.date = date;
@@ -32,6 +32,7 @@ public abstract class ReservaAbstracta {
 		this.numChilds = numChilds;
 	}
 
+	
 	public abstract DificultadPista getType();
 	
 	public abstract boolean validate();
@@ -104,6 +105,9 @@ public abstract class ReservaAbstracta {
 		this.numAdults = numAdults;
 	}
 
+	public Integer getNumChilds() {
+		return numChilds;
+	}
 	public void setNumChilds(Integer numChilds) {
 		this.numChilds = numChilds;
 	}

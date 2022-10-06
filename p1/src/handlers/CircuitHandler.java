@@ -25,9 +25,12 @@ public class CircuitHandler {
 	
 	public static CircuitHandler getInstance() {
         if(CircuitHandler.instance == null) {
+        	//TODO ficheros circuito
+        	/*
         	loadFilesPath();
         	pistaList = loadPistaFile();
         	kartList = loadKartFile();
+        	*/
         	CircuitHandler.instance = new CircuitHandler();
         }
         return CircuitHandler.instance;
@@ -310,17 +313,7 @@ public class CircuitHandler {
 	 * @return
 	 */
 	public ArrayList<Kart> getKartsByIDPista(Integer idPista) {
-		ArrayList<Kart> kartsPista=new ArrayList<Kart>();
-//		
-//		for(int i=0;i<kartList.size();i++){
-//			Kart kart = kartList.get(i);
-//			if(kart.getIdPista().equals(idPista) && kart.getState()!=EstadoKart.MANTENIMIENTO){
-//				if(maxKarts<=kartsList.size()) return false;
-//				kartsPista.add(kart);
-//				
-//			}
-//		}
-		return kartsPista;
+		return getInstance().getPistaByID(idPista).getKartsList();
 	}
 	
 	public ArrayList<Pista> getAllPistas(){

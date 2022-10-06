@@ -32,6 +32,14 @@ public class Pista implements Serializable{
 		this.difficulty = difficulty;
 		this.maxKarts = maxKarts;
 	}
+	
+	public Pista(int id,String name, boolean isAvailable, DificultadPista difficulty, Integer maxKarts) {
+		this.id = id;
+		this.name = name;
+		this.isAvailable = isAvailable;
+		this.difficulty = difficulty;
+		this.maxKarts = maxKarts;
+	}
 
 	public String getName() {
 		return name;

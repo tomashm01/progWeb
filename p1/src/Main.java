@@ -3,21 +3,44 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
-import handlers.*;
+import factory.ReservaInfantil;
+import handlers.CircuitHandler;
+import handlers.ReservaHandler;
+import handlers.UsuarioHandler;
 
 public class Main {
-
-
-	Kart nuevo = new Kart();
+	
 	public static void main(String[] args) {
+		CircuitHandler.getInstance().addPista(new Pista(1,"Alvaro",true,DificultadPista.FAMILIAR,10));
+		CircuitHandler.getInstance().addPista(new Pista(2,"Tomás",true,DificultadPista.ADULTOS,10));
+		CircuitHandler.getInstance().addPista(new Pista(5,"Juan",true,DificultadPista.INFANTIL,10));		
+		for(int i=0;i<20;i++) {
+			Kart aux = new Kart((i%2==0),EstadoKart.DISPONIBLE);
+			CircuitHandler.getInstance().addKart(aux);
+			CircuitHandler.getInstance().getPistaByID(5).asociarKartAPista(aux); 
+		}
+	
+		for(Kart it: CircuitHandler.getInstance().getKartsByIDPista(5))
+			System.out.println(it);
+		
+		UsuarioHandler.getInstance().addUser(new Usuario(2,"Alvaro",LocalDate.of(2000,12,31),"alvaro@gmail.com",LocalDate.of(2019, 1, 1)));
+		UsuarioHandler.getInstance().addUser(new Usuario("Juan",LocalDate.of(2006,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
+		
+		
+
+		ReservaInfantil  res = new ReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
+		ReservaHandler.getInstance().addReservaIndividual(res);
 
 		// MenÃº
 		// Declaracion de variables
+	/*
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
@@ -255,7 +278,7 @@ public class Main {
 					
 					System.out.println();
 				}
-				*/
+				
 				break;
 
 			}
@@ -263,7 +286,7 @@ public class Main {
 		} while (mainSelect != 0);
 
 		input.close();
-
+		*/
 	}
 
 	public static void mainMenu() {
