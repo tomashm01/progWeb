@@ -73,14 +73,15 @@ public class CircuitHandler {
 		return lista;
 	}
 	
-
+    //TODO funcion de load
+    
 	public static ArrayList<Kart> loadKartFile() {
 		ArrayList<Kart> lista = new ArrayList<Kart>();
 		try {
 			FileInputStream fis = new FileInputStream(karts_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			if(lista instanceof ArrayList<Kart>) {
+			if(lista instanceof ArrayList<?>) {
 				lista = (ArrayList<Kart>) ois.readObject();	
 			}
 			ois.close();
@@ -94,7 +95,6 @@ public class CircuitHandler {
 		}
 		return lista;
 	}
-
 	
 	/**
 	 * Dar de alta a un kart, comprobando que no está registrado previamente.
@@ -130,20 +130,7 @@ public class CircuitHandler {
 		return null;
 	}
 	
-	/**
-	 * Devuelve el id del kart a traves del idUser
-	 * @param idUser
-	 * @return
-	 */
-	public Integer getIdKartByIDUser(Integer idUser) {
-		for(Kart kart: kartList){
-			if(kart.getIdUser().equals(idUser)){
-				return kart.getId();
-			}
-		}
-		return null;
-	}
-	
+
 	/**
 	 * Elimina el kart dado su id si existe
 	 * @param id

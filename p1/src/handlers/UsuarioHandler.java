@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
-
 import entities.Usuario;
 
 //Esta clase será la encargada de gestionar la información de los usuarios que hacen reservas.
@@ -127,13 +126,14 @@ public class UsuarioHandler {
 	}
 	
 	public static void loadUserFile() {
-		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		try {
 			FileInputStream fis = new FileInputStream(users_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			usersList = (ArrayList<Usuario>) ois.readObject();
-
+			if(usersList instanceof ArrayList<?>) {
+				usersList = (ArrayList<Usuario>) ois.readObject();	
+			}
+			
 			ois.close();
 			fis.close();
 		} catch (IOException ioe) {

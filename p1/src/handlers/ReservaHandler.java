@@ -1,5 +1,4 @@
 package handlers;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -44,11 +44,11 @@ public class ReservaHandler {
 		if( ! UsuarioHandler.getInstance().existUser(reserve.getId()) 					||
 			! pista.isAvailable() 														|| 
 			! pista.getDifficulty().equals(reserve.type())								|| 
-			! (pista.getMaxKarts() >= reserve.getPlayers().size())						||
-			! (reserve.getPlayers().size() <= pista.consultarKartsDisponibles().size())	||
-			! reserve.validate() 														|| 
-			reserve.getPlayers().size()==0
-		) return false;
+			! (pista.getMaxKarts() >= reserve.getNumPlayers()							||
+			! (reserve.getNumPlayers()	 <= pista.consultarKartsDisponibles().size())	||
+			! (reserve.validate()) 														|| 
+			(reserve.getNumPlayers()) == 0))
+			return false;
 		
 		/* kart1.idUser=idUser1;
 		
@@ -59,6 +59,7 @@ public class ReservaHandler {
 			
 		}
 		*/
+		reserve.setId((int) (Math.random()*ReservaAbstracta.MAX_RANDOM));
 		reserve.setDiscount( (user.antiquity() > 2) ?  0.10f : 0f);
 		reservesList.add(reserve);
 
@@ -100,7 +101,7 @@ public class ReservaHandler {
 	
 	
 	public boolean modifyReserve(int idReserva,int opcion) {
-		//TODO
+		//TODO modificar reserva
 		
 		return true;
 	}
@@ -114,7 +115,7 @@ public class ReservaHandler {
 		
 		ArrayList<ReservaAbstracta> reservesFiltered=new ArrayList<ReservaAbstracta>();
 		for(ReservaAbstracta reserva:ReservaHandler.reservesList) {
-			if(reserva.getDate().isAfter(LocalDate.now())) reservesFiltered.add(reserva);
+			if(reserva.getDate().toLocalDate().isAfter(LocalDate.now())) reservesFiltered.add(reserva);
 		}
 		
 		return reservesFiltered;
@@ -128,7 +129,7 @@ public class ReservaHandler {
 	 * @param day
 	 * @return
 	 */
-	public ArrayList<ReservaAbstracta> getReserveByPistaDay(Integer idPista,LocalDate fecha){
+	public ArrayList<ReservaAbstracta> getReserveByPistaDay(Integer idPista,LocalDateTime fecha){
 		ArrayList<ReservaAbstracta> reservesFiltered=new ArrayList<ReservaAbstracta>();
 		
 		for(ReservaAbstracta reserva:ReservaHandler.reservesList) {

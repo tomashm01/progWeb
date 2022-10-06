@@ -4,51 +4,47 @@ import java.io.Serializable;
 
 import entities.enums.EstadoKart;
 
-//Clase que representa a un vehÃ­culo que utilizan los usuarios para recorrer las pistas.
+//Clase que representa a un vehhículo que utilizan los usuarios para recorrer las pistas.
 
 public class Kart implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static int numKarts=0;
+	//Variables indicadas en la práctica
 	private Integer id;
 	private boolean isAdult;
 	private EstadoKart state;
-	private Integer idUser;
+	
 	private Integer idPista;
+	
+	private static final long serialVersionUID = 1L;
+	public static int numKarts=0;
 	
 	public Kart(){
 		Kart.numKarts++;
 		this.id = Kart.numKarts;
 	}
 	
-	public Kart(boolean isAdult, EstadoKart state, Integer idUser, Integer idPista) {
+	public Kart(Integer id,boolean isAdult, EstadoKart state, Integer idPista) {
+		Kart.numKarts++;
+		this.id = id;
+		this.isAdult = isAdult;
+		this.state = state;
+		this.idPista = idPista;
+	}
+	
+	public Kart(boolean isAdult, EstadoKart state, Integer idPista) {
 		Kart.numKarts++;
 		this.id = Kart.numKarts;
 		this.isAdult = isAdult;
 		this.state = state;
-		this.idUser = idUser;
 		this.idPista = idPista;
 	}
 	
-	//constructor para kart sin pista ni usuario asignado
 	public Kart(boolean isAdult, EstadoKart state) {
 		Kart.numKarts++;
 		this.id = Kart.numKarts;
 		this.isAdult = isAdult;
 		this.state = state;
-		this.idUser = -1;
 		this.idPista = -1;
-	}
-
-	public static int getNumKarts() {
-		return numKarts;
-	}
-
-	public static void setNumKarts(int numKarts) {
-		Kart.numKarts = numKarts;
 	}
 
 	public Integer getId() {
@@ -75,14 +71,6 @@ public class Kart implements Serializable{
 		this.state = state;
 	}
 
-	public Integer getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(Integer idUser) {
-		this.idUser = idUser;
-	}
-
 	public Integer getIdPista() {
 		return idPista;
 	}
@@ -91,11 +79,25 @@ public class Kart implements Serializable{
 		this.idPista = idPista;
 	}
 
+	public static int getNumKarts() {
+		return numKarts;
+	}
+
+	public static void setNumKarts(int numKarts) {
+		Kart.numKarts = numKarts;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "Kart [id=" + id + ", isAdult=" + isAdult + ", state=" + state + ", idUser=" + idUser + ", idPista="
+		return "Kart [id=" + id + ", isAdult=" + isAdult + ", state=" + state + ", idPista="
 				+ idPista + "]";
 	}
+
 	
+
 	
 }

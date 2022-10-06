@@ -1,51 +1,17 @@
 package factory;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-
-import entities.Usuario;
+import java.time.LocalDateTime;
 import entities.enums.DificultadPista;
+import handlers.UsuarioHandler;
 
 //Es una reserva que realiza un adulto, pero en la que solo participan niños en una pista infantil.
 
 public class ReservaInfantil extends ReservaAbstracta{
 	
-	private int numChilds=0;
+	public ReservaInfantil() {};
 	
-	@Override
-	public String toString() {
-		return "ReservaInfantil [idUser=" + idUser + ", precio=" + price + ", fecha=" + date + ", minutos=" + time
-				+ ", idPista=" + idPista + ", descuento=" + discount + ",numChilds=" + numChilds + "]";
-	}
-	
-
-	public ReservaInfantil() {
-		super();
-	}
-
-	public int getNumChilds() {
-		return numChilds;
-	}
-
-	public void setNumChilds(int numChilds) {
-		this.numChilds = numChilds;
-	}
-
-	/**
-	 * Es una reserva que realiza un adulto, pero en la que solo participan
-	 * niños en una pista infantil. Se deberá registrar el número de niños que participan.
-	 * @param idUser
-	 * @param precio
-	 * @param fecha
-	 * @param minutos
-	 * @param idPista
-	 * @param descuento
-	 */
-	
-	public ReservaInfantil(Integer idUser,ArrayList<Usuario> participantes, float precio, LocalDate fecha, Integer minutos, Integer idPista, float descuento) {
-		super(idUser, precio, fecha, minutos, idPista, descuento);
-		super.players=participantes;
-		numChilds=participantes.size();
+	//TODO (en todas las reservas) id y discount creo que no deberia de ir en el constructor, pero no me deja llamar a funciones sin poner super arriba del todo
+	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds) {
+		super(idUser,  date,  time,  idPista,  price, discount,  id, 0,numChilds);
 	}
 
 	public DificultadPista type(){
@@ -53,7 +19,16 @@ public class ReservaInfantil extends ReservaAbstracta{
 	}
 
 	public  boolean validate(){
-		return allChilds();
-	};
+		return (numAdults == 0 && 
+				numChilds > 0 && 
+				UsuarioHandler.getInstance().existUser(idUser) &&
+				UsuarioHandler.getInstance().getUserByID(idUser).isMayorEdad());
+	}
+
+	@Override
+	public String toString() {
+		return "ReservaInfantil [idUser=" + idUser + ", date=" + date + ", time=" + time + ", idPista=" + idPista
+				+ ", price=" + price + ", discount=" + discount + ", numChilds=" + numChilds + ", id=" + id + "]";
+	}
 
 }

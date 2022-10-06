@@ -10,17 +10,16 @@ import entities.enums.EstadoKart;
 
 public class Pista implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static final int MAX_RANDOM = 999999999;
-	private Integer id;
 	private String name;
 	private boolean isAvailable;
 	private DificultadPista difficulty;
 	private Integer maxKarts;
 	private ArrayList<Kart> kartsList=new ArrayList<Kart>();
+
+	
+	private static final long serialVersionUID = 1L;
+	public static final int MAX_RANDOM = 999999999;
+	private Integer id;
 	
 	public Pista() {
 		this.id=(int) (Math.random()*MAX_RANDOM);
@@ -34,58 +33,73 @@ public class Pista implements Serializable{
 		this.maxKarts = maxKarts;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public boolean isAvailable() {
 		return isAvailable;
 	}
+
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+
 	public DificultadPista getDifficulty() {
 		return difficulty;
 	}
+
 	public void setDifficulty(DificultadPista difficulty) {
 		this.difficulty = difficulty;
 	}
+
 	public Integer getMaxKarts() {
 		return maxKarts;
 	}
+
 	public void setMaxKarts(Integer maxKarts) {
 		this.maxKarts = maxKarts;
 	}
+
 	public ArrayList<Kart> getKartsList() {
 		return kartsList;
 	}
-	public void setKartsList(ArrayList<Kart> newList) {
-		kartsList=newList;
+
+	public void setKartsList(ArrayList<Kart> kartsList) {
+		this.kartsList = kartsList;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
 	
 	@Override
 	public String toString() {
-		return "Pista [id=" + id + ", name=" + name + ", isAvailable=" + isAvailable + ", difficulty=" + difficulty
-				+ ", maxKarts=" + maxKarts + "]";
+		return "Pista [name=" + name + ", isAvailable=" + isAvailable + ", difficulty=" + difficulty + ", maxKarts="
+				+ maxKarts + ", kartsList=" + kartsList + ", id=" + id + "]";
 	}
+
 	public ArrayList<Kart> consultarKartsDisponibles() {
-		
 		ArrayList<Kart> kartsDisponibles= new ArrayList<Kart>();
-		
-		for(int i=0;i<this.kartsList.size();i++) {
-			if( this.kartsList.get(i).getState() == EstadoKart.DISPONIBLE ) {
-				kartsDisponibles.add(kartsList.get(i));
+		for(Kart it : kartsList) {
+			if( it.getState() == EstadoKart.DISPONIBLE ) {
+				kartsDisponibles.add(it);
 			}
 		}
-		
 		return kartsDisponibles;
 	}
 	

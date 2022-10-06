@@ -9,44 +9,51 @@ import factory.ReservaAbstracta;
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
 public class Usuario implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static final int MAX_RANDOM = 999999999;
-	private Integer id;
+
 	private String fullName;
 	private LocalDate birthdayDate;	
 	private LocalDate inscriptionDate;
 	private String email;
-	private ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>(); 
+
+	private static final long serialVersionUID = 1L;
+	public static final int MAX_RANDOM = 999999999;
+	private Integer id;
+	private ArrayList<ReservaAbstracta> reservesList=new ArrayList<ReservaAbstracta>();
 	
 	public Usuario() {
 		this.id=(int) (Math.random()*MAX_RANDOM);
 		this.inscriptionDate = LocalDate.now();
 	}
 	
-	public Usuario(Integer id) {
+	public Usuario(Integer id,String fullName, LocalDate birthdayDate, String email, LocalDate inscriptionDate) {
+		this.fullName = fullName;
+		this.birthdayDate = birthdayDate;
+		this.inscriptionDate = inscriptionDate;
+		this.email = email;
 		this.id = id;
 	}
-		
+	
+	public Usuario(String fullName, LocalDate birthdayDate, String email, LocalDate inscriptionDate) {
+		this.fullName = fullName;
+		this.birthdayDate = birthdayDate;
+		this.inscriptionDate = inscriptionDate;
+		this.email = email;
+		this.id=(int) (Math.random()*MAX_RANDOM);
+	}
+
 	public Usuario(String fullName, LocalDate birthdayDate, String email) {
-		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.fullName = fullName;
 		this.birthdayDate = birthdayDate;
 		this.inscriptionDate = LocalDate.now();
 		this.email = email;
-	}
-	
-	public Integer getId() {
-		return id;
+		this.id=(int) (Math.random()*MAX_RANDOM);
 	}
 
-	public void setId(Integer id) {
+
+	public Usuario(Integer id) {
 		this.id = id;
 	}
-
+		
 	public String getFullName() {
 		return fullName;
 	}
@@ -79,21 +86,30 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	/**
-	 * @return the reservas
-	 */
-	public ArrayList<ReservaAbstracta> getReserves() {
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ArrayList<ReservaAbstracta> getReservesList() {
 		return reservesList;
+	}
+
+	public void setReservesList(ArrayList<ReservaAbstracta> reservesList) {
+		this.reservesList = reservesList;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", fullName=" + fullName + ", birthdayDate=" + birthdayDate + ", inscriptionDate="
-				+ inscriptionDate + ", email=" + email + ", reservesList=" + reservesList + "]";
+		return "Usuario [fullName=" + fullName + ", birthdayDate=" + birthdayDate + ", inscriptionDate="
+				+ inscriptionDate + ", email=" + email + ", id=" + id + ", reservesList=" + reservesList + "]";
 	}
 
 	/*
-		Calcula los anios que lleva registrado el usuario
+		Calcula los años que lleva registrado el usuario
 	*/
 	public long antiquity(){
 		Period period = Period.between(inscriptionDate, LocalDate.now());
