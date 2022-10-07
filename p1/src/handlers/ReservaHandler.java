@@ -247,7 +247,7 @@ public class ReservaHandler {
 	 */
 
 	public boolean modifyReserve(ReservaAbstracta reserve){
-		if(reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+		if(reserve.getDate().isAfter(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
 			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
 			return false;
 		}
@@ -268,7 +268,7 @@ public class ReservaHandler {
 	}
 
 	public boolean removeReserve(Integer idReserve ) {
-		if(ReservaHandler.getInstance().getReserveByID(idReserve).getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+		if(ReservaHandler.getInstance().getReserveByID(idReserve).getDate().isAfter(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
 			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
 			return false;
 		}
