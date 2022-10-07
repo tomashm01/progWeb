@@ -1,6 +1,7 @@
 package handlers;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,12 +19,24 @@ public class UsuarioHandler {
 	private static ArrayList<Usuario> usersList=new ArrayList<Usuario>();
 	private static UsuarioHandler instance = null;
 	
+	
+	
 	public static UsuarioHandler getInstance() {
         if(UsuarioHandler.instance == null) {
             UsuarioHandler.instance = new UsuarioHandler();
+            loadFilesPath();
+			loadUserFile();
         }
         return UsuarioHandler.instance;
     }
+
+	public static ArrayList<Usuario> getUsersList() {
+		return usersList;
+	}
+
+	public static void setUsersList(ArrayList<Usuario> usersList) {
+		UsuarioHandler.usersList = usersList;
+	}
 
 	/**
 	 * Dar de alta a un usuario, comprobando que no está registrado previamente.
@@ -129,13 +142,17 @@ public class UsuarioHandler {
 		try {
 			FileInputStream fis = new FileInputStream(users_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			if(usersList instanceof ArrayList<?>) {
+			
+			if(users_file.length()!=0){
 				usersList = (ArrayList<Usuario>) ois.readObject();	
 			}
 			
 			ois.close();
 			fis.close();
+		}catch(FileNotFoundException e){
+			System.out.println("El fichero "+users_file+" no existe. No hay lista de usuarios cargadas.");
+		}catch(EOFException e){
+			System.out.println("El fichero "+users_file+" esta vacio.");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 
@@ -159,10 +176,10 @@ public class UsuarioHandler {
 			// Captura de excepciones
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			System.out.println("ERROR: No se ha podido leer el fichero");
 		}
 	}
-	//TODO: implementar metodo para leer de fchero csv, escribir en fichero csv y añadir csv
 
 }

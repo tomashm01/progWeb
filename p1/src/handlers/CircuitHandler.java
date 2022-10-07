@@ -1,6 +1,7 @@
 package handlers;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,13 +26,10 @@ public class CircuitHandler {
 	
 	public static CircuitHandler getInstance() {
         if(CircuitHandler.instance == null) {
-        	//TODO ficheros circuito
-        	/*
-        	loadFilesPath();
-        	pistaList = loadPistaFile();
-        	kartList = loadKartFile();
-        	*/
         	CircuitHandler.instance = new CircuitHandler();
+        	loadFilesPath();
+        	loadKartFile();
+        	loadPistaFile();
         }
         return CircuitHandler.instance;
     }
@@ -56,47 +54,61 @@ public class CircuitHandler {
 		}
 	}
 
-    public static ArrayList<Pista> loadPistaFile() {
-		ArrayList<Pista> lista = new ArrayList<Pista>();
+    public static void loadPistaFile() {
 		try {
 			FileInputStream fis = new FileInputStream(pistas_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			lista = (ArrayList<Pista>) ois.readObject();
+			
+			if(pistas_file.length()!=0){
+				pistaList = (ArrayList<Pista>) ois.readObject();
+			}
 
 			ois.close();
 			fis.close();
-		} catch (IOException ioe) {
+		}catch(FileNotFoundException e){
+			System.out.println("El fichero "+pistas_file+" no existe. No hay lista de Pistas cargadas.");
+		}catch(EOFException e){
+			System.out.println("El fichero "+pistas_file+" esta vacio.");
+		}catch (IOException ioe) {
 			ioe.printStackTrace();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return lista;
 	}
-	
-    //TODO funcion de load
     
-	public static ArrayList<Kart> loadKartFile() {
-		ArrayList<Kart> lista = new ArrayList<Kart>();
+	public static void loadKartFile() {
 		try {
 			FileInputStream fis = new FileInputStream(karts_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			
-			lista = (ArrayList<Kart>) ois.readObject();	
+			if(karts_file.length() != 0) {
+				kartList = (ArrayList<Kart>) ois.readObject();					
+			}
 			
 			ois.close();
 			fis.close();
-		} catch (IOException ioe) {
+			
+			fis = new FileInputStream(pistas_file);
+			ois = new ObjectInputStream(fis);
+
+			
+			pistaList = (ArrayList<Pista>) ois.readObject();	
+			
+			ois.close();
+			fis.close();
+		}  catch(FileNotFoundException e){
+			System.out.println("El fichero "+karts_file+" no existe. No hay lista de Karts cargadas.");
+		}catch(EOFException e){
+			System.out.println("El fichero "+karts_file+" esta vacio.");
+		}catch (IOException ioe) {
 			ioe.printStackTrace();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return lista;
 	}
 	
 	/**

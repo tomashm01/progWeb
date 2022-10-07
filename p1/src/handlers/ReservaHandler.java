@@ -1,6 +1,7 @@
 package handlers;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,11 +28,9 @@ public class ReservaHandler {
 
 	public static ReservaHandler getInstance() {
 		if (ReservaHandler.instance == null) {
-			// TODO ficheros reserva
-			/*
-			 * reservesList = loadReserveFile();
-			 */
 			ReservaHandler.instance = new ReservaHandler();
+			loadFilesPath();
+			loadReserveFile();
 		}
 		return ReservaHandler.instance;
 	}
@@ -311,25 +310,28 @@ public class ReservaHandler {
 		return reservesList;
 	}
 
-	public static ArrayList<ReservaAbstracta> loadReserveFile() {
-		ArrayList<ReservaAbstracta> lista = new ArrayList<ReservaAbstracta>();
+	public static void loadReserveFile() {
 		try {
-			loadFilesPath();
 			FileInputStream fis = new FileInputStream(reserves_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			lista = (ArrayList<ReservaAbstracta>) ois.readObject();
+			if(reserves_file.length()!=0) {
+				reservesList = (ArrayList<ReservaAbstracta>) ois.readObject();
+			}
+			
 
 			ois.close();
 			fis.close();
-		} catch (IOException ioe) {
+		} catch(FileNotFoundException e){
+			System.out.println("El fichero "+reserves_file+" no existe. No hay lista de reservas cargadas.");
+		}catch(EOFException e){
+			System.out.println("El fichero "+reserves_file+" esta vacio.");
+		}catch (IOException ioe) {
 			ioe.printStackTrace();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return lista;
 	}
 
 	public static void loadFilesPath() {

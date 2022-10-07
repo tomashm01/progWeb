@@ -1,11 +1,16 @@
 package factory;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import entities.enums.DificultadPista;
 
-public abstract class ReservaAbstracta {
+public abstract class ReservaAbstracta implements Serializable{
 	
+	/**
+	 * 
+	 */
+	protected static final long serialVersionUID = 1L;
 	protected Integer idUser;
 	protected LocalDateTime date;
 	protected Integer time;

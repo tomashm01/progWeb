@@ -4,7 +4,7 @@ import entities.enums.DificultadPista;
 
 //Es una reserva que realiza un adulto, pero en la que solo participan niños en una pista infantil.
 
-public class ReservaInfantil extends ReservaAbstracta{
+public class ReservaInfantil extends ReservaAbstracta {
 	
 	public ReservaInfantil() {};
 	
