@@ -34,7 +34,7 @@ public class Main {
 		System.out.println(CircuitHandler.getInstance().getAllPistas());
 		System.out.println(ReservaHandler.getInstance().getAllReserves());
 		
-		/*CircuitHandler.getInstance().addPista(new Pista(1,"Alvaro",true,DificultadPista.FAMILIAR,10));
+		CircuitHandler.getInstance().addPista(new Pista(1,"Alvaro",true,DificultadPista.FAMILIAR,10));
 		CircuitHandler.getInstance().addPista(new Pista(2,"Tomás",true,DificultadPista.ADULTOS,10));
 		CircuitHandler.getInstance().addPista(new Pista(5,"Juan",true,DificultadPista.INFANTIL,10));		
 		for(int i=0;i<20;i++) {
@@ -65,7 +65,7 @@ public class Main {
 		ReservaHandler.getInstance().addReservaIndividual(mi);
 		ReservaHandler.getInstance().addReservaIndividual(mf);
 		ReservaHandler.getInstance().addReservaIndividual(ra);		
-*/
+
 		
 		// MenÃº
 		// Declaracion de variables
