@@ -19,53 +19,58 @@ import handlers.UsuarioHandler;
 public class Main {
 
 	public static void main(String[] args) {
-
-		UsuarioHandler.getInstance().getAllUsers();
-		CircuitHandler.getInstance().getAllKarts();
-		ReservaHandler.getInstance().getAllReserves();
-
+		//LoadFiles by using all getInstance
+		UsuarioHandler.getInstance();
+		CircuitHandler.getInstance();
+		ReservaHandler.getInstance();
+		//Create  Karts,Tracks,Users and reserves
 		CircuitHandler.getInstance().addPista(new Pista(1, "Alvaro", true, DificultadPista.FAMILIAR, 10));
 		CircuitHandler.getInstance().addPista(new Pista(2, "Tomás", true, DificultadPista.ADULTOS, 10));
 		CircuitHandler.getInstance().addPista(new Pista(5, "Juan", true, DificultadPista.INFANTIL, 10));
+		/*
 		for (int i = 0; i < 20; i++) {
+			Kart aux = new Kart((i % 2 == 0), EstadoKart.DISPONIBLE);
+			CircuitHandler.getInstance().addKart(aux);
+			CircuitHandler.getInstance().getPistaByID(1).asociarKartAPista(aux);
+		}
+		for (int i = 0; i < 20; i++) {
+			Kart aux = new Kart((i % 2 == 0), EstadoKart.DISPONIBLE);
+			CircuitHandler.getInstance().addKart(aux);
+			CircuitHandler.getInstance().getPistaByID(2).asociarKartAPista(aux);
+		}
+		for (int i = 0; i < 4020; i++) {
 			Kart aux = new Kart((i % 2 == 0), EstadoKart.DISPONIBLE);
 			CircuitHandler.getInstance().addKart(aux);
 			CircuitHandler.getInstance().getPistaByID(5).asociarKartAPista(aux);
 		}
-		for (int i = 35; i < 40; i++) {
-			Kart aux = new Kart(true, EstadoKart.DISPONIBLE);
-			CircuitHandler.getInstance().addKart(aux);
-			CircuitHandler.getInstance().getPistaByID(2).asociarKartAPista(aux);
-		}
-		for (int i = 35; i < 40; i++) {
-			Kart aux = new Kart(true, EstadoKart.DISPONIBLE);
-			CircuitHandler.getInstance().addKart(aux);
-			CircuitHandler.getInstance().getPistaByID(1).asociarKartAPista(aux);
-		}
-
+	*/
 		UsuarioHandler.getInstance().addUser(
 				new Usuario(2, "Alvaro", LocalDate.of(2000, 12, 31), "alvaro@gmail.com", LocalDate.of(2019, 1, 1)));
 		UsuarioHandler.getInstance().addUser(
-				new Usuario(1, "Juan", LocalDate.of(2000, 1, 1), "juan@gmail.com", LocalDate.of(2022, 12, 31)));
+				new Usuario(1, "Juan", LocalDate.of(2006, 1, 1), "juan@gmail.com", LocalDate.of(2022, 12, 31)));
+		UsuarioHandler.getInstance().addUser(
+				new Usuario(1, "Tomas", LocalDate.of(2001, 2, 1), "tomas@gmail.com", LocalDate.of(2019, 12, 31)));
 
 //		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(1000,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
 //		ReservaFamiliar mf	= new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
 //		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),2000,5,10f,0f,1,10);
 
+		//auxiliar variables
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
 		int subMainSelect = 0;
 		LocalDateTime date = LocalDateTime.now();
-
 		Scanner input = new Scanner(System.in);
+
+		//mainMenu
 		do {
 			mainMenu();
 			mainSelect = input.nextInt();
 			input.nextLine();
 			switch (mainSelect) {
 			case 0: // Salir
-				// TO DO
+				// TODO
 				// writeFile();
 				System.out.println("Saliendo del sistema");
 				break;
@@ -188,65 +193,158 @@ public class Main {
 				break;
 
 			case 2:
-
-				circuitMenu();
-				subMainSelect = input.nextInt();
-
-				if (subMainSelect == 1) {
-					int adult = 1;
-					System.out.println("Introduce los datos para aÃ±adir un kart");
-					System.out.println("Si el kart a aÃ±adir es para adultos pulse 1, sino pulse 0");
-					adult = input.nextInt();
-					input.nextLine();
-					CircuitHandler.getInstance().addKart(new Kart((adult == 1), EstadoKart.DISPONIBLE));
-				}
-
-				if (subMainSelect == 2) {
-					int adult, id;
-					Kart k;
-					ArrayList<EstadoKart> state = new ArrayList<EstadoKart>();
-					state.add(EstadoKart.DISPONIBLE);
-					state.add(EstadoKart.MANTENIMIENTO);
-					state.add(EstadoKart.RESERVADO);
-
-					System.out.println("Selecciona el id del kart que quieres modificar.");
-					CircuitHandler.getInstance().printAllKarts();
-
-					id = input.nextInt();
-					input.nextLine();
-					k = CircuitHandler.getInstance().getKartByID(id);
-
-					System.out.println("Introduce los nuevos datos del usuario:");
-					System.out.println("Si el kart a aÃ±adir es para adultos pulse 1, sino pulse 0");
-					adult = input.nextInt();
-					input.nextLine();
-
-					k.setAdult((adult == 1));
-
-					System.out.println("Introduce el estado del kart:");
-					System.out.println("1 --> Disponible");
-					System.out.println("2 --> Reservado");
-					System.out.println("3 --> Mantenimiento");
-
-					k.setState(state.get(input.nextInt() - 1));
-					input.nextLine();
-
-					System.out.println("Mostrando de nuevo la lista de karts...");
-
-					for (Kart k2 : CircuitHandler.getInstance().getAllKarts()) {
-						System.out.println(k2);
+				do {
+					circuitMenu();
+					subMainSelect = input.nextInt();
+					if( subMainSelect == 0) {
+						System.out.println("saliendo del menu");
+						return;
 					}
-
-				}
-
-				if (subMainSelect == 5) {
-
-					System.out.println("Estos son los nombres de los karts de la lista.");
-
-					CircuitHandler.getInstance().printAllKarts();
-				}
-
-				break;
+					else if (subMainSelect == 1) {
+						int adult = 1;
+						System.out.println("Introduce los datos para añadir un kart");
+						System.out.println("Indique el tipo de Kart:");
+						System.out.println("1)Adultos");
+						System.out.println("2)Niños");
+						adult = input.nextInt();
+						input.nextLine();
+						CircuitHandler.getInstance().addKart(new Kart((adult == 1), EstadoKart.DISPONIBLE));
+					}
+					else if (subMainSelect == 2) {
+						int adult, id;
+						Kart k;
+						ArrayList<EstadoKart> state = new ArrayList<EstadoKart>();
+						state.add(EstadoKart.DISPONIBLE);
+						state.add(EstadoKart.MANTENIMIENTO);
+						state.add(EstadoKart.RESERVADO);
+	
+						System.out.println("Selecciona el id del kart que quiera modificar.");
+						CircuitHandler.getInstance().printAllKarts();
+	
+						id = input.nextInt();
+						input.nextLine();
+						k = CircuitHandler.getInstance().getKartByID(id);
+	
+						System.out.println("Introduzca los nuevos datos del usuario:");
+						System.out.println("Indique el tipo de Kart:");
+						System.out.println("1)Adultos");
+						System.out.println("2)Niños");
+						adult = input.nextInt();
+						input.nextLine();
+	
+						k.setAdult((adult == 1));
+	
+						System.out.println("Introduzca el estado del kart:");
+						System.out.println("1 --> Disponible");
+						System.out.println("2 --> Reservado");
+						System.out.println("3 --> Mantenimiento");
+	
+						k.setState(state.get(input.nextInt() - 1));
+						input.nextLine();
+	
+						System.out.println("Mostrando de nuevo la lista de karts...");
+	
+						System.out.println("Kart modificado");
+					}
+					else if (subMainSelect == 3) {
+						System.out.println("Estos son los karts de la lista.");
+						CircuitHandler.getInstance().printAllKarts();
+						System.out.println("Selecciona el id del kart que quiera eliminar.");
+						CircuitHandler.getInstance().printAllKarts();
+						int id = input.nextInt();
+						if(CircuitHandler.getInstance().existKart(id)) {
+							CircuitHandler.getInstance().removeKart(id);
+							System.out.println("Kart eliminado");
+						}
+						input.nextLine();
+					}
+					else if (subMainSelect == 4) {
+	
+						System.out.println("Estos son los karts de la lista.");
+	
+						CircuitHandler.getInstance().printAllKarts();
+					}
+					else if( subMainSelect == 5) { //String name, boolean isAvailable, DificultadPista difficulty, Integer maxKart
+						int tipoPista = 10;
+						DificultadPista dif = DificultadPista.ADULTOS;
+						System.out.println("Ha seleccionado crear una pista nueva:");
+						System.out.println("Introduzca el nombre de la pista");
+						fullName=input.nextLine();
+						System.out.println("Introduzca si está disponible (1) o no (0)");
+						int disp = input.nextInt();
+						input.nextLine();
+						do {
+							System.out.println("Introduzca el tipo de pista que quiere");
+							System.out.println("1.Tipo familiar");
+							System.out.println("2.Tipo adultos");
+							System.out.println("3.Tipo infantil");
+							tipoPista = input.nextInt();
+							input.nextLine();
+						} while (tipoPista > 3 || tipoPista < 0);
+						if(tipoPista == 1)
+							dif = DificultadPista.FAMILIAR;
+						else if(tipoPista == 2)
+							dif = DificultadPista.ADULTOS;
+						if(tipoPista == 3)
+							dif = DificultadPista.INFANTIL;
+						System.out.println("Introduzca el numero de karts maximos en esta pista");
+						int numMax = input.nextInt();
+						input.nextLine();
+						
+						CircuitHandler.getInstance().addPista(new Pista(fullName,disp == 1,dif,numMax));
+					}
+					else if( subMainSelect == 6) {
+						int tipoPista = 10;
+						DificultadPista dif = DificultadPista.ADULTOS;
+						System.out.println("Ha seleccionado modificar una pista:");
+						System.out.println("Las pistas disponibles son:");
+						CircuitHandler.getInstance().printAllPistas();
+						int index = input.nextInt();
+						input.nextLine();
+						
+						System.out.println("Introduzca el nombre de la pista");
+						fullName=input.nextLine();
+						System.out.println("Introduzca si está disponible (1) o no (0)");
+						int disp = input.nextInt();
+						input.nextLine();
+						do {
+							System.out.println("Introduzca el tipo de pista que quiere");
+							System.out.println("1.Tipo familiar");
+							System.out.println("2.Tipo adultos");
+							System.out.println("3.Tipo infantil");
+							tipoPista = input.nextInt();
+							input.nextLine();
+						} while (tipoPista > 3 || tipoPista < 0);
+						if(tipoPista == 1)
+							dif = DificultadPista.FAMILIAR;
+						else if(tipoPista == 2)
+							dif = DificultadPista.ADULTOS;
+						if(tipoPista == 3)
+							dif = DificultadPista.INFANTIL;
+						System.out.println("Introduzca el numero de karts maximos en esta pista");
+						int numMax = input.nextInt();
+						input.nextLine();
+						if (CircuitHandler.getInstance().editPista(new Pista(CircuitHandler.getInstance().getAllPistas().get(index).getId(),fullName,disp == 1,dif,numMax))) {
+							System.out.println("Pista modificada con exito");
+						}
+					}
+					else if( subMainSelect == 7) {
+						System.out.println("Seleccione la pista a eliminar");
+						System.out.println(CircuitHandler.getInstance().getAllPistas());
+						int id = input.nextInt();
+						input.nextLine();
+						CircuitHandler.getInstance().removePista(id);
+						System.out.println("pista eliminada");
+					}
+					else if( subMainSelect == 8) {
+						CircuitHandler.getInstance().printAllPistasByName();
+					}
+					else if( subMainSelect == 9) {
+						CircuitHandler.getInstance().printAllPistas();
+					}
+					
+				}while(subMainSelect != 10);
+			break;
 
 			case 3:
 
@@ -503,14 +601,13 @@ public class Main {
 		System.out.println("1) Añadir kart");
 		System.out.println("2) Editar kart");
 		System.out.println("3) Eliminar kart");
-		System.out.println("4) Ver kart de usuario");
-		System.out.println("5) Ver todos los karts");
-		System.out.println("6) Añadir pista");
-		System.out.println("7) Editar pista");
-		System.out.println("8) Eliminar pista");
-		System.out.println("9) Ver pista por nombre");
-		System.out.println("10) Ver todas las pistas");
-		System.out.println("11) Atrás");
+		System.out.println("4) Ver todos los karts");
+		System.out.println("5) Añadir pista");
+		System.out.println("6) Editar pista");
+		System.out.println("7) Eliminar pista");
+		System.out.println("8) Ver pista por nombre");
+		System.out.println("9) Ver todas las pistas");
+		System.out.println("10) Atrás");
 		System.out.println("0) Salir");
 		System.out.println("-> Introduce una opcion: ");
 	}
