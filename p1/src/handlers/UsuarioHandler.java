@@ -138,6 +138,7 @@ public class UsuarioHandler {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void loadUserFile() {
 		try {
 			FileInputStream fis = new FileInputStream(users_file);

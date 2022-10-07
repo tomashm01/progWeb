@@ -1,23 +1,16 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
 import factory.ModalidadBono;
-import factory.ModalidadIndividual;
 import factory.ReservaAdultos;
 import factory.ReservaFamiliar;
 import factory.ReservaInfantil;
@@ -69,7 +62,7 @@ public class Main {
 		
 		// Menú
 		// Declaracion de variables
-	/*
+	
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
@@ -270,7 +263,7 @@ public class Main {
 			case 3:
 				
 				reserveMenu();
-				/*
+				
 				subMainSelect = input.nextInt();
 				input.nextLine();
 
@@ -283,7 +276,7 @@ public class Main {
 					
 					System.out.println("Introduce el tiempo que quieras estar");
 					int time=input.nextInt();
-					
+					input.nextLine();
 					do {
 						System.out.println("Que tipo de reserva quieres?");
 						System.out.println("1.Tipo familiar");
@@ -292,6 +285,7 @@ public class Main {
 						tipoReserva=input.nextInt();
 						input.nextLine();
 					}while(tipoReserva>3 || tipoReserva<0);
+					
 					System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
 					while (!valid) {
 						try {
@@ -315,7 +309,7 @@ public class Main {
 		} while (mainSelect != 0);
 
 		input.close();
-		*/
+		
 	}
 
 	public static void mainMenu() {

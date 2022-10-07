@@ -13,12 +13,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Vector;
-
 import entities.Pista;
 import entities.Usuario;
-import factory.ModalidadAbstracta;
-import factory.ModalidadBono;
 import factory.ReservaAbstracta;
 
 public class ReservaHandler {
@@ -74,7 +70,6 @@ public class ReservaHandler {
 			System.out.println("Hay más personas que el numero máximo permitido en la pista.");
 			return false;
 		}
-		// TODO ver porque este if no se ejecuta
 		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
 			System.out.println("No hay suficientes karts disponibles para todos los reservantes.");
 			return false;
@@ -159,7 +154,6 @@ public class ReservaHandler {
 			System.out.println("Hay más personas que el numero máximo permitido en la pista.");
 			return false;
 		}
-		// TODO ver porque este if no se ejecuta
 		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
 			System.out.println("No hay suficientes karts disponibles para todos los reservantes.");
 			return false;
@@ -310,6 +304,7 @@ public class ReservaHandler {
 		return reservesList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadReserveFile() {
 		try {
 			FileInputStream fis = new FileInputStream(reserves_file);
@@ -329,7 +324,6 @@ public class ReservaHandler {
 			ioe.printStackTrace();
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

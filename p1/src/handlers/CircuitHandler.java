@@ -54,7 +54,8 @@ public class CircuitHandler {
 		}
 	}
 
-    public static void loadPistaFile() {
+    @SuppressWarnings("unchecked")
+	public static void loadPistaFile() {
 		try {
 			FileInputStream fis = new FileInputStream(pistas_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -71,13 +72,12 @@ public class CircuitHandler {
 			System.out.println("El fichero "+pistas_file+" esta vacio.");
 		}catch (IOException ioe) {
 			ioe.printStackTrace();
-
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
     
+	@SuppressWarnings("unchecked")
 	public static void loadKartFile() {
 		try {
 			FileInputStream fis = new FileInputStream(karts_file);
@@ -106,7 +106,6 @@ public class CircuitHandler {
 			ioe.printStackTrace();
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

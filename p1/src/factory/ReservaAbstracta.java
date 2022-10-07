@@ -24,7 +24,7 @@ public abstract class ReservaAbstracta implements Serializable{
 	public static final int MAX_RANDOM = 999999999;
 
 	public ReservaAbstracta() {}
-	//TODO no existe generador de ids en reserva
+
 	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
 		this.idUser = idUser;
 		this.date = date;
@@ -33,6 +33,18 @@ public abstract class ReservaAbstracta implements Serializable{
 		this.price = price;
 		this.discount = discount;
 		this.id = id;
+		this.numAdults = numAdults;
+		this.numChilds = numChilds;
+	}
+	
+	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults,Integer numChilds) {
+		this.idUser = idUser;
+		this.date = date;
+		this.time = time;
+		this.idPista = idPista;
+		this.price = price;
+		this.discount = discount;
+		this.id = (int) (Math.random()*MAX_RANDOM);;
 		this.numAdults = numAdults;
 		this.numChilds = numChilds;
 	}

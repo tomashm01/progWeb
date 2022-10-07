@@ -6,11 +6,21 @@ import entities.enums.DificultadPista;
 
 public class ReservaAdultos extends ReservaAbstracta{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ReservaAdultos() {};
 	
 	public ReservaAdultos(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id, numAdults,0);
 	}
+	
+	public ReservaAdultos(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults) {
+		super(idUser,  date,  time,  idPista,  price, discount, numAdults,0);
+	}
+
 
 	public DificultadPista getType(){
 		return DificultadPista.ADULTOS;

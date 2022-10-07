@@ -1,10 +1,5 @@
 package factory;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Vector;
 
 public class ModalidadBono extends ModalidadAbstracta{
 
