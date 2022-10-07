@@ -52,17 +52,16 @@ public class Main {
 		UsuarioHandler.getInstance().addUser(new Usuario(1,"Juan",LocalDate.of(2000,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
 		
 		
-		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
+		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(1000,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
 		ReservaFamiliar mf	= new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
-		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
+		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),2000,5,10f,0f,1,10);
 		
 		ReservaHandler.getInstance().addReservaIndividual(mi);
-		
 		ReservaHandler.getInstance().addReservaBono(mf);
+		
 		/*
 		ReservaHandler.getInstance().addReservaBono(ra);	
 		*/
-		System.out.println("[ADIOS]"+ReservaHandler.getInstance().getAllBonos());
 	
 		writeFile();	
 

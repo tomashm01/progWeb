@@ -126,6 +126,7 @@ public class ReservaHandler {
 	 */
 
 	public boolean addReservaBono(ReservaAbstracta reserve) {
+		
 
 		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
 			System.out.println("El id de la pista no existe");
@@ -188,6 +189,7 @@ public class ReservaHandler {
 		reserve.setDiscount(0.05f);
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		
+		
 		//idUser mismo en todos
 		for(int i=0;i<bonoList.size();i++) {
 			//la id de reserva de la primera reserva del bono
@@ -205,8 +207,9 @@ public class ReservaHandler {
 			}
 		}
 		
-		Bono bono=new Bono(reserve.getId());
+		Bono bono=new Bono(reserve.getId());		
 		bonoList.add(bono);
+		System.out.println(bonoList.size());
 		reservesList.add(reserve);
 		return true;
 	}

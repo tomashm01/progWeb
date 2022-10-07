@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Bono implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Integer> bonoList;
+	private ArrayList<Integer> bonoList=new ArrayList<Integer>();
 	private int id;
 	private static int numBono=0;
 	private LocalDate expirationDate; 
@@ -17,6 +17,7 @@ public class Bono implements Serializable {
 		this.id = numBono;
 		expirationDate= LocalDate.now().plus(1, ChronoUnit.YEARS);
 		bonoList.add(idReserve);
+		
 	}
 	
 	public ArrayList<Integer> getBonoList() {
