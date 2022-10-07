@@ -13,12 +13,16 @@ import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import entities.Bono;
 import entities.Pista;
 import entities.Usuario;
 import factory.ReservaAbstracta;
 
 public class ReservaHandler {
 	public static String reserves_file;
+	public static String bono_file;
+	private static ArrayList<Bono> bonoList = new ArrayList<Bono>();
 	private static ArrayList<ReservaAbstracta> reservesList = new ArrayList<ReservaAbstracta>();
 	private static ReservaHandler instance = null;
 
@@ -27,6 +31,7 @@ public class ReservaHandler {
 			ReservaHandler.instance = new ReservaHandler();
 			loadFilesPath();
 			loadReserveFile();
+			loadReserveBonoFile();
 		}
 		return ReservaHandler.instance;
 	}
@@ -100,10 +105,6 @@ public class ReservaHandler {
 			}
 		}
 
-		// TODO si el tipo de reserva del usuario es tipo bono, ver que se puede añadir
-		// más a su tipo.
-
-		// TODO si la reserva es de bono, añadirla al bono del usuario
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
@@ -125,7 +126,7 @@ public class ReservaHandler {
 	 */
 
 	public boolean addReservaBono(ReservaAbstracta reserve) {
-		
+
 		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
 			System.out.println("El id de la pista no existe");
 			return false;
@@ -184,22 +185,29 @@ public class ReservaHandler {
 			}
 		}
 		
-		
-		//Comprobar mismo tipo del bono
-		
+		reserve.setDiscount(0.05f);
+		reserve.setPrice(calculatePrice(reserve.getTime()));
 		
 		//idUser mismo en todos
+		for(int i=0;i<bonoList.size();i++) {
+			//la id de reserva de la primera reserva del bono
+			Integer idIt = ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().get(0);
+			LocalDate expirationDateBono=ReservaHandler.getInstance().getAllBonos().get(i).getExpirationDate();
+			
+			if(	(	ReservaHandler.getInstance().getReserveByID(idIt).getIdUser().equals(reserve.getIdUser()) 	) && 	//comprueba que el bono es del usuario
+				(	ReservaHandler.getInstance().getReserveByID(idIt).getType().equals(reserve.getType())		) &&		//comprueba que el bono es del tipo igual que la reserva
+				(	ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().size() < 5					) &&		//comprueba que el bono tiene hueco
+				(	expirationDateBono.isBefore(LocalDate.now())												)
+			){				
+						
+				ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().add(reserve.getId());
+				return true;
+			}
+		}
 		
-		
-		//Precio reducido del 5%
-		reserve.setDiscount(0.05f);
-		
-		//5 sesiones y fecha caducidad 1 año
-		
-		
-		reserve.setPrice(calculatePrice(reserve.getTime()));
+		Bono bono=new Bono(reserve.getId());
+		bonoList.add(bono);
 		reservesList.add(reserve);
-		
 		return true;
 	}
 
@@ -303,6 +311,9 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getAllReserves() {
 		return reservesList;
 	}
+	public ArrayList<Bono> getAllBonos(){
+		return bonoList;
+	}
 
 	@SuppressWarnings("unchecked")
 	public static void loadReserveFile() {
@@ -312,7 +323,7 @@ public class ReservaHandler {
 			if(reserves_file.length()!=0) {
 				reservesList = (ArrayList<ReservaAbstracta>) ois.readObject();
 			}
-			
+
 
 			ois.close();
 			fis.close();
@@ -327,6 +338,29 @@ public class ReservaHandler {
 			e.printStackTrace();
 		}
 	}
+	public static void loadReserveBonoFile() {
+		try {
+			FileInputStream fis = new FileInputStream(bono_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			if(bono_file.length()!=0) {
+				bonoList = (ArrayList<Bono>) ois.readObject();
+			}
+
+
+			ois.close();
+			fis.close();
+		} catch(FileNotFoundException e){
+			System.out.println("El fichero "+bono_file+" no existe. No hay lista de reservas cargadas.");
+		}catch(EOFException e){
+			System.out.println("El fichero "+bono_file+" esta vacio.");
+		}catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public static void loadFilesPath() {
 		Properties prop = new Properties();
@@ -337,6 +371,7 @@ public class ReservaHandler {
 
 			String path = "datos/";
 			reserves_file = path + prop.getProperty("reserves_file");
+			bono_file = path + prop.getProperty("bono_file");
 
 			// Captura de excepciones
 		} catch (FileNotFoundException e) {

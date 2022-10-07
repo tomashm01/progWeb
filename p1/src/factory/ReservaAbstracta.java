@@ -17,6 +17,7 @@ public abstract class ReservaAbstracta implements Serializable{
 	protected Integer idPista;
 	protected float price;
 	protected float discount;
+	
 	protected Integer numAdults;
 	protected Integer numChilds;
 	

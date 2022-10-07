@@ -11,6 +11,7 @@ import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
 import factory.ModalidadBono;
+import factory.ModalidadIndividual;
 import factory.ReservaAdultos;
 import factory.ReservaFamiliar;
 import factory.ReservaInfantil;
@@ -26,7 +27,8 @@ public class Main {
 		System.out.println(CircuitHandler.getInstance().getAllKarts());
 		System.out.println(CircuitHandler.getInstance().getAllPistas());
 		System.out.println(ReservaHandler.getInstance().getAllReserves());
-		
+		System.out.println(ReservaHandler.getInstance().getAllBonos());
+				
 		CircuitHandler.getInstance().addPista(new Pista(1,"Alvaro",true,DificultadPista.FAMILIAR,10));
 		CircuitHandler.getInstance().addPista(new Pista(2,"Tom·s",true,DificultadPista.ADULTOS,10));
 		CircuitHandler.getInstance().addPista(new Pista(5,"Juan",true,DificultadPista.INFANTIL,10));		
@@ -50,19 +52,24 @@ public class Main {
 		UsuarioHandler.getInstance().addUser(new Usuario(1,"Juan",LocalDate.of(2000,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
 		
 		
-		
 		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
 		ReservaFamiliar mf	= new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
-		ReservaInfantil mi 	= new ModalidadBono().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
+		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),100,5,10f,0f,1,10);
 		
 		ReservaHandler.getInstance().addReservaIndividual(mi);
-		ReservaHandler.getInstance().addReservaIndividual(mf);
-		ReservaHandler.getInstance().addReservaIndividual(ra);		
+		
+		ReservaHandler.getInstance().addReservaBono(mf);
+		/*
+		ReservaHandler.getInstance().addReservaBono(ra);	
+		*/
+		System.out.println("[ADIOS]"+ReservaHandler.getInstance().getAllBonos());
+	
+		writeFile();	
 
 		
 		// Men√∫
 		// Declaracion de variables
-	
+	/*
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
@@ -308,7 +315,7 @@ public class Main {
 
 		} while (mainSelect != 0);
 
-		input.close();
+		input.close(); */
 		
 	}
 
@@ -375,16 +382,23 @@ public class Main {
 		String pathReserve="datos/reservas.txt";
 		String pathKart="datos/karts.txt";
 		String pathPista="datos/pistas.txt";
+		String pathBono="datos/bonos.txt";
 		try {
 			
 			FileOutputStream fileOut = new FileOutputStream(pathUser);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(UsuarioHandler.getInstance().getAllUsers());
 			fileOut.close();
-			
+						
 			fileOut = new FileOutputStream(pathReserve);
 			objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(ReservaHandler.getInstance().getAllReserves());
+			fileOut.close();
+			
+			
+			fileOut = new FileOutputStream(pathBono);
+			objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(ReservaHandler.getInstance().getAllBonos());
 			fileOut.close();
 			
 			fileOut = new FileOutputStream(pathPista);
