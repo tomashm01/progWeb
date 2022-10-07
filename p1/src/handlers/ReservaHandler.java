@@ -92,7 +92,10 @@ public class ReservaHandler {
 			System.out.println("No se puede hacer una reserva en el pasado");
 			return false;
 		}
-
+		if(reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+			System.out.println("No se puede reservar a 24h o antes de la fecha de la reserva");
+			return false;
+		}
 		for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
 			LocalDateTime t11 = t1.getDate();
 			LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
@@ -109,7 +112,6 @@ public class ReservaHandler {
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
 		reservesList.add(reserve);
-
 		return true;
 
 	}
@@ -138,7 +140,6 @@ public class ReservaHandler {
 		}
 
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
-		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
 
 		if (!UsuarioHandler.getInstance().getUserByID(reserve.getIdUser()).isMayorEdad()) {
 			System.out.println("El responsble de la reserva no es mayor de edad.");
@@ -173,7 +174,10 @@ public class ReservaHandler {
 			System.out.println("No se puede hacer una reserva en el pasado");
 			return false;
 		}
-
+		if(reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+			System.out.println("No se puede reservar a 24h o antes de la fecha de la reserva");
+			return false;
+		}
 		for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
 			LocalDateTime t11 = t1.getDate();
 			LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
@@ -209,7 +213,6 @@ public class ReservaHandler {
 		
 		Bono bono=new Bono(reserve.getId());		
 		bonoList.add(bono);
-		System.out.println(bonoList.size());
 		reservesList.add(reserve);
 		return true;
 	}
@@ -226,6 +229,16 @@ public class ReservaHandler {
 		return time / 3;
 	}
 
+	public ArrayList<Bono> getAllBonosByIDUser(Integer idUser){
+		ArrayList<Bono> bono=new ArrayList<Bono>();
+		for(int i=0;i<bonoList.size();i++){
+			if(ReservaHandler.getInstance().getReserveByID(bonoList.get(i).getBonoList().get(0)).getIdUser().equals(idUser)){
+				bono.add(new Bono(ReservaHandler.getInstance().getReserveByID(bonoList.get(i).getBonoList().get(0)).getId()));	
+			}
+		}
+		return bono;
+	}
+
 	/**
 	 * Las reservas pueden realizarse, modificarse y/o cancelarse hasta 24h antes de
 	 * la hora de inicio
@@ -233,12 +246,44 @@ public class ReservaHandler {
 	 * @return
 	 */
 
-	public boolean modifyReserve(int idReserva, int opcion) {
-		// TODO modificar reserva
-
-		return true;
+	public boolean modifyReserve(ReservaAbstracta reserve){
+		if(reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
+			return false;
+		}
+			for(int i=0;i<reservesList.size();i++){
+				if(reservesList.get(i).getId().equals(reserve.getId())){
+					reservesList.set(i, reserve);
+					return true;
+				}
+			}
+			System.out.println("No se ha encontrado la reserva a modificar (Id no encontrado)");
+			return false;
 	}
 
+	public boolean removeBono(Integer idBono ) {
+		int i = ReservaHandler.getInstance().getIndexBono(idBono);
+		return (bonoList.remove(i) != null);
+		
+	}
+
+	public boolean removeReserve(Integer idReserve ) {
+		if(ReservaHandler.getInstance().getReserveByID(idReserve).getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))){
+			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
+			return false;
+		}
+		for(Bono b : bonoList) {
+			for(int i=0;i<b.getBonoList().size();i++) {
+				if(b.getBonoList().get(i).equals(idReserve)){
+					b.getBonoList().remove(i);
+				}
+			}
+		}
+		int index = ReservaHandler.getInstance().getIndexReserve(idReserve);
+		return (reservesList.remove(index) != null);
+		
+	}
+	
 	/**
 	 * El gestor debe permitir consultar el número de reservas futuras, esto es,
 	 * para cualquier fecha posterior a la actual.
@@ -282,8 +327,19 @@ public class ReservaHandler {
 		}
 		return null;
 	}
+	
+	public int getIndexBono(int idBono) {
+		int contador = 0;
+		for (Bono bono : bonoList) {
+			if(bono.getId() == idBono) {
+				return contador;
+			}
+			contador++;
+		}
+		return -1;
+	}
 
-	public int getIndex(Integer id) {
+	public int getIndexReserve(Integer id) {
 		int contador = 0;
 		for (ReservaAbstracta reserve : reservesList) {
 			contador++;
@@ -326,8 +382,6 @@ public class ReservaHandler {
 			if(reserves_file.length()!=0) {
 				reservesList = (ArrayList<ReservaAbstracta>) ois.readObject();
 			}
-
-
 			ois.close();
 			fis.close();
 		} catch(FileNotFoundException e){
@@ -341,6 +395,7 @@ public class ReservaHandler {
 			e.printStackTrace();
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public static void loadReserveBonoFile() {
 		try {
 			FileInputStream fis = new FileInputStream(bono_file);
@@ -348,8 +403,6 @@ public class ReservaHandler {
 			if(bono_file.length()!=0) {
 				bonoList = (ArrayList<Bono>) ois.readObject();
 			}
-
-
 			ois.close();
 			fis.close();
 		} catch(FileNotFoundException e){
@@ -361,6 +414,18 @@ public class ReservaHandler {
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void printAllReservesList(){
+		for(ReservaAbstracta res: reservesList){
+			System.out.println(res.toString());
+		}
+	}
+	
+	public void printAllBonosList(){
+		for(Bono bono: bonoList){
+			System.out.println(bono.toString());
 		}
 	}
 

@@ -1,15 +1,11 @@
 package factory;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import entities.enums.DificultadPista;
 
 public abstract class ReservaAbstracta implements Serializable{
 	
-	/**
-	 * 
-	 */
 	protected static final long serialVersionUID = 1L;
 	protected Integer idUser;
 	protected LocalDateTime date;
@@ -18,15 +14,12 @@ public abstract class ReservaAbstracta implements Serializable{
 	protected float price;
 	protected float discount;
 	
-	protected Integer numAdults;
-	protected Integer numChilds;
-	
 	protected Integer id;
 	public static final int MAX_RANDOM = 999999999;
 
 	public ReservaAbstracta() {}
 
-	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
+	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id) {
 		this.idUser = idUser;
 		this.date = date;
 		this.time = time;
@@ -34,11 +27,9 @@ public abstract class ReservaAbstracta implements Serializable{
 		this.price = price;
 		this.discount = discount;
 		this.id = id;
-		this.numAdults = numAdults;
-		this.numChilds = numChilds;
 	}
 	
-	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults,Integer numChilds) {
+	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount) {
 		this.idUser = idUser;
 		this.date = date;
 		this.time = time;
@@ -46,30 +37,13 @@ public abstract class ReservaAbstracta implements Serializable{
 		this.price = price;
 		this.discount = discount;
 		this.id = (int) (Math.random()*MAX_RANDOM);;
-		this.numAdults = numAdults;
-		this.numChilds = numChilds;
 	}
-	
-	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds,ArrayList<ReservaAbstracta> array) {
-		this.idUser = idUser;
-		this.date = date;
-		this.time = time;
-		this.idPista = idPista;
-		this.price = price;
-		this.discount = discount;
-		this.id = id;
-		this.numAdults = numAdults;
-		this.numChilds = numChilds;
-	}
-	
 	
 	public abstract DificultadPista getType();
 	
 	public abstract boolean validate();
 	
-	public Integer getNumPlayers() {
-		return numChilds+numAdults;
-	}
+	public abstract Integer getNumPlayers();
 
 	public Integer getIdUser() {
 		return idUser;
@@ -127,21 +101,11 @@ public abstract class ReservaAbstracta implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getNumAdults() {
-		return numAdults;
+	@Override
+	public String toString() {
+		return "ReservaAbstracta [idUser=" + idUser + ", date=" + date + ", time=" + time + ", idPista=" + idPista
+				+ ", price=" + price + ", discount=" + discount + ", id=" + id + "]";
 	}
-
-	public void setNumAdults(Integer numAdults) {
-		this.numAdults = numAdults;
-	}
-
-	public Integer getNumChilds() {
-		return numChilds;
-	}
-	public void setNumChilds(Integer numChilds) {
-		this.numChilds = numChilds;
-	}
-	
 }
 
 

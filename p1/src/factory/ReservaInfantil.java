@@ -6,19 +6,21 @@ import entities.enums.DificultadPista;
 
 public class ReservaInfantil extends ReservaAbstracta {
 	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
+	private Integer numChilds;
+	
 	public ReservaInfantil() {};
 	
 	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds) {
-		super(idUser,  date,  time,  idPista,  price, discount,  id, 0,numChilds);
+		super(idUser,  date,  time,  idPista,  price, discount,  id);
+		this.numChilds = numChilds;
 	}
 	
 	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numChilds) {
-		super(idUser,  date,  time,  idPista,  price, discount, 0,numChilds);
+		super(idUser,  date,  time,  idPista,  price, discount);
+		this.numChilds = numChilds;
 	}
 
 
@@ -27,7 +29,19 @@ public class ReservaInfantil extends ReservaAbstracta {
 	}
 
 	public  boolean validate(){
-		return (numAdults == 0 && numChilds > 0);
+		return ( numChilds > 0);
+	}
+
+	public Integer getNumPlayers() {
+		return numChilds;
+	}
+	
+	public Integer getNumChilds() {
+		return numChilds;
+	}
+
+	public void setNumChilds(Integer numChilds) {
+		this.numChilds = numChilds;
 	}
 
 	@Override

@@ -53,6 +53,13 @@ public class UsuarioHandler {
 	 * @param newUser
 	 * @return boolean
 	 */
+	public boolean existUser(String correo) {
+		for(Usuario user:usersList) {
+			if(user.getEmail().equals(correo)) return true;
+		}
+		return false;
+	}
+	
 	public boolean existUser(Integer id) {
 		for(Usuario user:usersList) {
 			if(user.getId().equals(id)) return true;

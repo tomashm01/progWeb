@@ -17,7 +17,6 @@ public class Bono implements Serializable {
 		this.id = numBono;
 		expirationDate= LocalDate.now().plus(1, ChronoUnit.YEARS);
 		bonoList.add(idReserve);
-		
 	}
 	
 	public ArrayList<Integer> getBonoList() {

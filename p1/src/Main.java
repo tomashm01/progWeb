@@ -5,16 +5,12 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 import entities.*;
 import entities.enums.*;
 import factory.ModalidadBono;
 import factory.ModalidadIndividual;
-import factory.ReservaAdultos;
-import factory.ReservaFamiliar;
-import factory.ReservaInfantil;
 import handlers.CircuitHandler;
 import handlers.ReservaHandler;
 import handlers.UsuarioHandler;
@@ -23,11 +19,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(UsuarioHandler.getInstance().getAllUsers());
-		System.out.println(CircuitHandler.getInstance().getAllKarts());
-		System.out.println(CircuitHandler.getInstance().getAllPistas());
-		System.out.println(ReservaHandler.getInstance().getAllReserves());
-		System.out.println(ReservaHandler.getInstance().getAllBonos());
+		UsuarioHandler.getInstance().getAllUsers();
+		CircuitHandler.getInstance().getAllKarts();
+		ReservaHandler.getInstance().getAllReserves();
 				
 		CircuitHandler.getInstance().addPista(new Pista(1,"Alvaro",true,DificultadPista.FAMILIAR,10));
 		CircuitHandler.getInstance().addPista(new Pista(2,"Tomás",true,DificultadPista.ADULTOS,10));
@@ -51,29 +45,17 @@ public class Main {
 		UsuarioHandler.getInstance().addUser(new Usuario(2,"Alvaro",LocalDate.of(2000,12,31),"alvaro@gmail.com",LocalDate.of(2019, 1, 1)));
 		UsuarioHandler.getInstance().addUser(new Usuario(1,"Juan",LocalDate.of(2000,1,1),"juan@gmail.com",LocalDate.of(2022, 12, 31)));
 		
-		
-		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(1000,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
-		ReservaFamiliar mf	= new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
-		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),2000,5,10f,0f,1,10);
-		
-		ReservaHandler.getInstance().addReservaIndividual(mi);
-		ReservaHandler.getInstance().addReservaBono(mf);
-		
-		/*
-		ReservaHandler.getInstance().addReservaBono(ra);	
-		*/
-	
-		writeFile();	
 
-		
-		// MenÃº
-		// Declaracion de variables
-	/*
+//		ReservaAdultos ra	= new ModalidadBono().createReservaAdultos(1, LocalDateTime.now().plus(1000,ChronoUnit.MINUTES), 100, 2, 0, 1, 1, 3);
+//		ReservaFamiliar mf	= new ModalidadBono().createReservaFamiliar(1, LocalDateTime.now().plus(100,ChronoUnit.MINUTES), 50, 1, 0, 1, 2, 1, 4);
+//		ReservaInfantil mi 	= new ModalidadIndividual().createReservaInfantil(2,LocalDateTime.now().plus(2,ChronoUnit.MINUTES),2000,5,10f,0f,1,10);
+
+	
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
 		int subMainSelect = 0;
-		LocalDate date = LocalDate.now();
+		LocalDateTime date = LocalDateTime.now();
 		
 
 		Scanner input = new Scanner(System.in);
@@ -89,119 +71,120 @@ public class Main {
 				break;
 
 			case 1:
-				userMenu();
-				subMainSelect = input.nextInt();
-				input.nextLine();
-
-				// AÃ‘ADIR USUARIO
-				if (subMainSelect == 1) {
-					valid=false;
-					fullName="";
-					email="";
-					date=LocalDate.now();
-
-					System.out.println("Ha seleccionado la opcion aÃ±adir usuario, introduzca los siguientes datos:");
-
-					System.out.println("Nombre completo:");
-					fullName = input.nextLine();
-
-					System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
-					while (!valid) {
-						try {
-							date = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-							valid = true;
-						} catch (Exception e) {
-							System.out.println("Formato de fecha no vÃ¡lido,vuelva a intentarlo:");
-						}
-					}
-
-					System.out.println("Correo electronico:");
-					email = input.nextLine();
-
-					System.out.println("AÃ±adiendo usuario...");
-					UsuarioHandler.getInstance().addUser(new Usuario(fullName, date, email));
-					System.out.println("El usuario ha sido aÃ±adido correctamente.");
-				}
-
-				// MODIFICAR USUARIO
-				else if (subMainSelect == 2) {
-					valid=false;
-					fullName="";
-					email="";
-					date=LocalDate.now();
-					
-					System.out.println("Selecciona el id del usuario que quieres modificar.");
-					Usuario userMod = UsuarioHandler.getInstance().getUserByID( input.nextInt());
+				do{
+					userMenu();
+					subMainSelect = input.nextInt();
 					input.nextLine();
-							
-					System.out.println("Nombre completo:");
-					fullName = input.nextLine();
+
+					// AÑADIR USUARIO
+				
+					if (subMainSelect == 1) {
+						valid=false;
+						fullName="";
+						email="";
+						LocalDate date2=LocalDate.now();
 	
-			
-					System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
-					while (!valid) {
-						try {
-							date = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-							valid = true;
-						} catch (Exception e) {
-							System.out.println("Formato de fecha no vÃ¡lido,vuelva a intentarlo:");
-						}
-					}
-
-					System.out.println("Correo electronico:");
-					email = input.nextLine();
-
-					userMod.setBirthdayDate(date);
-					userMod.setEmail(email);
-					userMod.setFullName(fullName);
-					UsuarioHandler.getInstance().editUser(userMod);
-					System.out.println("Mostrando el nuevo usuario...");
-					System.out.println(userMod);
-				}
-
-				else if (subMainSelect == 3) {
-					
-					System.out.println("Estos son los usuarios de la lista.");
-					for (Usuario us : UsuarioHandler.getInstance().getAllUsers()) {
-						System.out.println(us);
-					}
-
-				} else if (subMainSelect == 4) {
-					System.out.println("Estos son los nombres de los usuarios de la lista.");
-					UsuarioHandler.getInstance().printNameUsers();
-					valid=false;
-					System.out.println("Selecciona el nombre del usuario que quieres borrar.");
-					while (!valid) {
-						try {
-							int id =input.nextInt();
-							input.nextLine();
-							if(UsuarioHandler.getInstance().existUser(id)){
-								UsuarioHandler.getInstance()
-								.removeUser(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()).getId());
-								valid=true;
+						System.out.println("Ha seleccionado la opcion añadir usuario, introduzca los siguientes datos:");
+	
+						System.out.println("Nombre completo:");
+						fullName = input.nextLine();
+	
+						System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
+						while (!valid) {
+							try {
+								date2 = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+								valid = true;
+							} catch (Exception e) {
+								System.out.println("Formato de fecha no válido,vuelva a intentarlo:");
 							}
-						} catch (Exception e) {
-							System.out.println("Formato de id no correcto o id no existente");
 						}
+	
+						System.out.println("Correo electronico:");
+						email = input.nextLine();
+	
+						System.out.println("Añadiendo usuario...");
+						UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2, email));
+						System.out.println("El usuario ha sido añadido correctamente.");
 					}
-
-				} else if (subMainSelect == 5) {
-
-					System.out.println("Estos son los nombres de los usuarios de la lista.");
-					UsuarioHandler.getInstance().printNameUsers();
-
-					System.out.println("Selecciona el nombre del usuario que quieres ver.");
-					System.out.println(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()));
-					input.nextLine();
-				} else if (subMainSelect == 6) {
-					mainMenu();
-					mainSelect = input.nextInt();
-				} else if (subMainSelect == 0) {
-					input.close();
-					return;
-				}
-
-				break;
+	
+					// MODIFICAR USUARIO
+					else if (subMainSelect == 2) {
+						valid=false;
+						fullName="";
+						email="";
+						LocalDate date1 = LocalDate.now();
+						
+						System.out.println("Selecciona el id del usuario que quieres modificar.");
+						Usuario userMod = UsuarioHandler.getInstance().getUserByID( input.nextInt());
+						input.nextLine();
+								
+						System.out.println("Nombre completo:");
+						fullName = input.nextLine();
+		
+				
+						System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
+						while (!valid) {
+							try {
+								date1 = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+								valid = true;
+							} catch (Exception e) {
+								System.out.println("Formato de fecha no válido,vuelva a intentarlo:");
+							}
+						}
+	
+						System.out.println("Correo electronico:");
+						email = input.nextLine();
+	
+						userMod.setBirthdayDate(date1);
+						userMod.setEmail(email);
+						userMod.setFullName(fullName);
+						UsuarioHandler.getInstance().editUser(userMod);
+						System.out.println("Mostrando el nuevo usuario...");
+						System.out.println(userMod);
+					}
+	
+					else if (subMainSelect == 3) {
+						
+						System.out.println("Estos son los usuarios de la lista.");
+						for (Usuario us : UsuarioHandler.getInstance().getAllUsers()) {
+							System.out.println(us);
+						}
+	
+					} else if (subMainSelect == 4) {
+						System.out.println("Estos son los nombres de los usuarios de la lista.");
+						UsuarioHandler.getInstance().printNameUsers();
+						valid=false;
+						System.out.println("Selecciona el nombre del usuario que quieres borrar.");
+						while (!valid) {
+							try {
+								int index =input.nextInt();
+								input.nextLine();
+								if(UsuarioHandler.getInstance().getAllUsers().size()> index){
+									UsuarioHandler.getInstance().removeUser(UsuarioHandler.getInstance().getAllUsers().get(index).getId());
+									valid=true;
+								}
+							} catch (Exception e) {
+								System.out.println("Formato de id no correcto o id no existente");
+							}
+						}
+	
+					} else if (subMainSelect == 5) {
+	
+						System.out.println("Estos son los nombres de los usuarios de la lista.");
+						UsuarioHandler.getInstance().printNameUsers();
+	
+						System.out.println("Selecciona el nombre del usuario que quieres ver.");
+						System.out.println(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()));
+						input.nextLine();
+					} else if (subMainSelect == 6) {
+						mainMenu();
+						mainSelect = input.nextInt();
+					} else if (subMainSelect == 0) {
+						input.close();
+						return;
+					}
+				}while(subMainSelect != 6);
+			break;
 
 			case 2:
 
@@ -273,16 +256,28 @@ public class Main {
 				subMainSelect = input.nextInt();
 				input.nextLine();
 
-				if (subMainSelect == 1) {
+				if (subMainSelect == 1) { //Añadir reserva
+					
 					UsuarioHandler.getInstance().printNameUsers();
 					System.out.println("Introduce el ID del usuario encargado de la reserva");
-					int idUser=input.nextInt();
+					int indexIdUser=input.nextInt();
 					input.nextLine();
-					int tipoReserva=0;
+					int idUser=UsuarioHandler.getInstance().getAllUsers().get(indexIdUser).getId();
+					
+					CircuitHandler.getInstance().printAllPistas();
+					System.out.println("Introduce el ID de la pista para crear");
+					int indexIdPista=input.nextInt();
+					input.nextLine();
+					int idPista=CircuitHandler.getInstance().getAllPistas().get(indexIdPista).getId();
 					
 					System.out.println("Introduce el tiempo que quieras estar");
 					int time=input.nextInt();
 					input.nextLine();
+					
+					int price=ReservaHandler.getInstance().calculatePrice(time);
+					
+					int tipoReserva=0,modalidadReserva=0,discount=0;
+					
 					do {
 						System.out.println("Que tipo de reserva quieres?");
 						System.out.println("1.Tipo familiar");
@@ -292,20 +287,169 @@ public class Main {
 						input.nextLine();
 					}while(tipoReserva>3 || tipoReserva<0);
 					
-					System.out.println("Fecha de nacimiento (formato(dd-mm-yyyy):");
+					System.out.println("Cuantos adultos desean ir?");
+					int numAdults=input.nextInt();
+					input.nextLine();
+					
+					System.out.println("Cuantos niños desean ir?");
+					int numChilds=input.nextInt();
+					input.nextLine();
+					
+					do {
+						System.out.println("Que modalidad de reserva quieres?");
+						System.out.println("1.Modalidad individual");
+						System.out.println("2.Modalidad bono");
+						modalidadReserva=input.nextInt();
+						input.nextLine();
+					}while(modalidadReserva>2 || modalidadReserva<0);
+					
+					System.out.println("Fecha de reserva (formato(mm-HH-dd-MM-yyyy)(minutos,horas,dia,mes,año):");
 					while (!valid) {
 						try {
-							date = LocalDate.parse(input.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+							date = LocalDateTime.parse(input.nextLine(), DateTimeFormatter.ofPattern("mm-HH-dd-MM-yyyy"));
 							valid = true;
 						} catch (Exception e) {
-							System.out.println("Formato de fecha no vÃ¡lido,vuelva a intentarlo:");
+							System.out.println("Formato de fecha no válido,vuelva a intentarlo:");
 						}
 					}
-					if(tipoReserva==1) {
-						//ReservaAbstracta resFamiliar=new ReservaAbstracta(idUser,ReservaHandler.getInstance().calculatePrice(time),date,time,time,time);
+					
+					if(modalidadReserva==1) { //Modalidad individual
+						if(tipoReserva==1){ //Tipo familiar
+							if( new ModalidadIndividual().createReservaFamiliar(idUser, date, time, idPista, price, discount, numAdults, numChilds)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}else if(tipoReserva==2){ //Tipo adultos
+							if(new ModalidadIndividual().createReservaAdultos(idUser, date, time, idPista, price, discount, numAdults)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}else{ //Tipo infantil
+							if(new ModalidadIndividual().createReservaInfantil(idUser, date, time, idPista, price, discount, numChilds)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}
+					}else{ //Modalidad bono
+						if(tipoReserva==1){ //Tipo familiar
+							if( new ModalidadBono().createReservaFamiliar(idUser, date, time, idPista, price, discount, numAdults, numChilds)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}else if(tipoReserva==2){ //Tipo adultos
+							if(new ModalidadBono().createReservaAdultos(idUser, date, time, idPista, price, discount, numAdults)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}else{ //Tipo infantil
+							if(new ModalidadBono().createReservaInfantil(idUser, date, time, idPista, price, discount, numChilds)!=null){
+								System.out.println("Reserva creada correctamente");
+							}else{
+								System.out.println("Reserva no ha sido creada correctamente");
+							}
+						}
 					}
 					
 					System.out.println();
+				}else if(subMainSelect==2){ //Modificar reserva
+				
+				int modalidad=0;
+					
+					do{
+						System.out.println("Deseas eliminar una reserva bono o individual? ");
+						System.out.println("1.Eliminar bono");
+						System.out.println("2.Eliminar reserva individual");
+						modalidad=input.nextInt();
+						input.nextLine();
+					}while(modalidad<0 || modalidad>2);
+					
+					if(modalidad==1){
+						
+						System.out.println("---RESERVAS BONO---");
+						ReservaHandler.getInstance().printAllBonosList();
+						System.out.println();
+						
+						System.out.println("Introduce el ID del bono a eliminar: ");
+						int idBono=input.nextInt();
+						input.nextLine();
+					
+						
+					}else{
+						System.out.println("---RESERVAS INDIVIDUALES---");
+						ReservaHandler.getInstance().printAllReservesList();
+						System.out.println();
+						
+						System.out.println("Introduce el ID de la reserva a eliminar: ");
+						int idReserva=input.nextInt();
+						input.nextLine();
+					
+						
+					}
+					
+				}else if(subMainSelect==3){ //Eliminar reserva
+					int modalidad=0;
+					
+					do{
+						System.out.println("Deseas eliminar una reserva bono o individual? ");
+						System.out.println("1.Eliminar bono");
+						System.out.println("2.Eliminar reserva individual");
+						modalidad=input.nextInt();
+						input.nextLine();
+					}while(modalidad<0 || modalidad>2);
+					
+					if(modalidad==1){
+						
+						System.out.println("---RESERVAS BONO---");
+						ReservaHandler.getInstance().printAllBonosList();
+						System.out.println();
+						
+						System.out.println("Introduce el ID del bono a eliminar: ");
+						int idBono=input.nextInt();
+						input.nextLine();
+					
+						if(ReservaHandler.getInstance().removeBono(idBono)){
+							System.out.println("Bono eliminado correctamente");
+						}else{
+							System.out.println("Bono no eliminado correctamente");
+						}
+					}else{
+						System.out.println("---RESERVAS INDIVIDUALES---");
+						ReservaHandler.getInstance().printAllReservesList();
+						System.out.println();
+						
+						System.out.println("Introduce el ID de la reserva a eliminar: ");
+						int idReserva=input.nextInt();
+						input.nextLine();
+					
+						if(ReservaHandler.getInstance().removeReserve(idReserva)){
+							System.out.println("Reserva eliminada correctamente");
+						}else{
+							System.out.println("Reserva no eliminada correctamente");
+						}
+						
+					}
+					
+				}else if(subMainSelect==4){//Ver todas las reservas
+				
+					System.out.println("---RESERVAS INDIVIDUALES---");
+					ReservaHandler.getInstance().printAllReservesList();
+					System.out.println();
+					
+					System.out.println("---RESERVAS BONO---");
+					ReservaHandler.getInstance().printAllBonosList();
+					System.out.println();
+					
+				}else if(subMainSelect==5){//Atrás
+					
+				}else if(subMainSelect==6){//Salir de la app
+					
+				}else{//Fallo de opción
+					System.out.println("Fallo de opcion. Elige una de las opciones mostradas");
 				}
 				
 				break;
@@ -314,7 +458,7 @@ public class Main {
 
 		} while (mainSelect != 0);
 
-		input.close(); */
+		input.close(); 
 		
 	}
 
@@ -322,57 +466,56 @@ public class Main {
 		System.out.println("\n\n================================");
 		System.out.println("  SISTEMA DE RESERVA DE KARTS");
 		System.out.println("================================");
-		System.out.println("1) MenÃº Usuario");
-		System.out.println("2) MenÃº Circuito");
-		System.out.println("3) MenÃº Reserva\n");
+		System.out.println("1) Menú Usuario");
+		System.out.println("2) Menú Circuito");
+		System.out.println("3) Menú Reserva\n");
 		System.out.println("0) Salir\n");
 		System.out.println("-> Introduce una opcion: ");
 	}
 
 	public static void userMenu() {
 		System.out.println("\n\n================================");
-		System.out.println("  GESTIÃ“N DE USUARIOS");
+		System.out.println("  GESTIÓN DE USUARIOS");
 		System.out.println("================================");
 		System.out.println("1) Alta de usuario no registrado");
 		System.out.println("2) Modificar usuario");
 		System.out.println("3) Listar todos los usuarios");
 		System.out.println("4) Eliminar usuario");
 		System.out.println("5) Ver datos de un usuario");
-		System.out.println("6) AtrÃ¡s");
+		System.out.println("6) Atrás");
 		System.out.println("0) Salir");
 		System.out.println("-> Introduce una opcion: ");
 	}
 
 	public static void circuitMenu() {
 		System.out.println("\n\n================================");
-		System.out.println("  GESTIÃ“N DE CIRCUITOS");
+		System.out.println("  GESTIÓN DE CIRCUITOS");
 		System.out.println("================================");
-		System.out.println("1) AÃ±adir kart");
+		System.out.println("1) Añadir kart");
 		System.out.println("2) Editar kart");
 		System.out.println("3) Eliminar kart");
 		System.out.println("4) Ver kart de usuario");
 		System.out.println("5) Ver todos los karts");
-		System.out.println("6) AÃ±adir pista");
+		System.out.println("6) Añadir pista");
 		System.out.println("7) Editar pista");
 		System.out.println("8) Eliminar pista");
 		System.out.println("9) Ver pista por nombre");
 		System.out.println("10) Ver todas las pistas");
-		System.out.println("11) AtrÃ¡s");
+		System.out.println("11) Atrás");
 		System.out.println("0) Salir");
 		System.out.println("-> Introduce una opcion: ");
 	}
 
 	public static void reserveMenu() {
 		System.out.println("\n\n================================");
-		System.out.println("  GESTIÃ“N DE RESERVAS");
+		System.out.println("  GESTIÓN DE RESERVAS");
 		System.out.println("================================");
-		System.out.println("1) AÃ±adir reserva");
+		System.out.println("1) Añadir reserva");
 		System.out.println("2) Modificar reserva");
-		System.out.println("3) Ver reserva por usuario");
-		System.out.println("4) Ver reserva por pista");
-		System.out.println("5) Eliminar reserva");
-		System.out.println("6) AtrÃ¡s");
-		System.out.println("0) Salir");
+		System.out.println("3) Eliminar reserva por usuario");
+		System.out.println("4) Ver todas las reservas");
+		System.out.println("5) Atrás");
+		System.out.println("6) Salir");
 		System.out.println("-> Introduce una opcion: ");
 	}
 
