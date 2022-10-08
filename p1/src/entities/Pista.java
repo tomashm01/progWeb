@@ -22,7 +22,7 @@ public class Pista implements Serializable{
 	private Integer id;
 	
 	public Pista() {
-		this.id=(int) (Math.random()*MAX_RANDOM);
+		this.id = (int) (Math.random()*MAX_RANDOM);
 	}
 
 	public Pista(String name, boolean isAvailable, DificultadPista difficulty, Integer maxKarts) {
@@ -99,6 +99,11 @@ public class Pista implements Serializable{
 	public String toString() {
 		return "Pista [name=" + name + ", isAvailable=" + isAvailable + ", difficulty=" + difficulty + ", maxKarts="
 				+ maxKarts + ", kartsList=" + kartsList + ", id=" + id + "]";
+	}
+
+	public String toStringWithoutKarts() {
+		return "Pista [name=" + name + ", isAvailable=" + isAvailable + ", difficulty=" + difficulty + ", maxKarts="
+				+ maxKarts +", id=" + id + "]";
 	}
 
 	public ArrayList<Kart> consultarKartsDisponibles() {

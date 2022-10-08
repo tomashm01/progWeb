@@ -324,6 +324,15 @@ public class CircuitHandler {
 			count ++;
 		}
 	}
+	
+	public void printAllPistasWithoutKarts() {
+		int count = 0;
+		
+		for( Pista p: getAllPistas()){
+			System.out.println(count + ") " + p.toStringWithoutKarts());
+			count ++;
+		}
+	}
 	public void printAllPistasByName() {
 		int count = 0;
 		

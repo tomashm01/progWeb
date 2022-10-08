@@ -15,15 +15,13 @@ public class Kart implements Serializable{
 	private Integer idPista;
 	
 	private static final long serialVersionUID = 1L;
-	public static int numKarts=0;
+	public static final int MAX_RANDOM = 999999999;
 	
 	public Kart(){
-		Kart.numKarts++;
-		this.id = Kart.numKarts;
+		this.id = (int) (Math.random()*MAX_RANDOM);
 	}
 	
 	public Kart(Integer id,boolean isAdult, EstadoKart state, Integer idPista) {
-		Kart.numKarts++;
 		this.id = id;
 		this.isAdult = isAdult;
 		this.state = state;
@@ -31,16 +29,14 @@ public class Kart implements Serializable{
 	}
 	
 	public Kart(boolean isAdult, EstadoKart state, Integer idPista) {
-		Kart.numKarts++;
-		this.id = Kart.numKarts;
+		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.isAdult = isAdult;
 		this.state = state;
 		this.idPista = idPista;
 	}
 	
 	public Kart(boolean isAdult, EstadoKart state) {
-		Kart.numKarts++;
-		this.id = Kart.numKarts;
+		this.id = (int) (Math.random()*MAX_RANDOM);
 		this.isAdult = isAdult;
 		this.state = state;
 		this.idPista = -1;
@@ -76,14 +72,6 @@ public class Kart implements Serializable{
 
 	public void setIdPista(Integer idPista) {
 		this.idPista = idPista;
-	}
-
-	public static int getNumKarts() {
-		return numKarts;
-	}
-
-	public static void setNumKarts(int numKarts) {
-		Kart.numKarts = numKarts;
 	}
 
 	public static long getSerialversionuid() {
