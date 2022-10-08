@@ -1,8 +1,5 @@
-package java.business.handlers;
+package es.uco.pw.business.handlers;
 
-import java.data.enums.DificultadPista;
-import java.data.models.Kart;
-import java.data.models.Pista;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
@@ -13,6 +10,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import es.uco.pw.data.enums.DificultadPista;
+import es.uco.pw.data.models.Kart;
+import es.uco.pw.data.models.Pista;
 
 //Esta clase será la que gestione las instalaciones y material necesario para dar servicio.
 
@@ -33,7 +34,9 @@ public class CircuitHandler {
         return CircuitHandler.instance;
     }
 	
-	
+	/**
+	 * Carga path de karts y pistas
+	 */
 	public static void loadFilesPath() {
 		Properties prop = new Properties();
 		String filename = "src/data.properties";
@@ -53,6 +56,9 @@ public class CircuitHandler {
 		}
 	}
 
+	/**
+	 * Carga datos del fichero pista
+	 */
     @SuppressWarnings("unchecked")
 	public static void loadPistaFile() {
 		try {
@@ -76,6 +82,9 @@ public class CircuitHandler {
 		}
 	}
     
+    /**
+     * Carga datos del fichero karts
+     */
 	@SuppressWarnings("unchecked")
 	public static void loadKartFile() {
 		try {
@@ -111,7 +120,8 @@ public class CircuitHandler {
 	
 	/**
 	 * Dar de alta a un kart, comprobando que no está registrado previamente.
-	 * @param Kart neKart
+	 * @param newKart
+	 * @return boolean
 	 */
 	public boolean addKart(Kart newKart) {
 		if(existKart(newKart.getId())) return false;
@@ -134,7 +144,7 @@ public class CircuitHandler {
 	/**
 	 * Obtiene un kart dado un id
 	 * @param id
-	 * @return
+	 * @return Kart
 	 */
 	public Kart getKartByID(Integer id) {
 		for(Kart it:kartList) {
@@ -147,7 +157,7 @@ public class CircuitHandler {
 	/**
 	 * Elimina el kart dado su id si existe
 	 * @param id
-	 * @return
+	 * @return boolean
 	 */
 	public boolean removeKart(Integer id){
 		for(int i=0;i<kartList.size();i++){
@@ -162,7 +172,7 @@ public class CircuitHandler {
 	/**
 	 * Edita un kart si existe
 	 * @param kart
-	 * @return
+	 * @return boolean
 	 */
 	public boolean editKart(Kart kart){
 		for(int i=0;i<kartList.size();i++){
@@ -175,14 +185,48 @@ public class CircuitHandler {
 	}
 	
 	/**
+	 * Devuelve los karts asociados a una pista
+	 * @param idPista
+	 * @return ArrayList<Kart>
+	 */
+	public ArrayList<Kart> getKartsByIDPista(Integer idPista) {
+		return getInstance().getPistaByID(idPista).getKartsList();
+	}
+	
+	/**
 	 * Devuelve la lista de todos los karts
-	 * @return
+	 * @return ArrayList<Kart>
 	 */
 	public ArrayList<Kart> getAllKarts(){
 		return kartList;
 	}
 	
-
+	/**
+	 * Imprimir todos los karts registrados
+	 * @param 
+	 * @return void 
+	 */
+	
+	public void printAllKarts() {
+		int count = 0;
+		
+		for( Kart k: getAllKarts()){
+			System.out.println(count + ") " + k);
+			count ++;
+		}
+	}
+	
+	/**
+	 * Imprime pistas sin los arrayList de karts
+	 */
+	public void printAllPistasWithoutKarts() {
+		int count = 0;
+		
+		for( Pista p: getAllPistas()){
+			System.out.println(count + ") " + p.toStringWithoutKarts());
+			count ++;
+		}
+	}
 	
 	
 	
@@ -190,6 +234,7 @@ public class CircuitHandler {
 	/**
 	 * Dar de alta a un pista, comprobando que no está registrado previamente.
 	 * @param newPista
+	 * @return boolean
 	 */
 	public boolean addPista(Pista newPista) {
 		if(existPista(newPista.getId())) return false;
@@ -211,7 +256,7 @@ public class CircuitHandler {
 	/**
 	 * Devuelve la pista sabiendo su id
 	 * @param id
-	 * @return
+	 * @return Pista
 	 */
 	public Pista getPistaByID(Integer id) {
 		for(Pista it:pistaList) {
@@ -223,7 +268,7 @@ public class CircuitHandler {
 	/**
 	 * Devuelve el id de la pista sabiendo su nombre
 	 * @param name
-	 * @return
+	 * @return Integer
 	 */
 	public Integer getIDPistaByName(String name) {
 		for(Pista pista: pistaList){
@@ -234,6 +279,11 @@ public class CircuitHandler {
 		return null;
 	}
 	
+	/**
+	 * Elimina pista de la lista
+	 * @param id
+	 * @return boolean
+	 */
 	public boolean removePista(Integer id){
 		for(int i=0;i<pistaList.size();i++){
 			if(pistaList.get(i).getId().equals(id)){
@@ -244,6 +294,11 @@ public class CircuitHandler {
 		return false;
 	}
 
+	/**
+	 * Edita datos de una pista que exista en la lista
+	 * @param pista
+	 * @return boolean
+	 */
 	public boolean editPista(Pista pista){
 		for(int i=0;i<pistaList.size();i++){
 			if(pistaList.get(i).getId().equals(pista.getId())){
@@ -258,7 +313,7 @@ public class CircuitHandler {
 	/**
 	 * Obtiene la dificultad sabiendo el idPista
 	 * @param idPista
-	 * @return
+	 * @return DificultadPista
 	 */
 	public DificultadPista getDifficultyByID(Integer idPista) {
 		return getPistaByID(idPista).getDifficulty();
@@ -266,7 +321,7 @@ public class CircuitHandler {
 	
 	/**
 	 * Devuelve las pistas en mantenimiento
-	 * @return
+	 * @return ArrayList<Pista> 
 	 */
 	public ArrayList<Pista> getMantenimientoPistas(){
 		ArrayList<Pista> mantenPista = new ArrayList<Pista>();
@@ -284,7 +339,7 @@ public class CircuitHandler {
 	 * asociados.
 	 * @param numKarts
 	 * @param difficulty
-	 * @return
+	 * @return ArrayList<Pista> 
 	 */
 	public ArrayList<Pista> getFreePistas(Integer numKarts,DificultadPista difficulty){
 		ArrayList<Pista> pistasFree=new ArrayList<Pista>();
@@ -299,22 +354,11 @@ public class CircuitHandler {
 		return pistasFree;
 	}
 	
-	
 	/**
-	 * Imprimir todos los karts registrados
+	 * Imprimir todos las pistas registradas
 	 * @param 
 	 * @return void 
 	 */
-	
-	public void printAllKarts() {
-		int count = 0;
-		
-		for( Kart k: getAllKarts()){
-			System.out.println(count + ") " + k);
-			count ++;
-		}
-	}
-	
 	public void printAllPistas() {
 		int count = 0;
 		
@@ -324,14 +368,10 @@ public class CircuitHandler {
 		}
 	}
 	
-	public void printAllPistasWithoutKarts() {
-		int count = 0;
-		
-		for( Pista p: getAllPistas()){
-			System.out.println(count + ") " + p.toStringWithoutKarts());
-			count ++;
-		}
-	}
+	/**
+	 * Imprime pistas sin los arrayList de pistas
+	 */
+	
 	public void printAllPistasByName() {
 		int count = 0;
 		
@@ -341,17 +381,10 @@ public class CircuitHandler {
 		}
 	}
 	
-
-
 	/**
-	 * Devuelve los karts asociados a una pista
-	 * @param idPista
-	 * @return
+	 * Develve todas las pistas
+	 * @return ArrayList<Pista> 
 	 */
-	public ArrayList<Kart> getKartsByIDPista(Integer idPista) {
-		return getInstance().getPistaByID(idPista).getKartsList();
-	}
-	
 	public ArrayList<Pista> getAllPistas(){
 		return pistaList;
 	}	

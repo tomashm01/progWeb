@@ -1,9 +1,10 @@
-package java.data.models;
+package es.uco.pw.data.models;
 
-import java.data.enums.DificultadPista;
-import java.data.enums.EstadoKart;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import es.uco.pw.data.enums.DificultadPista;
+import es.uco.pw.data.enums.EstadoKart;
 
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 

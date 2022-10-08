@@ -1,6 +1,7 @@
-package java.business.factories;
-import java.data.enums.DificultadPista;
+package es.uco.pw.business.factories;
 import java.time.LocalDateTime;
+
+import es.uco.pw.data.enums.DificultadPista;
 
 //Es una reserva que realiza un adulto, en la que solo participan adultos en una pista de ese tipo
 

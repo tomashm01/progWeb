@@ -1,6 +1,7 @@
-package java.business.factories;
-import java.business.handlers.ReservaHandler;
+package es.uco.pw.business.factories;
 import java.time.LocalDateTime;
+
+import es.uco.pw.business.handlers.ReservaHandler;
 
 public class ModalidadBono extends ModalidadAbstracta{
 

@@ -1,4 +1,4 @@
-package java.data.models;
+package es.uco.pw.data.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

@@ -1,4 +1,4 @@
-package java.data.models;
+package es.uco.pw.data.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
@@ -97,7 +97,7 @@ public class Usuario implements Serializable {
 	}
 
 	/*
-		Calcula los años que lleva registrado el usuario
+		Calcula los aï¿½os que lleva registrado el usuario
 	*/
 	public int antiquity(){
 		Period period = Period.between(inscriptionDate, LocalDate.now());

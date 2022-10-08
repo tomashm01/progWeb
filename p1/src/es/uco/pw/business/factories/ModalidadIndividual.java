@@ -1,7 +1,8 @@
-package java.business.factories;
+package es.uco.pw.business.factories;
 
-import java.business.handlers.ReservaHandler;
 import java.time.LocalDateTime;
+
+import es.uco.pw.business.handlers.ReservaHandler;
 
 public class ModalidadIndividual extends ModalidadAbstracta{
 	

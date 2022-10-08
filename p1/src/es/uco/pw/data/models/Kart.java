@@ -1,9 +1,10 @@
-package java.data.models;
+package es.uco.pw.data.models;
 
-import java.data.enums.EstadoKart;
 import java.io.Serializable;
 
-//Clase que representa a un vehhículo que utilizan los usuarios para recorrer las pistas.
+import es.uco.pw.data.enums.EstadoKart;
+
+//Clase que representa a un vehhï¿½culo que utilizan los usuarios para recorrer las pistas.
 
 public class Kart implements Serializable{
 	

@@ -1,7 +1,8 @@
-package java.business.factories;
-import java.data.enums.DificultadPista;
+package es.uco.pw.business.factories;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import es.uco.pw.data.enums.DificultadPista;
 
 public abstract class ReservaAbstracta implements Serializable{
 	
