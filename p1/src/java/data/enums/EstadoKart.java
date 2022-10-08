@@ -1,4 +1,4 @@
-package entities.enums;
+package java.data.enums;
 
 public enum EstadoKart {
 	DISPONIBLE,

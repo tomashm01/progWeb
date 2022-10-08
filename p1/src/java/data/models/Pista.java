@@ -1,10 +1,9 @@
-package entities;
+package java.data.models;
 
+import java.data.enums.DificultadPista;
+import java.data.enums.EstadoKart;
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import entities.enums.DificultadPista;
-import entities.enums.EstadoKart;
 
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 

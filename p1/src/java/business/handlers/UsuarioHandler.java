@@ -1,5 +1,6 @@
-package handlers;
+package java.business.handlers;
 
+import java.data.models.Usuario;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
-import entities.Usuario;
 
 //Esta clase será la encargada de gestionar la información de los usuarios que hacen reservas.
 

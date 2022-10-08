@@ -1,5 +1,8 @@
-package handlers;
+package java.business.handlers;
 
+import java.data.enums.DificultadPista;
+import java.data.models.Kart;
+import java.data.models.Pista;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
@@ -10,10 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import entities.Kart;
-import entities.Pista;
-import entities.enums.DificultadPista;
 
 //Esta clase será la que gestione las instalaciones y material necesario para dar servicio.
 

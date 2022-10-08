@@ -1,8 +1,7 @@
-package entities;
+package java.data.models;
 
+import java.data.enums.EstadoKart;
 import java.io.Serializable;
-
-import entities.enums.EstadoKart;
 
 //Clase que representa a un vehhículo que utilizan los usuarios para recorrer las pistas.
 

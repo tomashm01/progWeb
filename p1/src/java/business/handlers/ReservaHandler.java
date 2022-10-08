@@ -1,5 +1,9 @@
-package handlers;
+package java.business.handlers;
 
+import java.business.factories.ReservaAbstracta;
+import java.data.models.Bono;
+import java.data.models.Pista;
+import java.data.models.Usuario;
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
@@ -13,11 +17,6 @@ import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import entities.Bono;
-import entities.Pista;
-import entities.Usuario;
-import factory.ReservaAbstracta;
 
 public class ReservaHandler {
 	public static String reserves_file;

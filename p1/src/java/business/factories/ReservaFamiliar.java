@@ -1,6 +1,6 @@
-package factory;
+package java.business.factories;
+import java.data.enums.DificultadPista;
 import java.time.LocalDateTime;
-import entities.enums.DificultadPista;
 
 //Es una reserva que realiza un adulto, en la que participan tanto adultos como niños en una pista de tipo de familiar
 
