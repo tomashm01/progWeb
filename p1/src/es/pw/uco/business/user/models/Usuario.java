@@ -1,4 +1,4 @@
-package es.uco.pw.data.models;
+package es.pw.uco.business.user.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;

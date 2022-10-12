@@ -1,7 +1,7 @@
-package es.uco.pw.business.factories;
+package es.pw.uco.business.reserve.models.factory;
 import java.time.LocalDateTime;
 
-import es.uco.pw.data.enums.DificultadPista;
+import es.pw.uco.business.enums.DificultadPista;
 
 //Es una reserva que realiza un adulto, en la que participan tanto adultos como niños en una pista de tipo de familiar
 

@@ -1,4 +1,4 @@
-package es.uco.pw.data.enums;
+package es.pw.uco.business.enums;
 
 public enum DificultadPista {
 	INFANTIL,
