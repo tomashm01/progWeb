@@ -3,11 +3,6 @@ package es.pw.uco.data.common;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 /**
  * A class to manage the MySQL connection (general methods and configuration).
  * @author Aurora Ramirez

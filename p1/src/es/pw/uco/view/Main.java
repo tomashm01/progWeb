@@ -28,6 +28,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Connection cn=new Conexion().getConnection();
+		if(true) return;
 		
 		CircuitHandler.getInstance();
 		UsuarioHandler.getInstance();
