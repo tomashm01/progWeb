@@ -1,4 +1,4 @@
-package es.uco.pw.business.handlers;
+package es.pw.uco.business.circuit.handlers;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -11,9 +11,9 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import es.uco.pw.data.enums.DificultadPista;
-import es.uco.pw.data.models.Kart;
-import es.uco.pw.data.models.Pista;
+import es.pw.uco.business.circuit.models.Kart;
+import es.pw.uco.business.circuit.models.Pista;
+import es.pw.uco.business.enums.DificultadPista;
 
 //Esta clase será la que gestione las instalaciones y material necesario para dar servicio.
 

@@ -1,4 +1,4 @@
-package es.uco.pw.business.handlers;
+package es.pw.uco.business.reserve.handlers;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -14,10 +14,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import es.uco.pw.business.factories.ReservaAbstracta;
-import es.uco.pw.data.models.Bono;
-import es.uco.pw.data.models.Pista;
-import es.uco.pw.data.models.Usuario;
+import es.pw.uco.business.circuit.handlers.CircuitHandler;
+import es.pw.uco.business.circuit.models.Pista;
+import es.pw.uco.business.reserve.models.Bono;
+import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.user.handlers.UsuarioHandler;
+import es.pw.uco.business.user.models.Usuario;
 
 public class ReservaHandler {
 	public static String reserves_file;

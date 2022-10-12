@@ -1,8 +1,8 @@
-package es.uco.pw.data.models;
+package es.pw.uco.business.circuit.models;
 
 import java.io.Serializable;
 
-import es.uco.pw.data.enums.EstadoKart;
+import es.pw.uco.business.enums.EstadoKart;
 
 //Clase que representa a un vehh�culo que utilizan los usuarios para recorrer las pistas.
 

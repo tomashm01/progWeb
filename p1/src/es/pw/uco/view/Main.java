@@ -1,28 +1,33 @@
+package es.pw.uco.view;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import es.uco.pw.business.factories.ModalidadBono;
-import es.uco.pw.business.factories.ModalidadIndividual;
-import es.uco.pw.business.factories.ReservaAbstracta;
-import es.uco.pw.business.handlers.CircuitHandler;
-import es.uco.pw.business.handlers.ReservaHandler;
-import es.uco.pw.business.handlers.UsuarioHandler;
-import es.uco.pw.data.enums.DificultadPista;
-import es.uco.pw.data.enums.EstadoKart;
-import es.uco.pw.data.models.Kart;
-import es.uco.pw.data.models.Pista;
-import es.uco.pw.data.models.Usuario;
+import es.pw.uco.business.circuit.handlers.CircuitHandler;
+import es.pw.uco.business.circuit.models.Kart;
+import es.pw.uco.business.circuit.models.Pista;
+import es.pw.uco.business.enums.DificultadPista;
+import es.pw.uco.business.enums.EstadoKart;
+import es.pw.uco.business.reserve.handlers.ReservaHandler;
+import es.pw.uco.business.reserve.models.factory.ModalidadBono;
+import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
+import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.user.handlers.UsuarioHandler;
+import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.common.Conexion;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		Connection cn=new Conexion().getConnection();
 		
 		CircuitHandler.getInstance();
 		UsuarioHandler.getInstance();
@@ -36,6 +41,8 @@ public class Main {
 		LocalDateTime date = LocalDateTime.now();
 		Scanner input = new Scanner(System.in);
 
+		
+		
 		// mainMenu
 		do {
 			mainMenu();

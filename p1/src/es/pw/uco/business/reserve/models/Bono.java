@@ -1,4 +1,4 @@
-package es.uco.pw.data.models;
+package es.pw.uco.business.reserve.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

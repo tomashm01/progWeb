@@ -1,4 +1,4 @@
-package es.uco.pw.business.factories;
+package es.pw.uco.business.reserve.models.factory;
 
 import java.time.LocalDateTime;
 
