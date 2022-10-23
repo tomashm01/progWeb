@@ -9,7 +9,7 @@ public class UserDTO {
 	private LocalDate fechaIncripcion;
 	private String nombreCompleto;
 	
-	public UserDTO(int id, String email, LocalDate fecha, LocalDate fechaIncripcion, String nombreCompleto) {
+	public UserDTO(int id, String email, LocalDate fecha, String nombreCompleto,LocalDate fechaIncripcion) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -18,7 +18,7 @@ public class UserDTO {
 		this.nombreCompleto = nombreCompleto;
 	}
 	
-	public UserDTO(String email,LocalDate fecha, LocalDate fechaIncripcion, String nombreCompleto) {
+	public UserDTO(String email,LocalDate fecha, String nombreCompleto,LocalDate fechaIncripcion) {
 		this.id=null;
 		this.email = email;
 		this.fecha = fecha;

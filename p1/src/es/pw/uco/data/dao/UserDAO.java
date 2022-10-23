@@ -1,40 +1,46 @@
 package es.pw.uco.data.dao;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.ResultSet;
+
 import es.pw.uco.business.user.dto.UserDTO;
+import es.pw.uco.data.common.Conexion;
 
 public class UserDAO implements DAO<UserDTO,Integer>{
 
 	@Override
-	public boolean insertar(UserDTO a) throws SQLException {
+	public boolean insert(UserDTO a) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean modificar(UserDTO a) throws SQLException {
+	public boolean update(UserDTO a) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean eliminar(Integer id) throws SQLException {
+	public boolean delete(Integer id) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public ArrayList<UserDTO> obtenerTodos() throws SQLException {
-		// TODO Auto-generated method stub
+	public ArrayList<UserDTO> getAll() throws SQLException {
+		ResultSet rs;
+		Conexion conexController=Conexion.getInstance();
+		Connection conex=conexController.getConnection();
 		return null;
 	}
 
 	@Override
-	public UserDTO obtenerUno(Integer id) throws SQLException {
+	public UserDTO get(Integer id) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
