@@ -36,7 +36,7 @@ public class ReservaAdultos extends ReservaAbstracta{
 	public Integer getNumPlayers() {
 		return numAdults;
 	}
-	
+	@Override
 	public Integer getNumAdults() {
 		return numAdults;
 	}

@@ -16,10 +16,15 @@ import java.util.Properties;
 
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
 import es.pw.uco.business.circuit.models.Pista;
+import es.pw.uco.business.enums.DificultadPista;
+import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.models.Bono;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
+import es.pw.uco.business.user.dto.UserDTO;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.dao.ReserveDAO;
 
 public class ReservaHandler {
 	public static String reserves_file;
@@ -27,13 +32,12 @@ public class ReservaHandler {
 	private static ArrayList<Bono> bonoList = new ArrayList<Bono>();
 	private static ArrayList<ReservaAbstracta> reservesList = new ArrayList<ReservaAbstracta>();
 	private static ReservaHandler instance = null;
+	private static ReserveDAO dao;
 
 	public static ReservaHandler getInstance() {
 		if (ReservaHandler.instance == null) {
 			ReservaHandler.instance = new ReservaHandler();
-			loadFilesPath();
-			loadReserveFile();
-			loadReserveBonoFile();
+			dao = new ReserveDAO();
 		}
 		return ReservaHandler.instance;
 	}
@@ -61,7 +65,7 @@ public class ReservaHandler {
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
 
-		if (!UsuarioHandler.getInstance().getUserByID(reserve.getIdUser()).isMayorEdad()) {
+		if (!user.isMayorEdad()) {
 			System.out.println("El responsble de la reserva no es mayor de edad.");
 			return false;
 		}
@@ -113,7 +117,8 @@ public class ReservaHandler {
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-		reservesList.add(reserve);
+		// reservesList.add(reserve);
+		dao.insert(new ReserveDTO(reserve));
 		return true;
 
 	}
@@ -232,7 +237,8 @@ public class ReservaHandler {
 
 		Bono bono = new Bono(reserve.getId());
 		bonoList.add(bono);
-		reservesList.add(reserve);
+		// reservesList.add(reserve);
+		dao.insert(new ReserveDTO(reserve));
 		return true;
 	}
 
@@ -250,6 +256,7 @@ public class ReservaHandler {
 
 	public ArrayList<Bono> getAllBonosByIDUser(Integer idUser) {
 		ArrayList<Bono> bono = new ArrayList<Bono>();
+		// TODO:
 		for (int i = 0; i < bonoList.size(); i++) {
 			if (ReservaHandler.getInstance().getReserveByID(bonoList.get(i).getBonoList().get(0)).getIdUser()
 					.equals(idUser)) {
@@ -273,6 +280,18 @@ public class ReservaHandler {
 			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
 			return false;
 		}
+		reservesList = new ArrayList<ReservaAbstracta>();
+		for (ReserveDTO it : dao.getAll()) {
+			if (it.getTipo().equals(DificultadPista.FAMILIAR.toString())) {
+				reserveList.add(new ReservaFamiliar(it.getId(), it.getDate().atStartOfDay(), it.getTime(),
+						it.getIdPista(), it.getPrice(), it.getDiscount(), it.getId()));
+			} else if (it.getTipo().equals(DificultadPista.FAMILIAR.toString())) {
+
+			} else {
+
+			}
+
+		}
 		for (int i = 0; i < reservesList.size(); i++) {
 			if (reservesList.get(i).getId().equals(reserve.getId())) {
 				reservesList.set(i, reserve);
@@ -292,7 +311,6 @@ public class ReservaHandler {
 	public boolean removeBono(Integer idBono) {
 		int i = ReservaHandler.getInstance().getIndexBono(idBono);
 		return (bonoList.remove(i) != null);
-
 	}
 
 	/**

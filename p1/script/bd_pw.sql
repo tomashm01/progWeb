@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: oraclepr.uco.es
--- Tiempo de generación: 12-10-2022 a las 14:19:44
+-- Tiempo de generación: 30-10-2022 a las 19:50:03
 -- Versión del servidor: 5.1.73
 -- Versión de PHP: 5.3.3
 -- 
@@ -97,12 +97,14 @@ CREATE TABLE `Pista` (
   `dificultad` varchar(16) NOT NULL,
   `maxKarts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- 
 -- Volcar la base de datos para la tabla `Pista`
 -- 
 
+INSERT INTO `Pista` VALUES (1, 'Mario Kart', 'FAMILIAR', 20);
+INSERT INTO `Pista` VALUES (2, 'CordobaCity', 'ADULTOS', 50);
 
 -- --------------------------------------------------------
 
@@ -119,15 +121,19 @@ CREATE TABLE `Reserva` (
   `fecha` date NOT NULL,
   `duracion` int(11) NOT NULL,
   `tipo` varchar(20) NOT NULL,
+  `numAdultos` int(11) DEFAULT NULL,
+  `numMenores` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_reserva_user` (`idUser`),
   KEY `fk_reserva_pista` (`idPista`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- 
 -- Volcar la base de datos para la tabla `Reserva`
 -- 
 
+INSERT INTO `Reserva` VALUES (1, 1, 1, 200, 10, '2022-10-30', 100, 'FAMILIAR', 0, 0);
+INSERT INTO `Reserva` VALUES (3, 5, 1, 200, 10, '2022-10-30', 100, 'FAMILIAR', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -143,12 +149,14 @@ CREATE TABLE `User` (
   `fechaInscripcion` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- 
 -- Volcar la base de datos para la tabla `User`
 -- 
 
+INSERT INTO `User` VALUES (1, 'tomas@gmail.com', '2001-09-25', 'Tomás Hidalgo Martín', '2022-10-11');
+INSERT INTO `User` VALUES (5, 'i02pinma@uco.es', '2002-12-31', 'Alvaro Pino', '2022-10-30');
 
 -- 
 -- Filtros para las tablas descargadas (dump)
@@ -172,5 +180,5 @@ ALTER TABLE `KartReserva`
 -- Filtros para la tabla `Reserva`
 -- 
 ALTER TABLE `Reserva`
-  ADD CONSTRAINT `fk_reserva_user` FOREIGN KEY (`idUser`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_reserva_pista` FOREIGN KEY (`idPista`) REFERENCES `Pista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_reserva_pista` FOREIGN KEY (`idPista`) REFERENCES `Pista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_reserva_user` FOREIGN KEY (`idUser`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
