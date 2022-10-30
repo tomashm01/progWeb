@@ -12,7 +12,20 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 
 	@Override
 	public boolean insert(UserDTO a) throws SQLException {
-		// TODO Auto-generated method stub
+		Conexion conexController=Conexion.getInstance();
+		Connection conex=conexController.getConnection();
+		String query=conexController.getSql().getProperty("INSERT_USER");
+
+		try{
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1,null);
+			st.setString(2,a.getEmail());
+			st.setDate(3,a.getDate());
+			
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -30,9 +43,22 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 
 	@Override
 	public ArrayList<UserDTO> getAll() throws SQLException {
-		ResultSet rs;
 		Conexion conexController=Conexion.getInstance();
 		Connection conex=conexController.getConnection();
+		String query=conexController.getSql().getProperty("SELECT_ALL_USER");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			ResultSet rs=st.executeQuery();
+			ArrayList<UserDTO> users=new ArrayList<UserDTO>();
+			while(rs.next()) {
+				users.add(new UserDTO(rs.getInt("id"),rs.getString("email"), rs.getDate("fechaNacimiento").toLocalDate(), rs.getString("nombreCompleto"), rs.getDate("fechaInscripcion").toLocalDate()));
+			}
+			return users;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
