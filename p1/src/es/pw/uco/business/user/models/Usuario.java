@@ -3,6 +3,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
+import es.pw.uco.business.user.dto.UserDTO;
+
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
 public class Usuario implements Serializable {
@@ -43,6 +45,14 @@ public class Usuario implements Serializable {
 		this.inscriptionDate = LocalDate.now();
 		this.email = email;
 		this.id=(int) (Math.random()*MAX_RANDOM);
+	}
+
+	public Usuario(UserDTO user) {
+		this.fullName = user.getNombreCompleto();
+		this.birthdayDate = user.getFecha();
+		this.inscriptionDate =user.getFechaIncripcion();
+		this.email = user.getEmail();
+		this.id = user.getId();
 	}
 
 

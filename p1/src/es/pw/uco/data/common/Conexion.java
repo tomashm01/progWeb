@@ -22,13 +22,17 @@ public class Conexion {
     private String user;
     private String passwd;
     private Properties config;
+    private Properties sql;
 
     private Conexion(){
         config = new Properties();
+        sql=new Properties();
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	BufferedReader reader = new BufferedReader(new FileReader(new File("src/config.properties")));
             config.load( reader );
+            reader = new BufferedReader(new FileReader(new File("src/sql.properties")));
+            sql.load( reader );
             this.url=config.getProperty("URL");
             this.user=config.getProperty("USER");
             this.passwd=config.getProperty("PASSWORD");
@@ -50,7 +54,6 @@ public class Conexion {
     private Connection connect() {
         try {
             connection = DriverManager.getConnection(this.url, this.user, this.passwd);
-            System.out.println("Connection with the database established");
         } catch (SQLException e) {
             System.out.println("Connection with the database has failed!");
             e.printStackTrace();
@@ -84,5 +87,9 @@ public class Conexion {
 
     public Properties getConfig() {
         return config;
+    }
+    
+    public Properties getSql() {
+        return sql;
     }
 }

@@ -2,6 +2,8 @@ package es.pw.uco.business.user.dto;
 
 import java.time.LocalDate;
 
+import es.pw.uco.business.user.models.Usuario;
+
 public class UserDTO {
 	private Integer id;
 	private String email;
@@ -24,6 +26,22 @@ public class UserDTO {
 		this.fecha = fecha;
 		this.fechaIncripcion = fechaIncripcion;
 		this.nombreCompleto = nombreCompleto;
+	}
+	
+	public UserDTO(Usuario u) {
+		this.id=u.getId();
+		this.email=u.getEmail();
+		this.fecha=u.getBirthdayDate();
+		this.fechaIncripcion=u.getInscriptionDate();
+		this.nombreCompleto=u.getFullName();
+	}
+
+	public UserDTO() {
+		this.id=null;
+		this.email="";
+		this.fecha=LocalDate.now();
+		this.fechaIncripcion=LocalDate.now();
+		this.nombreCompleto="";
 	}
 
 	public int getId() {
