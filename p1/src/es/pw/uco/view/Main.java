@@ -1,14 +1,14 @@
 package es.pw.uco.view;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
@@ -20,30 +20,18 @@ import es.pw.uco.business.reserve.handlers.ReservaHandler;
 import es.pw.uco.business.reserve.models.factory.ModalidadBono;
 import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
-import es.pw.uco.business.user.dto.UserDTO;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
-import es.pw.uco.data.common.Conexion;
-import es.pw.uco.data.dao.UserDAO;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
-		Connection cn=Conexion.getInstance().getConnection();
-		UserDAO dao=new UserDAO();
-		//dao.insert(new UserDTO(new Usuario(null,"Alvaro Pino",LocalDate.now(),"ejemplo1@gmail.com",LocalDate.now())));
-		Usuario user=new Usuario(dao.get(1));
-		user.setFullName("Tomás Hidalgo Martín");
-		if(dao.update(new UserDTO(user))) System.out.println("Modificado");
-		else System.out.println("No modificado");
-		//(Integer id,String fullName, LocalDate birthdayDate, String email, LocalDate inscriptionDate
-		if(true) return;
-		
-		CircuitHandler.getInstance();
-		UsuarioHandler.getInstance();
-		ReservaHandler.getInstance();
-		
+
+		/*
+		 * CircuitHandler.getInstance(); UsuarioHandler.getInstance();
+		 * ReservaHandler.getInstance();
+		 */
+
 		// auxiliar variables
 		String fullName, email;
 		boolean valid = false;
@@ -52,8 +40,6 @@ public class Main {
 		LocalDateTime date = LocalDateTime.now();
 		Scanner input = new Scanner(System.in);
 
-		
-		
 		// mainMenu
 		do {
 			mainMenu();
@@ -98,7 +84,7 @@ public class Main {
 						System.out.println("Correo electronico:");
 						email = input.nextLine();
 
-						System.out.println("A�adiendo usuario...");
+						System.out.println("Añ adiendo usuario...");
 						UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2, email));
 						System.out.println("El usuario ha sido añadido correctamente.");
 					}
@@ -168,12 +154,28 @@ public class Main {
 
 						System.out.println("Estos son los nombres de los usuarios de la lista.");
 						UsuarioHandler.getInstance().printNameUsers();
+						int numMax = UsuarioHandler.getInstance().getAllUsers().size();
+						int index = 999;
+						valid = false;
+						while (!valid) {
+							try {
+								index = input.nextInt();
+								input.nextLine();
+								if (numMax > index) {
+									valid = true;
+								} else {
+									System.out.println("Numero no correcto, elija uno dentro del rango");
+								}
+							} catch (InputMismatchException e) {
+								System.out.println("Inserta un numero");
+								input.nextLine();
+							}
 
-						System.out.println("Selecciona el nombre del usuario que quieres ver.");
-						System.out.println(UsuarioHandler.getInstance().getAllUsers().get(input.nextInt()));
-						input.nextLine();
+						}
+						System.out.println(UsuarioHandler.getInstance().getAllUsers().get(index));
+
 					} else if (subMainSelect == 6) {
-						
+
 					} else if (subMainSelect == 0) {
 						input.close();
 						writeFile();
