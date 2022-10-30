@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,14 +17,23 @@ import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
 import es.pw.uco.business.enums.DificultadPista;
 import es.pw.uco.business.enums.EstadoKart;
+import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.handlers.ReservaHandler;
 import es.pw.uco.business.reserve.models.factory.ModalidadBono;
 import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.reserve.models.factory.ReservaAdultos;
+import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
+import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.dao.ReserveDAO;
 
 public class Main {
+
+	public static void prueba(ReservaAbstracta a) {
+		System.out.println(a.getNumChilds()+","+ a.getNumAdults());
+	}
 
 	public static void main(String[] args) {
 
@@ -31,6 +41,16 @@ public class Main {
 		 * CircuitHandler.getInstance(); UsuarioHandler.getInstance();
 		 * ReservaHandler.getInstance();
 		 */
+		ReservaFamiliar a = new ReservaFamiliar(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1, 1);
+		ReservaInfantil b = new ReservaInfantil(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
+		ReservaAdultos c = new ReservaAdultos(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
+		prueba(a);
+		prueba(b);
+		prueba(c);
+
+		int var = 1;
+		if (1 == var)
+			return;
 
 		// auxiliar variables
 		String fullName, email;
@@ -178,7 +198,6 @@ public class Main {
 
 					} else if (subMainSelect == 0) {
 						input.close();
-						writeFile();
 						return;
 					} else {// Fallo de opción
 						System.out.println("Fallo de opcion. Elige una de las opciones mostradas");
@@ -192,7 +211,6 @@ public class Main {
 					subMainSelect = input.nextInt();
 					input.nextLine();
 					if (subMainSelect == 0) {
-						writeFile();
 						System.out.println("Saliendo del menu");
 						return;
 					} else if (subMainSelect == 1) {
@@ -565,7 +583,6 @@ public class Main {
 					} else if (subMainSelect == 5) {// Atras
 						break;
 					} else if (subMainSelect == 6) {// Salir de la app
-						writeFile();
 						return;
 
 					} else {// Fallo de opcion

@@ -2,6 +2,7 @@ package es.pw.uco.business.reserve.models.factory;
 import java.time.LocalDateTime;
 
 import es.pw.uco.business.enums.DificultadPista;
+import es.pw.uco.business.reserve.dto.ReserveDTO;
 
 //Es una reserva que realiza un adulto, en la que participan tanto adultos como niños en una pista de tipo de familiar
 
@@ -15,8 +16,7 @@ public class ReservaFamiliar extends ReservaAbstracta{
 	
 	public ReservaFamiliar() {};
 	
-	
-	public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
+public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id);
 		this.numAdults = numAdults;
 		this.numChilds = numChilds;
@@ -39,7 +39,7 @@ public class ReservaFamiliar extends ReservaAbstracta{
 	public Integer getNumPlayers() {
 		return numAdults+numChilds;
 	}
-	
+	@Override
 	public Integer getNumAdults() {
 		return numAdults;
 	}
@@ -49,7 +49,7 @@ public class ReservaFamiliar extends ReservaAbstracta{
 		this.numAdults = numAdults;
 	}
 
-
+	@Override
 	public Integer getNumChilds() {
 		return numChilds;
 	}

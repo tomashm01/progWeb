@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 
 public class BonoDTO {
 	private Integer id;
-	private LocalDateTime expirationDate;
+	private LocalDate expirationDate;
 	
-	public BonoDTO(Integer id, LocalDateTime expirationDate) {
+	public BonoDTO(Integer id, LocalDate expirationDate) {
 		super();
 		this.id = id;
 		this.expirationDate = expirationDate;
@@ -21,11 +21,11 @@ public class BonoDTO {
 		this.id = id;
 	}
 
-	public LocalDateTime getExpirationDate() {
+	public LocalDate getExpirationDate() {
 		return expirationDate;
 	}
 
-	public void setExpirationDate(LocalDateTime expirationDate) {
+	public void setExpirationDate(LocalDate expirationDate) {
 		this.expirationDate = expirationDate;
 	}
 
