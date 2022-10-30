@@ -11,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import es.pw.uco.business.user.dto.UserDTO;
+
 import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.dao.UserDAO;
 
 //Esta clase será la encargada de gestionar la información de los usuarios que hacen reservas.
 
@@ -23,12 +26,12 @@ public class UsuarioHandler {
 	public static String users_file;
 	private static ArrayList<Usuario> usersList = new ArrayList<Usuario>();
 	private static UsuarioHandler instance = null;
+	private static UserDAO dao;
 
 	public static UsuarioHandler getInstance() {
 		if (UsuarioHandler.instance == null) {
+			dao=new UserDAO();
 			UsuarioHandler.instance = new UsuarioHandler();
-			loadFilesPath();
-			loadUserFile();
 		}
 		return UsuarioHandler.instance;
 	}
@@ -50,8 +53,7 @@ public class UsuarioHandler {
 	public boolean addUser(Usuario u) {
 		if (existUser(u.getId()) || existEmail(u.getEmail()))
 			return false;
-		usersList.add(u);
-		return true;
+		return dao.insert(new UserDTO(u));
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class UsuarioHandler {
 	 * @return boolean
 	 */
 	public boolean existEmail(String correo) {
-		for (Usuario user : usersList) {
+		for (Usuario user : getAllUsers()) {
 			if (user.getEmail().equals(correo))
 				return true;
 		}
@@ -76,7 +78,7 @@ public class UsuarioHandler {
 	 */
 
 	public boolean existUser(Integer id) {
-		for (Usuario user : usersList) {
+		for (Usuario user : getAllUsers()) {
 			if (user.getId().equals(id))
 				return true;
 		}
@@ -90,7 +92,7 @@ public class UsuarioHandler {
 	 * @return Usuario
 	 */
 	public Usuario getUserByID(Integer id) {
-		for (Usuario user : usersList) {
+		for (Usuario user : getAllUsers()) {
 			if (user.getId().equals(id))
 				return user;
 		}
@@ -104,7 +106,7 @@ public class UsuarioHandler {
 	 * @return Integer
 	 */
 	public Integer getIdByEmail(String email) {
-		for (Usuario user : usersList) {
+		for (Usuario user : getAllUsers()) {
 			if (user.getEmail().equals(email))
 				return user.getId();
 		}
@@ -117,6 +119,10 @@ public class UsuarioHandler {
 	 * @return
 	 */
 	public ArrayList<Usuario> getAllUsers() {
+		usersList = new ArrayList<Usuario>();
+		for(UserDTO it :dao.getAll()) {
+			usersList.add(new Usuario(it));
+		}
 		return usersList;
 	}
 
@@ -127,13 +133,7 @@ public class UsuarioHandler {
 	 * @return boolean
 	 */
 	public boolean removeUser(Integer id) {
-		for (int i = 0; i < usersList.size(); i++) {
-			if (usersList.get(i).getId().equals(id)) {
-				usersList.remove(i);
-				return true;
-			}
-		}
-		return false;
+		return dao.delete(id);
 	}
 
 	/**
@@ -143,13 +143,7 @@ public class UsuarioHandler {
 	 * @return boolean
 	 */
 	public boolean editUser(Usuario user) {
-		for (int i = 0; i < usersList.size(); i++) {
-			if (usersList.get(i).getId().equals(user.getId())) {
-				usersList.set(i, user);
-				return true;
-			}
-		}
-		return false;
+		return dao.update(new UserDTO(user));
 	}
 
 	/**
@@ -160,8 +154,8 @@ public class UsuarioHandler {
 	 */
 
 	public void printNameUsers() {
+		
 		int count = 0;
-
 		for (Usuario us : getAllUsers()) {
 			System.out.println(count + ") " + us.getFullName());
 			count++;
