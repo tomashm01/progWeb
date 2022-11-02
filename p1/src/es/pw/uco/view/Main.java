@@ -31,10 +31,6 @@ import es.pw.uco.data.dao.ReserveDAO;
 
 public class Main {
 
-	public static void prueba(ReservaAbstracta a) {
-		System.out.println(a.getNumChilds()+","+ a.getNumAdults());
-	}
-
 	public static void main(String[] args) {
 
 		/*
@@ -44,9 +40,8 @@ public class Main {
 		ReservaFamiliar a = new ReservaFamiliar(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1, 1);
 		ReservaInfantil b = new ReservaInfantil(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
 		ReservaAdultos c = new ReservaAdultos(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
-		prueba(a);
-		prueba(b);
-		prueba(c);
+		ReserveDTO d = new ReserveDTO(1, LocalDate.now(), 100, 2, 100f, 10f, 1,"FAMILIAR", 1,1);
+		
 
 		int var = 1;
 		if (1 == var)

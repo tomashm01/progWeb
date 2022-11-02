@@ -28,6 +28,18 @@ public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer
 		this.numChilds = numChilds;
 	}
 
+	public ReservaFamiliar(ReserveDTO dto) {
+		this.idUser = dto.getIdUser();
+		this.date = dto.getDate().atStartOfDay();
+		this.time = dto.getTime();
+		this.idPista = dto.getIdPista();
+		this.price = dto.getPrice();
+		this.discount = dto.getDiscount();
+		this.id = dto.getId();
+		this.numAdults = dto.getNumAdultos();
+		this.numChilds = dto.getNumMenores();
+	}
+	
 	public DificultadPista getType(){
 		return DificultadPista.FAMILIAR;
 	}

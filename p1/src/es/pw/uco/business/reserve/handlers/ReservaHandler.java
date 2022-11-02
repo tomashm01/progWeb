@@ -20,7 +20,9 @@ import es.pw.uco.business.enums.DificultadPista;
 import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.models.Bono;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.reserve.models.factory.ReservaAdultos;
 import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
+import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
 import es.pw.uco.business.user.dto.UserDTO;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
@@ -208,26 +210,9 @@ public class ReservaHandler {
 			Integer idIt = ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().get(0);
 			LocalDate expirationDateBono = ReservaHandler.getInstance().getAllBonos().get(i).getExpirationDate();
 
-			if ((ReservaHandler.getInstance().getReserveByID(idIt).getIdUser().equals(reserve.getIdUser())) && // comprueba
-																												// que
-																												// el
-																												// bono
-																												// es
-																												// del
-																												// usuario
-					(ReservaHandler.getInstance().getReserveByID(idIt).getType().equals(reserve.getType())) && // comprueba
-																												// que
-																												// el
-																												// bono
-																												// es
-																												// del
-																												// tipo
-																												// igual
-																												// que
-																												// la
-																												// reserva
-					(ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().size() < 5) && // comprueba que el
-																									// bono tiene hueco
+			if ((ReservaHandler.getInstance().getReserveByID(idIt).getIdUser().equals(reserve.getIdUser())) && 
+					(ReservaHandler.getInstance().getReserveByID(idIt).getType().equals(reserve.getType())) && 
+					(ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().size() < 5) && 
 					(expirationDateBono.isBefore(LocalDate.now()))) {
 
 				ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().add(reserve.getId());
@@ -280,26 +265,14 @@ public class ReservaHandler {
 			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
 			return false;
 		}
-		reservesList = new ArrayList<ReservaAbstracta>();
-		for (ReserveDTO it : dao.getAll()) {
-			if (it.getTipo().equals(DificultadPista.FAMILIAR.toString())) {
-				reserveList.add(new ReservaFamiliar(it.getId(), it.getDate().atStartOfDay(), it.getTime(),
-						it.getIdPista(), it.getPrice(), it.getDiscount(), it.getId()));
-			} else if (it.getTipo().equals(DificultadPista.FAMILIAR.toString())) {
-
-			} else {
-
-			}
-
+		ReserveDTO aux = dao.get(reserve.getId());
+		if(aux == null) {
+			System.out.println("No se ha encontrado la reserva a modificar (Id no encontrado)");
+			return false;
 		}
-		for (int i = 0; i < reservesList.size(); i++) {
-			if (reservesList.get(i).getId().equals(reserve.getId())) {
-				reservesList.set(i, reserve);
-				return true;
-			}
-		}
-		System.out.println("No se ha encontrado la reserva a modificar (Id no encontrado)");
-		return false;
+		dao.update(new ReserveDTO(reserve));
+		return true;
+			
 	}
 
 	/**
@@ -320,21 +293,7 @@ public class ReservaHandler {
 	 * @return boolean
 	 */
 	public boolean removeReserve(Integer idReserve) {
-		if (ReservaHandler.getInstance().getReserveByID(idReserve).getDate()
-				.isAfter(LocalDateTime.now().minus(24, ChronoUnit.HOURS))) {
-			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
-			return false;
-		}
-		for (Bono b : bonoList) {
-			for (int i = 0; i < b.getBonoList().size(); i++) {
-				if (b.getBonoList().get(i).equals(idReserve)) {
-					b.getBonoList().remove(i);
-				}
-			}
-		}
-		int index = ReservaHandler.getInstance().getIndexReserve(idReserve);
-		return (reservesList.remove(index) != null);
-
+		return dao.delete(idReserve);
 	}
 
 	/**
@@ -365,7 +324,7 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getReserveByPistaDay(Integer idPista, LocalDate fecha) {
 		ArrayList<ReservaAbstracta> reservesFiltered = new ArrayList<ReservaAbstracta>();
 
-		for (ReservaAbstracta reserva : ReservaHandler.reservesList) {
+		for (ReservaAbstracta reserva : ReservaHandler.getInstance().getAllReserves()) {
 			if (reserva.getDate().toLocalDate().equals(fecha) && reserva.getIdPista().equals(idPista))
 				reservesFiltered.add(reserva);
 		}
@@ -380,11 +339,18 @@ public class ReservaHandler {
 	 * @return ReservaAbstracta
 	 */
 	public ReservaAbstracta getReserveByID(Integer id) {
-		for (ReservaAbstracta reserve : reservesList) {
-			if (reserve.getId().equals(id))
-				return reserve;
+		ReserveDTO aux = dao.get(id);
+		if(aux==null) {
+			return null;
 		}
-		return null;
+		else if(aux.getTipo().equals("FAMILIAR")) {
+			return new ReservaFamiliar(aux);
+		}else if(aux.getTipo().equals("ADULTOS")) {
+			return new ReservaAdultos(aux);
+		}
+		else {
+			return new ReservaInfantil(aux);
+		}
 	}
 
 	/**
@@ -443,11 +409,11 @@ public class ReservaHandler {
 	 */
 	public ArrayList<ReservaAbstracta> getReserveByUser(Integer idUser) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
-		for (ReservaAbstracta reserve : reservesList) {
+		for (ReservaAbstracta reserve : ReservaHandler.getInstance().getAllReserves()) {
 			if (reserve.getIdUser().equals(idUser))
 				reserversFiltered.add(reserve);
 		}
-		return null;
+		return reserversFiltered;
 	}
 
 	/**
@@ -456,6 +422,17 @@ public class ReservaHandler {
 	 * @return ArrayList<ReservaAbstracta>
 	 */
 	public ArrayList<ReservaAbstracta> getAllReserves() {
+		reservesList = new ArrayList<ReservaAbstracta>();
+		for(ReserveDTO it : dao.getAll()) {
+			if(it.getTipo().equals("FAMILIAR")) {
+				reservesList.add(new ReservaFamiliar(it));
+			}else if(it.getTipo().equals("ADULTOS")) {
+				reservesList.add(new ReservaAdultos(it));
+			}
+			else {
+				reservesList.add(new ReservaInfantil(it));
+			}
+		}
 		return reservesList;
 	}
 

@@ -2,6 +2,7 @@ package es.pw.uco.business.reserve.models.factory;
 import java.time.LocalDateTime;
 
 import es.pw.uco.business.enums.DificultadPista;
+import es.pw.uco.business.reserve.dto.ReserveDTO;
 
 //Es una reserva que realiza un adulto, en la que solo participan adultos en una pista de ese tipo
 
@@ -22,6 +23,17 @@ public class ReservaAdultos extends ReservaAbstracta{
 	public ReservaAdultos(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults) {
 		super(idUser,  date,  time,  idPista,  price, discount);
 		this.numAdults = numAdults;
+	}
+	
+	public ReservaAdultos(ReserveDTO dto) {
+		this.idUser = dto.getIdUser();
+		this.date = dto.getDate().atStartOfDay();
+		this.time = dto.getTime();
+		this.idPista = dto.getIdPista();
+		this.price = dto.getPrice();
+		this.discount = dto.getDiscount();
+		this.id = dto.getId();
+		this.numAdults = dto.getNumAdultos();
 	}
 
 

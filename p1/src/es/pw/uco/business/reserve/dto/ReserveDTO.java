@@ -46,6 +46,19 @@ public class ReserveDTO {
 		this.numAdultos=numAdultos;
 		this.numMenores=numMenores;
 	}
+	
+	public ReserveDTO(ReservaAbstracta res) {
+		this.id = res.getId();
+		this.idUser = res.getIdUser();
+		this.idPista = res.getIdPista();
+		this.price = res.getPrice();
+		this.discount = res.getDiscount();
+		this.date = res.getDate().toLocalDate();
+		this.time = res.getTime();
+		this.tipo = res.getType().toString();
+		this.numAdultos=res.getNumAdults();
+		this.numMenores=res.getNumChilds();
+	}
 
 	public Integer getNumAdultos() {
 		return numAdultos;
