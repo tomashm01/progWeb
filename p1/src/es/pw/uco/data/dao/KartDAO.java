@@ -39,6 +39,7 @@ public class KartDAO implements DAO<KartDTO,Integer>{
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setInt(1, a.getIsAdult());
 			st.setString(2,a.getState());
+			st.setInt(3,a.getId());
 			return st.executeUpdate()==1;
 		}catch (SQLException e) {
 			e.printStackTrace();
