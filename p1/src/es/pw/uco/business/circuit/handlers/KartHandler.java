@@ -71,7 +71,7 @@ public class KartHandler {
 
 
 	/**
-	 * Busca si existe el usuario por id y lo devuelve
+	 * Busca si existe el kart por id y lo devuelve
 	 * 
 	 * @param id
 	 * @return Kart

@@ -1,8 +1,5 @@
 package es.pw.uco.business.circuit.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class CircuitDTO {
 	private Integer id;
 	private String name;

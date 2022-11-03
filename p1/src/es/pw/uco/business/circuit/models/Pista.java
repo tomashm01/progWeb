@@ -3,6 +3,7 @@ package es.pw.uco.business.circuit.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import es.pw.uco.business.circuit.dto.PistaDTO;
 import es.pw.uco.business.enums.DificultadPista;
 import es.pw.uco.business.enums.EstadoKart;
 
@@ -39,6 +40,13 @@ public class Pista implements Serializable{
 		this.isAvailable = isAvailable;
 		this.difficulty = difficulty;
 		this.maxKarts = maxKarts;
+	}
+
+	public Pista(PistaDTO pista) {
+		this.id = pista.getId();
+		this.name = pista.getNombre();
+		this.difficulty = toDificultadPista(pista.getDificultad());
+		this.maxKarts = pista.getMaxKarts();
 	}
 
 	public String getName() {
@@ -131,6 +139,21 @@ public class Pista implements Serializable{
 			}
 		}
 		return false;
+	}
+	
+	public static DificultadPista toDificultadPista(String e) {
+		switch (e.toUpperCase()) {
+		case "ADULTOS":
+			return DificultadPista.ADULTOS;
+		case "FAMILIAR":
+			return DificultadPista.FAMILIAR;
+		case "INFANTIL":
+			return DificultadPista.INFANTIL;
+
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + e);
+		}
+
 	}
 	
 }
