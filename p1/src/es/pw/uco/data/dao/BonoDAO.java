@@ -50,7 +50,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 	}
 
 	@Override
-	public boolean update(BonoDTO a) throws SQLException {
+	public boolean update(BonoDTO a){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("UPDATE_BONO");
@@ -67,7 +67,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 	}
 
 	@Override
-	public boolean delete(Integer id) throws SQLException {
+	public boolean delete(Integer id){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("DELETE_BONO");
@@ -82,7 +82,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 	}
 
 	@Override
-	public ArrayList<BonoDTO> getAll() throws SQLException {
+	public ArrayList<BonoDTO> getAll(){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("SELECT_ALL_BONO");
@@ -103,7 +103,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 	}
 
 	@Override
-	public BonoDTO get(Integer id) throws SQLException {
+	public BonoDTO get(Integer id){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("SELECT_ID_BONO");
@@ -119,5 +119,46 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		}
 		return null;
 	}
+	
+	//TODO tanto la funcion como el sql
+	public ArrayList<BonoDTO> getAllBonoByUser(Integer idUser){
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_ALL_BONO_BY_ID_USER");
 
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			ArrayList<BonoDTO> bonos = new ArrayList<BonoDTO>();
+			while (rs.next()) {
+				bonos.add(new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate()));
+			}
+			return bonos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	public ArrayList<Integer> getAllIdByBono(Integer idBono){
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_IDRESERVE_BY_BONO");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, idBono);
+			ResultSet rs = st.executeQuery();
+			ArrayList<Integer> idReserves = new ArrayList<Integer>();
+			while (rs.next()) {
+				idReserves.add(rs.getInt("idReserva"));
+			}
+			return idReserves;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
 }

@@ -116,4 +116,49 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 		}
 		return null;
 	}
+	
+	public ArrayList<ReserveDTO> getAllReservesByUser(Integer idUser) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_RESERVE_BY_USER");
+		ArrayList<ReserveDTO> array = new ArrayList<ReserveDTO>();
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, idUser);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				array.add( new ReserveDTO(rs.getInt("idUser"), rs.getDate("fecha").toLocalDate(), rs.getInt("duracion"),
+						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
+						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
+			}
+			return array;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<ReserveDTO> getAllReservesByPista(Integer idPista) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_RESERVE_BY_PISTA");
+		ArrayList<ReserveDTO> array = new ArrayList<ReserveDTO>();
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, idPista);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				array.add( new ReserveDTO(rs.getInt("idUser"), rs.getDate("fecha").toLocalDate(), rs.getInt("duracion"),
+						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
+						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
+			}
+			return array;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
 import es.pw.uco.business.circuit.models.Pista;
+import es.pw.uco.business.reserve.dto.BonoDTO;
 import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.models.Bono;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
@@ -24,6 +25,7 @@ import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
 import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.dao.BonoDAO;
 import es.pw.uco.data.dao.ReserveDAO;
 
 public class ReservaHandler {
@@ -32,12 +34,14 @@ public class ReservaHandler {
 	private static ArrayList<Bono> bonoList = new ArrayList<Bono>();
 	private static ArrayList<ReservaAbstracta> reservesList = new ArrayList<ReservaAbstracta>();
 	private static ReservaHandler instance = null;
-	private static ReserveDAO dao;
+	private static ReserveDAO daoReserva;
+	private static BonoDAO daoBono;
 
 	public static ReservaHandler getInstance() {
 		if (ReservaHandler.instance == null) {
 			ReservaHandler.instance = new ReservaHandler();
-			dao = new ReserveDAO();
+			daoReserva = new ReserveDAO();
+			daoBono = new BonoDAO();
 		}
 		return ReservaHandler.instance;
 	}
@@ -117,10 +121,7 @@ public class ReservaHandler {
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-		// reservesList.add(reserve);
-		dao.insert(new ReserveDTO(reserve));
-		return true;
-
+		return daoReserva.insert(new ReserveDTO(reserve));
 	}
 
 	/**
@@ -217,12 +218,11 @@ public class ReservaHandler {
 				return true;
 			}
 		}
-
-		Bono bono = new Bono(reserve.getId());
-		bonoList.add(bono);
+		//TODO comprobar si existe un bono para ese usuario y tipo de reserva, sino crearle uno
+			Bono bono = new Bono(reserve.getId());
+			bonoList.add(bono);
 		// reservesList.add(reserve);
-		dao.insert(new ReserveDTO(reserve));
-		return true;
+		return daoReserva.insert(new ReserveDTO(reserve));
 	}
 
 	/**
@@ -238,16 +238,12 @@ public class ReservaHandler {
 	}
 
 	public ArrayList<Bono> getAllBonosByIDUser(Integer idUser) {
-		ArrayList<Bono> bono = new ArrayList<Bono>();
-		// TODO:
-		for (int i = 0; i < bonoList.size(); i++) {
-			if (ReservaHandler.getInstance().getReserveByID(bonoList.get(i).getBonoList().get(0)).getIdUser()
-					.equals(idUser)) {
-				bono.add(new Bono(
-						ReservaHandler.getInstance().getReserveByID(bonoList.get(i).getBonoList().get(0)).getId()));
-			}
+		bonoList = new ArrayList<Bono>();
+		for(BonoDTO it : daoBono.getAllBonoByUser(idUser)) {
+			it.setReserves(daoBono.getAllIdByBono(it.getId()));
+			bonoList.add(new Bono(it));
 		}
-		return bono;
+		return bonoList;
 	}
 
 	/**
@@ -263,14 +259,12 @@ public class ReservaHandler {
 			System.out.println("No se puede modificar a 24h o antes de la fecha de la reserva");
 			return false;
 		}
-		ReserveDTO aux = dao.get(reserve.getId());
+		ReserveDTO aux = daoReserva.get(reserve.getId());
 		if(aux == null) {
 			System.out.println("No se ha encontrado la reserva a modificar (Id no encontrado)");
 			return false;
 		}
-		dao.update(new ReserveDTO(reserve));
-		return true;
-			
+		return daoReserva.update(new ReserveDTO(reserve));
 	}
 
 	/**
@@ -280,8 +274,7 @@ public class ReservaHandler {
 	 * @return boolean
 	 */
 	public boolean removeBono(Integer idBono) {
-		int i = ReservaHandler.getInstance().getIndexBono(idBono);
-		return (bonoList.remove(i) != null);
+		return daoBono.delete(idBono);
 	}
 
 	/**
@@ -291,7 +284,7 @@ public class ReservaHandler {
 	 * @return boolean
 	 */
 	public boolean removeReserve(Integer idReserve) {
-		return dao.delete(idReserve);
+		return daoReserva.delete(idReserve);
 	}
 
 	/**
@@ -303,7 +296,7 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getFutureReserves() {
 
 		ArrayList<ReservaAbstracta> reservesFiltered = new ArrayList<ReservaAbstracta>();
-		for (ReservaAbstracta reserva : ReservaHandler.reservesList) {
+		for (ReservaAbstracta reserva : getAllReserves()) {
 			if (reserva.getDate().toLocalDate().isAfter(LocalDate.now()))
 				reservesFiltered.add(reserva);
 		}
@@ -337,7 +330,7 @@ public class ReservaHandler {
 	 * @return ReservaAbstracta
 	 */
 	public ReservaAbstracta getReserveByID(Integer id) {
-		ReserveDTO aux = dao.get(id);
+		ReserveDTO aux = daoReserva.get(id);
 		if(aux==null) {
 			return null;
 		}
@@ -359,7 +352,7 @@ public class ReservaHandler {
 	 */
 	public int getIndexBono(int idBono) {
 		int contador = 0;
-		for (Bono bono : bonoList) {
+		for (Bono bono : getAllBonos()) {
 			if (bono.getId() == idBono) {
 				return contador;
 			}
@@ -376,7 +369,7 @@ public class ReservaHandler {
 	 */
 	public int getIndexReserve(Integer id) {
 		int contador = 0;
-		for (ReservaAbstracta reserve : reservesList) {
+		for (ReservaAbstracta reserve : getAllReserves()) {
 			contador++;
 			if (reserve.getId().equals(id))
 				return contador;
@@ -392,9 +385,14 @@ public class ReservaHandler {
 	 */
 	public ArrayList<ReservaAbstracta> getReserveByPista(Integer idPista) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
-		for (ReservaAbstracta reserve : reservesList) {
-			if (reserve.getIdPista().equals(idPista))
-				reserversFiltered.add(reserve);
+		for (ReserveDTO it : daoReserva.getAllReservesByPista(idPista)) {
+			if(it.getTipo().equals("FAMILIAR")) {
+				 reserversFiltered.add(new ReservaFamiliar(it));
+			}else if(it.getTipo().equals("ADULTOS")) {
+				reserversFiltered.add(new ReservaAdultos(it));
+			}else {
+				reserversFiltered.add(new ReservaInfantil(it));				
+			}
 		}
 		return reserversFiltered;
 	}
@@ -407,9 +405,14 @@ public class ReservaHandler {
 	 */
 	public ArrayList<ReservaAbstracta> getReserveByUser(Integer idUser) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
-		for (ReservaAbstracta reserve : ReservaHandler.getInstance().getAllReserves()) {
-			if (reserve.getIdUser().equals(idUser))
-				reserversFiltered.add(reserve);
+		for (ReserveDTO it : daoReserva.getAllReservesByUser(idUser)) {
+			if(it.getTipo().equals("FAMILIAR")) {
+				 reserversFiltered.add(new ReservaFamiliar(it));
+			}else if(it.getTipo().equals("ADULTOS")) {
+				reserversFiltered.add(new ReservaAdultos(it));
+			}else {
+				reserversFiltered.add(new ReservaInfantil(it));				
+			}
 		}
 		return reserversFiltered;
 	}
@@ -420,18 +423,17 @@ public class ReservaHandler {
 	 * @return ArrayList<ReservaAbstracta>
 	 */
 	public ArrayList<ReservaAbstracta> getAllReserves() {
-		reservesList = new ArrayList<ReservaAbstracta>();
-		for(ReserveDTO it : dao.getAll()) {
+		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
+		for (ReserveDTO it : daoReserva.getAll()) {
 			if(it.getTipo().equals("FAMILIAR")) {
-				reservesList.add(new ReservaFamiliar(it));
+				 reserversFiltered.add(new ReservaFamiliar(it));
 			}else if(it.getTipo().equals("ADULTOS")) {
-				reservesList.add(new ReservaAdultos(it));
-			}
-			else {
-				reservesList.add(new ReservaInfantil(it));
+				reserversFiltered.add(new ReservaAdultos(it));
+			}else {
+				reserversFiltered.add(new ReservaInfantil(it));				
 			}
 		}
-		return reservesList;
+		return reserversFiltered;
 	}
 
 	/**
@@ -439,7 +441,13 @@ public class ReservaHandler {
 	 * 
 	 * @return ArrayList<Bono>
 	 */
+	//TODO por aqui me he quedado 
 	public ArrayList<Bono> getAllBonos() {
+		bonoList = new ArrayList<Bono>();
+		for(BonoDTO it : daoBono.getAll()) {
+			it.setReserves(daoBono.getAllIdByBono(it.getId()));
+			bonoList.add(new Bono(it));
+		}
 		return bonoList;
 	}
 

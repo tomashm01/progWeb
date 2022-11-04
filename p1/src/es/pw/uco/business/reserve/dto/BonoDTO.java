@@ -1,10 +1,12 @@
 package es.pw.uco.business.reserve.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class BonoDTO {
 	private Integer id;
 	private LocalDate expirationDate;
+	private ArrayList<Integer> reserves;
 	
 	public BonoDTO(Integer id, LocalDate expirationDate) {
 		super();
@@ -27,5 +29,14 @@ public class BonoDTO {
 	public void setExpirationDate(LocalDate expirationDate) {
 		this.expirationDate = expirationDate;
 	}
+
+	public ArrayList<Integer> getReserves() {
+		return reserves;
+	}
+
+	public void setReserves(ArrayList<Integer> reserves) {
+		this.reserves = reserves;
+	}
+	
 
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import es.pw.uco.business.reserve.dto.BonoDTO;
+
 public class Bono implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,6 +19,12 @@ public class Bono implements Serializable {
 		this.id = numBono;
 		expirationDate= LocalDate.now().plus(1, ChronoUnit.YEARS);
 		bonoList.add(idReserve);
+	}
+	
+	public Bono(BonoDTO bono) {
+		this.id = bono.getId();
+		this.expirationDate = bono.getExpirationDate();
+		this.setBonoList(bono.getReserves());
 	}
 	
 	public ArrayList<Integer> getBonoList() {
