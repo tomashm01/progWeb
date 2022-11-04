@@ -47,6 +47,7 @@ public class Pista implements Serializable{
 		this.name = pista.getNombre();
 		this.difficulty = toDificultadPista(pista.getDificultad());
 		this.maxKarts = pista.getMaxKarts();
+		this.isAvailable = pista.isAvailable()==1;
 	}
 
 	public String getName() {

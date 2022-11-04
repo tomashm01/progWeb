@@ -7,13 +7,15 @@ public class PistaDTO {
 	private String nombre;
 	private String dificultad;
 	private int maxKarts;
+	private Integer isAvailable;
 
-	public PistaDTO(Integer id, String nombre, String dificultad, int maxKarts) {
+	public PistaDTO(Integer id, String nombre, String dificultad, int maxKarts,Integer isAvailable) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.dificultad = dificultad;
 		this.maxKarts = maxKarts;
+		this.isAvailable = isAvailable;
 	}
 
 	public PistaDTO(Pista p) {
@@ -21,6 +23,8 @@ public class PistaDTO {
 		this.nombre = p.getName();
 		this.dificultad = p.getDifficulty().toString();
 		this.maxKarts = p.getMaxKarts();
+		this.isAvailable = (p.isAvailable())?1:0;
+		
 	}
 
 	public Integer getId() {
@@ -54,5 +58,16 @@ public class PistaDTO {
 	public void setMaxKarts(int maxKarts) {
 		this.maxKarts = maxKarts;
 	}
+
+	public Integer isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(Integer isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+
+	
 
 }

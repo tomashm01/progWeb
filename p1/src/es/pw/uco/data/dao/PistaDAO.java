@@ -1,6 +1,5 @@
 package es.pw.uco.data.dao;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +19,7 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 			st.setString(1,a.getNombre());
 			st.setString(2,a.getDificultad());
 			st.setInt(3,a.getMaxKarts());
+			st.setInt(4, a.isAvailable());
 			
 			return st.executeUpdate()==1;
 		}catch (SQLException e) {
@@ -38,7 +38,8 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 			st.setString(1,a.getNombre());
 			st.setString(2,a.getDificultad());
 			st.setInt(3,a.getMaxKarts());
-			st.setInt(4,a.getId());
+			st.setInt(4,a.isAvailable());
+			st.setInt(5,a.getId());
 			return st.executeUpdate()==1;
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -72,7 +73,7 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 			ResultSet rs=st.executeQuery();
 			ArrayList<PistaDTO> pistas=new ArrayList<PistaDTO>();
 			while(rs.next()) {
-				pistas.add(new PistaDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("dificultad"), rs.getInt("maxKarts")));
+				pistas.add(new PistaDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("dificultad"), rs.getInt("maxKarts"),rs.getInt("disponible")));
 			}
 			return pistas;
 		} catch (SQLException e) {
@@ -91,7 +92,7 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setInt(1,id);
 			ResultSet rs=st.executeQuery();
-			if(rs.next()) return new PistaDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("dificultad"), rs.getInt("maxKarts"));
+			if(rs.next()) return new PistaDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("dificultad"), rs.getInt("maxKarts"),rs.getInt("disponible"));
 
 		}catch (SQLException e) {
 			e.printStackTrace();

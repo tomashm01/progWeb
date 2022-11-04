@@ -47,6 +47,7 @@ public class Kart implements Serializable {
 		this.id = kart.getId();
 		this.isAdult = toBoolean(kart.getIsAdult());
 		this.state = toEstadoKart(kart.getState());
+		this.idPista = kart.getIdPista();
 	}
 
 	public Integer getId() {

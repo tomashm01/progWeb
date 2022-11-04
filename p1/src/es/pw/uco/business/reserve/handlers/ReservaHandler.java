@@ -16,14 +16,12 @@ import java.util.Properties;
 
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
 import es.pw.uco.business.circuit.models.Pista;
-import es.pw.uco.business.enums.DificultadPista;
 import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.models.Bono;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
 import es.pw.uco.business.reserve.models.factory.ReservaAdultos;
 import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
 import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
-import es.pw.uco.business.user.dto.UserDTO;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
 import es.pw.uco.data.dao.ReserveDAO;

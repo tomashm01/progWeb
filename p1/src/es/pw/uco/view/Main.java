@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,17 +16,12 @@ import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
 import es.pw.uco.business.enums.DificultadPista;
 import es.pw.uco.business.enums.EstadoKart;
-import es.pw.uco.business.reserve.dto.ReserveDTO;
 import es.pw.uco.business.reserve.handlers.ReservaHandler;
 import es.pw.uco.business.reserve.models.factory.ModalidadBono;
 import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
-import es.pw.uco.business.reserve.models.factory.ReservaAdultos;
-import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
-import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
-import es.pw.uco.data.dao.ReserveDAO;
 
 public class Main {
 
@@ -37,15 +31,12 @@ public class Main {
 		 * CircuitHandler.getInstance(); UsuarioHandler.getInstance();
 		 * ReservaHandler.getInstance();
 		 */
+		/*
 		ReservaFamiliar a = new ReservaFamiliar(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1, 1);
 		ReservaInfantil b = new ReservaInfantil(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
 		ReservaAdultos c = new ReservaAdultos(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
 		ReserveDTO d = new ReserveDTO(1, LocalDate.now(), 100, 2, 100f, 10f, 1,"FAMILIAR", 1,1);
-		
-
-		int var = 1;
-		if (1 == var)
-			return;
+		*/
 
 		// auxiliar variables
 		String fullName, email;
@@ -247,7 +238,7 @@ public class Main {
 							System.out.println("Selecciona el id del kart que quiera modificar.");
 							idKart = input.nextInt();
 							input.nextLine();
-						} while (CircuitHandler.getInstance().existKart(idKart));
+						} while (!CircuitHandler.getInstance().existKart(idKart));
 						kart = CircuitHandler.getInstance().getKartByID(idKart);
 
 						System.out.println("Indique el tipo de Kart:");
@@ -265,7 +256,15 @@ public class Main {
 
 						kart.setState(state.get(input.nextInt() - 1));
 						input.nextLine();
-
+						int idPista = 0;
+						do {
+							System.out.println(
+									"Indique el id de la pista a la que se va a asignar el idPista el kart, -1 si no quiere asignarlo a ninguna pista");
+							idPista = input.nextInt();
+							input.nextLine();
+						} while (!CircuitHandler.getInstance().existPista(idPista) && idPista != -1);
+						
+						CircuitHandler.getInstance().editKart(kart);
 						System.out.println("Kart modificado");
 						System.out.println(CircuitHandler.getInstance().getKartByID(idKart).toString());
 
@@ -273,11 +272,12 @@ public class Main {
 						System.out.println("Estos son los karts de la lista.");
 						CircuitHandler.getInstance().printAllKarts();
 						System.out.println("Selecciona el id del kart que quiera eliminar.");
-						CircuitHandler.getInstance().printAllKarts();
 						int id = input.nextInt();
 						if (CircuitHandler.getInstance().existKart(id)) {
 							CircuitHandler.getInstance().removeKart(id);
 							System.out.println("Kart eliminado");
+						}else {
+							System.out.println("no existe la id requerida");
 						}
 						input.nextLine();
 					} else if (subMainSelect == 4) {
@@ -347,7 +347,7 @@ public class Main {
 						input.nextLine();
 						if (CircuitHandler.getInstance()
 								.editPista(new Pista(CircuitHandler.getInstance().getAllPistas().get(index).getId(),
-										fullName, disp == 1, dif, numMax))) {
+										fullName,( disp == 1), dif, numMax))) {
 							System.out.println("Pista modificada con exito");
 						}
 					} else if (subMainSelect == 7) {

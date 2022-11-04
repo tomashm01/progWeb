@@ -1,7 +1,6 @@
 package es.pw.uco.business.reserve.models.factory;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import es.pw.uco.business.enums.DificultadPista;

@@ -3,9 +3,6 @@ package es.pw.uco.business.reserve.dto;
 import java.time.LocalDate;
 
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
-import es.pw.uco.business.reserve.models.factory.ReservaAdultos;
-import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
-import es.pw.uco.business.reserve.models.factory.ReservaInfantil;
 
 public class ReserveDTO {
 	private Integer id;

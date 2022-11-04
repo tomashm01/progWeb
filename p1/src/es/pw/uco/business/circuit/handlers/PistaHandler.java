@@ -11,11 +11,8 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import es.pw.uco.business.circuit.dto.KartDTO;
 import es.pw.uco.business.circuit.dto.PistaDTO;
-import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
-import es.pw.uco.data.dao.KartDAO;
 import es.pw.uco.data.dao.PistaDAO;
 
 //Esta clase será la encargada de gestionar la información de las pistas.
