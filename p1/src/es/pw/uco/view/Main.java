@@ -47,10 +47,10 @@ public class Main {
 		System.out.println(resDAO.insert(reserv));
 		System.out.println(reserv.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
 		 */
-		BonoDAO a = new BonoDAO();
-		System.out.println(a.getFreeBono(5, "FAMILIAR"));
-		int var=1;
-		if(var==1)return;
+		/*
+		 * BonoDAO a = new BonoDAO(); System.out.println(a.getFreeBono(5, "FAMILIAR"));
+		 * int var=1; if(var==1)return;
+		 */
 		// auxiliar variables
 		String fullName, email;
 		boolean valid = false;

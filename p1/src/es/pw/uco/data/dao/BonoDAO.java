@@ -147,8 +147,8 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setInt(1, idUser);
-			//st.setString(2, tipo);
-			ResultSet rs = st.executeQuery(query);
+			st.setString(2, tipo);
+			ResultSet rs = st.executeQuery();
 			if (rs.next())
 				return rs.getInt("id");
 
