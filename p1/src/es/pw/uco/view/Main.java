@@ -430,7 +430,7 @@ public class Main {
 							modalidadReserva = input.nextInt();
 							input.nextLine();
 						} while (modalidadReserva > 2 || modalidadReserva < 0);
-
+						valid=false;
 						System.out.println("Fecha de reserva (formato(mm-HH-dd-MM-yyyy)(minutos,horas,dia,mes,año):");
 						while (!valid) {
 							try {
