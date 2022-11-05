@@ -157,7 +157,6 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		}
 		return -1;
 	}
-	//TODO tanto la funcion como el sql
 	public ArrayList<BonoDTO> getAllBonoByUser(Integer idUser){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();

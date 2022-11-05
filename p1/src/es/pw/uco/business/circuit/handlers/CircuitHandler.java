@@ -24,8 +24,6 @@ import es.pw.uco.data.dao.PistaDAO;
 public class CircuitHandler {
 	public static String karts_file;
 	public static String pistas_file;
-	private static ArrayList<Pista> pistaList=new ArrayList<Pista>();
-	private static ArrayList<Kart> kartList=new ArrayList<Kart>();
 	private static CircuitHandler instance = null;
 	
 	private static PistaDAO daoPista;
@@ -49,8 +47,7 @@ public class CircuitHandler {
 	 */
 	public boolean addKart(Kart newKart) {
 		if(existKart(newKart.getId())) return false;
-		daoKart.insert(new KartDTO(newKart));
-		return true;
+		return daoKart.insert(new KartDTO(newKart));
 	}
 	
 	/**
@@ -96,9 +93,8 @@ public class CircuitHandler {
 	 * @return ArrayList<Kart>
 	 */
 	public ArrayList<Kart> getKartsByIDPista(Integer idPista) {
-		ArrayList<KartDTO> aux = daoKart.getKartsByPista(idPista);
-		kartList = new ArrayList<Kart>();
-		for(KartDTO it : aux) {
+		ArrayList<Kart> kartList = new ArrayList<Kart>();
+		for(KartDTO it : daoKart.getKartsByPista(idPista)) {
 			kartList.add(new Kart(it));
 		}
 		return kartList;
@@ -109,9 +105,8 @@ public class CircuitHandler {
 	 * @return ArrayList<Kart>
 	 */
 	public ArrayList<Kart> getAllKarts(){
-		ArrayList<KartDTO> aux = daoKart.getAll();
-		kartList = new ArrayList<Kart>();
-		for(KartDTO it : aux) {
+		ArrayList<Kart> kartList = new ArrayList<Kart>();
+		for(KartDTO it : daoKart.getAll()) {
 			kartList.add(new Kart(it));
 		}
 		return kartList;
@@ -145,8 +140,6 @@ public class CircuitHandler {
 	}
 	
 	
-	
-	
 	/**
 	 * Dar de alta a un pista, comprobando que no está registrado previamente.
 	 * @param newPista
@@ -154,8 +147,7 @@ public class CircuitHandler {
 	 */
 	public boolean addPista(Pista newPista) {
 		if(existPista(newPista.getId())) return false;
-		daoPista.insert(new PistaDTO (newPista));
-		return true;
+		return daoPista.insert(new PistaDTO (newPista));
 	}
 	
 	/**
@@ -229,7 +221,7 @@ public class CircuitHandler {
 	 */
 	public ArrayList<Pista> getMantenimientoPistas(){
 		ArrayList<Pista> mantenPista = new ArrayList<Pista>();
-		for(Pista pista: pistaList){
+		for(Pista pista: getAllPistas()){
 			if( ! pista.isAvailable()){
 				mantenPista.add(pista);
 			}
@@ -290,7 +282,7 @@ public class CircuitHandler {
 	 * @return ArrayList<Pista> 
 	 */
 	public ArrayList<Pista> getAllPistas(){
-		pistaList = new ArrayList<Pista>();
+		ArrayList<Pista> pistaList = new ArrayList<Pista>();
 		for(PistaDTO it : daoPista.getAll()) {
 			Pista aux = new Pista(it);
 			aux.setKartsList(getKartsByIDPista(aux.getId()));
@@ -332,7 +324,7 @@ public class CircuitHandler {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			
 			if(pistas_file.length()!=0){
-				pistaList = (ArrayList<Pista>) ois.readObject();
+				ArrayList<Pista> pistaList = (ArrayList<Pista>) ois.readObject();
 			}
 
 			ois.close();
@@ -358,7 +350,7 @@ public class CircuitHandler {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
 			if(karts_file.length() != 0) {
-				kartList = (ArrayList<Kart>) ois.readObject();					
+				ArrayList<Kart> kartList = (ArrayList<Kart>) ois.readObject();					
 			}
 			
 			ois.close();
@@ -368,7 +360,7 @@ public class CircuitHandler {
 			ois = new ObjectInputStream(fis);
 
 			
-			pistaList = (ArrayList<Pista>) ois.readObject();	
+			ArrayList<Pista> pistaList = (ArrayList<Pista>) ois.readObject();	
 			
 			ois.close();
 			fis.close();

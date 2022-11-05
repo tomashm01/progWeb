@@ -24,7 +24,6 @@ import es.pw.uco.data.dao.UserDAO;
  */
 public class UsuarioHandler {
 	public static String users_file;
-	private static ArrayList<Usuario> usersList = new ArrayList<Usuario>();
 	private static UsuarioHandler instance = null;
 	private static UserDAO dao;
 
@@ -34,14 +33,6 @@ public class UsuarioHandler {
 			UsuarioHandler.instance = new UsuarioHandler();
 		}
 		return UsuarioHandler.instance;
-	}
-
-	public static ArrayList<Usuario> getUsersList() {
-		return usersList;
-	}
-
-	public static void setUsersList(ArrayList<Usuario> usersList) {
-		UsuarioHandler.usersList = usersList;
 	}
 
 	/**
@@ -119,7 +110,7 @@ public class UsuarioHandler {
 	 * @return
 	 */
 	public ArrayList<Usuario> getAllUsers() {
-		usersList = new ArrayList<Usuario>();
+		ArrayList<Usuario> usersList = new ArrayList<Usuario>();
 		for(UserDTO it :dao.getAll()) {
 			usersList.add(new Usuario(it));
 		}
@@ -172,7 +163,7 @@ public class UsuarioHandler {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
 			if (users_file.length() != 0) {
-				usersList = (ArrayList<Usuario>) ois.readObject();
+				ArrayList<Usuario> usersList = (ArrayList<Usuario>) ois.readObject();
 			}
 
 			ois.close();
