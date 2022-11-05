@@ -29,10 +29,21 @@ public class Conexion {
         sql=new Properties();
         try {
         	Class.forName("com.mysql.jdbc.Driver");
-        	BufferedReader reader = new BufferedReader(new FileReader(new File("src/config.properties")));
+        	String ruta=new File("").getAbsolutePath();
+        	String filename1="p1/src/config.properties";
+        	String filename2="p1/src/sql.properties";
+        	
+        	if(ruta.substring(ruta.length()-2,ruta.length()).equals("p1")) {
+        		filename1="src/config.properties";
+        		filename2="src/sql.properties";
+        	}
+        	
+        	BufferedReader reader = new BufferedReader(new FileReader(new File(filename1)));
             config.load( reader );
-            reader = new BufferedReader(new FileReader(new File("src/sql.properties")));
+            
+            reader = new BufferedReader(new FileReader(new File(filename2)));
             sql.load( reader );
+            
             this.url=config.getProperty("URL");
             this.user=config.getProperty("USER");
             this.passwd=config.getProperty("PASSWORD");
