@@ -46,7 +46,7 @@ public abstract class ReservaAbstracta implements Serializable {
 
 	public ReservaAbstracta(ReserveDTO dto) {
 		this.idUser = dto.getIdUser();
-		this.date = dto.getDate().atStartOfDay();
+		this.date = dto.getDate();
 		this.time = dto.getTime();
 		this.idPista = dto.getIdPista();
 		this.price = dto.getPrice();

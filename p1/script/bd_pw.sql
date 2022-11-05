@@ -4,9 +4,9 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: oraclepr.uco.es
--- Tiempo de generación: 03-11-2022 a las 23:44:43
--- Versión del servidor: 5.1.73
--- Versión de PHP: 5.3.3
+-- Tiempo de generaciï¿½n: 03-11-2022 a las 23:44:43
+-- Versiï¿½n del servidor: 5.1.73
+-- Versiï¿½n de PHP: 5.3.3
 -- 
 -- Base de datos: `i02pinma`
 -- 
@@ -167,7 +167,7 @@ CREATE TABLE `User` (
 -- Volcar la base de datos para la tabla `User`
 -- 
 
-INSERT INTO `User` VALUES (1, 'tomas@gmail.com', '2001-09-25', 'Tomás Hidalgo Martín', '2022-10-11');
+INSERT INTO `User` VALUES (1, 'tomas@gmail.com', '2001-09-25', 'Tomï¿½s Hidalgo Martï¿½n', '2022-10-11');
 INSERT INTO `User` VALUES (5, 'i02pinma@uco.es', '2002-12-31', 'Alvaro Pino', '2022-10-30');
 
 -- 

@@ -1,6 +1,6 @@
 package es.pw.uco.business.reserve.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
 
@@ -10,13 +10,13 @@ public class ReserveDTO {
 	private Integer idPista;
 	private float price;
 	private float discount;
-	private LocalDate date;
+	private LocalDateTime date;
 	private Integer time;
 	private String tipo;
 	private Integer numAdultos;
 	private Integer numMenores;
 	
-	public ReserveDTO( Integer idUser, LocalDate date,Integer time, Integer idPista, float price, float discount,Integer id,
+	public ReserveDTO( Integer idUser, LocalDateTime date,Integer time, Integer idPista, float price, float discount,Integer id,
 			 String tipo,Integer numAdultos,Integer numMenores) {
 		this.id = id;
 		this.idUser = idUser;
@@ -30,7 +30,7 @@ public class ReserveDTO {
 		this.numMenores=numMenores;
 	}
 	
-	public ReserveDTO( Integer idUser, Integer idPista, float price, float discount, LocalDate date,
+	public ReserveDTO( Integer idUser, Integer idPista, float price, float discount, LocalDateTime date,
 			Integer time, String tipo,Integer numAdultos,Integer numMenores) {
 		this.id = null;
 		this.idUser = idUser;
@@ -50,7 +50,7 @@ public class ReserveDTO {
 		this.idPista = res.getIdPista();
 		this.price = res.getPrice();
 		this.discount = res.getDiscount();
-		this.date = res.getDate().toLocalDate();
+		this.date = res.getDate();
 		this.time = res.getTime();
 		this.tipo = res.getType().toString();
 		this.numAdultos=res.getNumAdults();
@@ -117,11 +117,11 @@ public class ReserveDTO {
 		this.discount = discount;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

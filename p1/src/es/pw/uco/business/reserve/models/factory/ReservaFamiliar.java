@@ -30,7 +30,7 @@ public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer
 
 	public ReservaFamiliar(ReserveDTO dto) {
 		this.idUser = dto.getIdUser();
-		this.date = dto.getDate().atStartOfDay();
+		this.date = dto.getDate();
 		this.time = dto.getTime();
 		this.idPista = dto.getIdPista();
 		this.price = dto.getPrice();
@@ -74,7 +74,7 @@ public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer
 
 	@Override
 	public String toString() {
-		return "ReservaFamiliar [idUser=" + idUser + ", date=" + date + ", time=" + time + ", idPista=" + idPista
+		return "ReservaFamiliar [idUser=" + idUser + ", date= " + date + ", time=" + time + ", idPista=" + idPista
 				+ ", price=" + price + ", discount=" + discount + ", numAdults=" + numAdults + ", numChilds="
 				+ numChilds + ", id=" + id + "]";
 	};

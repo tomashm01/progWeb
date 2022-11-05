@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
+import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
 import es.pw.uco.business.reserve.dto.BonoDTO;
 import es.pw.uco.business.reserve.dto.ReserveDTO;
@@ -31,8 +32,6 @@ import es.pw.uco.data.dao.ReserveDAO;
 public class ReservaHandler {
 	public static String reserves_file;
 	public static String bono_file;
-	private static ArrayList<Bono> bonoList = new ArrayList<Bono>();
-	private static ArrayList<ReservaAbstracta> reservesList = new ArrayList<ReservaAbstracta>();
 	private static ReservaHandler instance = null;
 	private static ReserveDAO daoReserva;
 	private static BonoDAO daoBono;
@@ -65,7 +64,6 @@ public class ReservaHandler {
 			System.out.println("El usuario que va a reservar no existe en la bd");
 			return false;
 		}
-
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
 
@@ -117,11 +115,21 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-
+		//TODO revertir la insercion de la reserva y de los karts si alguno da fallo
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-		return daoReserva.insert(new ReserveDTO(reserve));
+		if(daoReserva.insert(new ReserveDTO(reserve))) {
+			int idReserva =daoReserva.getByPistaDate(reserve.getIdPista(),reserve.getDate());
+			for(Kart it : pista.getKartsList()) {
+				if( ! daoReserva.pairKartReserve(idReserva,it.getId())) {
+					return false;
+				}
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -148,15 +156,15 @@ public class ReservaHandler {
 			System.out.println("El usuario que va a reservar no existe en la bd");
 			return false;
 		}
-
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
+		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
 
-		if (!UsuarioHandler.getInstance().getUserByID(reserve.getIdUser()).isMayorEdad()) {
+		if (!user.isMayorEdad()) {
 			System.out.println("El responsble de la reserva no es mayor de edad.");
 			return false;
 		}
 		if (!pista.isAvailable()) {
-			System.out.println("La pista no está disponible para reservas.");
+			System.out.println("La pista no est� disponible para reservas.");
 			return false;
 		}
 		if (!pista.getDifficulty().equals(reserve.getType())) {
@@ -164,7 +172,7 @@ public class ReservaHandler {
 			return false;
 		}
 		if (!(pista.getMaxKarts() >= reserve.getNumPlayers())) {
-			System.out.println("Hay más personas que el numero máximo permitido en la pista.");
+			System.out.println("Hay m�s personas que el numero m�ximo permitido en la pista.");
 			return false;
 		}
 		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
@@ -199,30 +207,29 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-
-		reserve.setDiscount(0.05f);
+		//TODO revertir la insercion de la reserva y de los karts si alguno da fallo
 		reserve.setPrice(calculatePrice(reserve.getTime()));
+		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
+		reserve.setDiscount(aux);
 
-		// idUser mismo en todos
-		for (int i = 0; i < bonoList.size(); i++) {
-			// la id de reserva de la primera reserva del bono
-			Integer idIt = ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().get(0);
-			LocalDate expirationDateBono = ReservaHandler.getInstance().getAllBonos().get(i).getExpirationDate();
 
-			if ((ReservaHandler.getInstance().getReserveByID(idIt).getIdUser().equals(reserve.getIdUser())) && 
-					(ReservaHandler.getInstance().getReserveByID(idIt).getType().equals(reserve.getType())) && 
-					(ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().size() < 5) && 
-					(expirationDateBono.isBefore(LocalDate.now()))) {
-
-				ReservaHandler.getInstance().getAllBonos().get(i).getBonoList().add(reserve.getId());
-				return true;
+		// reservesList.add(reserve);
+		if( ! daoReserva.insert(new ReserveDTO(reserve))) {
+			return false;
+		}
+		int idReserva =daoReserva.getByPistaDate(reserve.getIdPista(),reserve.getDate());
+		for(Kart it : pista.getKartsList()) {
+			if( ! daoReserva.pairKartReserve(idReserva,it.getId())) {
+				return false;
 			}
 		}
-		//TODO comprobar si existe un bono para ese usuario y tipo de reserva, sino crearle uno
-			Bono bono = new Bono(reserve.getId());
-			bonoList.add(bono);
-		// reservesList.add(reserve);
-		return daoReserva.insert(new ReserveDTO(reserve));
+		int idBono = daoBono.getFreeBono(reserve.getIdUser(), reserve.getType().toString());
+		
+		if(idBono == -1) {
+			idBono= daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS)));
+		}
+		daoBono.pairReserveBono(idBono,idReserva);
+		return true;
 	}
 
 	/**
@@ -238,7 +245,7 @@ public class ReservaHandler {
 	}
 
 	public ArrayList<Bono> getAllBonosByIDUser(Integer idUser) {
-		bonoList = new ArrayList<Bono>();
+		ArrayList<Bono> bonoList = new ArrayList<Bono>();
 		for(BonoDTO it : daoBono.getAllBonoByUser(idUser)) {
 			it.setReserves(daoBono.getAllIdByBono(it.getId()));
 			bonoList.add(new Bono(it));
@@ -441,9 +448,8 @@ public class ReservaHandler {
 	 * 
 	 * @return ArrayList<Bono>
 	 */
-	//TODO por aqui me he quedado 
 	public ArrayList<Bono> getAllBonos() {
-		bonoList = new ArrayList<Bono>();
+		ArrayList<Bono> bonoList = new ArrayList<Bono>();
 		for(BonoDTO it : daoBono.getAll()) {
 			it.setReserves(daoBono.getAllIdByBono(it.getId()));
 			bonoList.add(new Bono(it));
@@ -451,61 +457,12 @@ public class ReservaHandler {
 		return bonoList;
 	}
 
-	/**
-	 * Carga fichero de reservas
-	 */
-	@SuppressWarnings("unchecked")
-	public static void loadReserveFile() {
-		try {
-			FileInputStream fis = new FileInputStream(reserves_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			if (reserves_file.length() != 0) {
-				reservesList = (ArrayList<ReservaAbstracta>) ois.readObject();
-			}
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("El fichero " + reserves_file + " no existe. No hay lista de reservas cargadas.");
-		} catch (EOFException e) {
-			System.out.println("El fichero " + reserves_file + " esta vacio.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Carga fichero de bonos
-	 */
-	@SuppressWarnings("unchecked")
-	public static void loadReserveBonoFile() {
-		try {
-			FileInputStream fis = new FileInputStream(bono_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			if (bono_file.length() != 0) {
-				bonoList = (ArrayList<Bono>) ois.readObject();
-			}
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("El fichero " + bono_file + " no existe. No hay lista de reservas cargadas.");
-		} catch (EOFException e) {
-			System.out.println("El fichero " + bono_file + " esta vacio.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Imprime las reservas
 	 */
 	public void printAllReservesList() {
-		for (ReservaAbstracta res : reservesList) {
+		for (ReservaAbstracta res : getAllReserves()) {
 			System.out.println(res.toString());
 		}
 	}
@@ -514,7 +471,7 @@ public class ReservaHandler {
 	 * Imprime los bonos
 	 */
 	public void printAllBonosList() {
-		for (Bono bono : bonoList) {
+		for (Bono bono : getAllBonos()) {
 			System.out.println(bono.toString());
 		}
 	}
@@ -541,4 +498,56 @@ public class ReservaHandler {
 			System.out.println("ERROR: No se ha podido leer el fichero");
 		}
 	}
+	
+	/**
+	 * Carga fichero de reservas
+	 */
+	@SuppressWarnings("unchecked")
+	public static void loadReserveFile() {
+		try {
+			FileInputStream fis = new FileInputStream(reserves_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			if (reserves_file.length() != 0) {
+				ArrayList<ReservaAbstracta> reserveList = (ArrayList<ReservaAbstracta>) ois.readObject();
+			}
+			ois.close();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("El fichero " + reserves_file + " no existe. No hay lista de reservas cargadas.");
+		} catch (EOFException e) {
+			System.out.println("El fichero " + reserves_file + " esta vacio.");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Carga fichero de bonos
+	 */
+	@SuppressWarnings("unchecked")
+	public static void loadReserveBonoFile() {
+		try {
+			FileInputStream fis = new FileInputStream(bono_file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			if (bono_file.length() != 0) {
+				 ArrayList <Bono> bonoList = (ArrayList<Bono>) ois.readObject();
+			}
+			ois.close();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("El fichero " + bono_file + " no existe. No hay lista de reservas cargadas.");
+		} catch (EOFException e) {
+			System.out.println("El fichero " + bono_file + " esta vacio.");
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 }

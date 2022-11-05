@@ -27,7 +27,7 @@ public class ReservaInfantil extends ReservaAbstracta {
 
 	public ReservaInfantil(ReserveDTO dto) {
 		this.idUser = dto.getIdUser();
-		this.date = dto.getDate().atStartOfDay();
+		this.date = dto.getDate();
 		this.time = dto.getTime();
 		this.idPista = dto.getIdPista();
 		this.price = dto.getPrice();
@@ -58,7 +58,7 @@ public class ReservaInfantil extends ReservaAbstracta {
 
 	@Override
 	public String toString() {
-		return "ReservaInfantil [idUser=" + idUser + ", date=" + date + ", time=" + time + ", idPista=" + idPista
+		return "ReservaInfantil [idUser=" + idUser + ", date= " + date + ", time=" + time + ", idPista=" + idPista
 				+ ", price=" + price + ", discount=" + discount + ", numChilds=" + numChilds + ", id=" + id + "]";
 	}
 

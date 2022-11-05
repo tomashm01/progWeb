@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.Statement;
+
 import java.sql.ResultSet;
 
 import es.pw.uco.business.reserve.dto.BonoDTO;
@@ -14,18 +16,36 @@ import es.pw.uco.data.common.Conexion;
 public class BonoDAO implements DAO<BonoDTO, Integer> {
 
 	@Override
-	public boolean insert(BonoDTO a) throws SQLException {
+	public boolean insert(BonoDTO a){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("INSERT_BONO");
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setDate(1, Date.valueOf(a.getExpirationDate()));
-			return st.executeUpdate() == 1;
+			return st.executeUpdate()==1;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int insertGettingId(BonoDTO a){
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("INSERT_BONO");
+		try {
+			PreparedStatement st = conex.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			st.setDate(1, Date.valueOf(a.getExpirationDate()));
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+			if(rs.next())
+				return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	public ArrayList<Integer> getIDReservesBono(Integer idBono) {
@@ -120,6 +140,23 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		return null;
 	}
 	
+	public int getFreeBono(int idUser,String tipo){
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_FREEBONO_BY_USER");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, idUser);
+			//st.setString(2, tipo);
+			ResultSet rs = st.executeQuery(query);
+			if (rs.next())
+				return rs.getInt("id");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	//TODO tanto la funcion como el sql
 	public ArrayList<BonoDTO> getAllBonoByUser(Integer idUser){
 		Conexion conexController = Conexion.getInstance();
@@ -159,6 +196,21 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		}
 
 		return null;
+	}
+	
+	public boolean pairReserveBono(Integer idBono,Integer idReserva) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("INSERT_BONO_RESERVE");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1,idBono);
+			st.setInt(2, idReserva);
+			return st.executeUpdate() == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,8 @@ import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
+import es.pw.uco.data.common.Conexion;
+import es.pw.uco.data.dao.BonoDAO;
 
 public class Main {
 
@@ -32,12 +35,22 @@ public class Main {
 		 * ReservaHandler.getInstance();
 		 */
 		/*
-		ReservaFamiliar a = new ReservaFamiliar(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1, 1);
 		ReservaInfantil b = new ReservaInfantil(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
 		ReservaAdultos c = new ReservaAdultos(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
 		ReserveDTO d = new ReserveDTO(1, LocalDate.now(), 100, 2, 100f, 10f, 1,"FAMILIAR", 1,1);
-		*/
-
+		2024-01-01 00:00:00
+		
+		LocalDateTime localdate = LocalDateTime.of(2124, Month.JANUARY, 1, 10, 10, 30);
+		ReservaFamiliar a = new ReservaFamiliar(1, localdate, 100, 2, 100f, 10f, 1, 1, 1);
+		ReserveDTO reserv = new ReserveDTO(a);
+		ReserveDAO resDAO = new ReserveDAO();
+		System.out.println(resDAO.insert(reserv));
+		System.out.println(reserv.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
+		 */
+		BonoDAO a = new BonoDAO();
+		System.out.println(a.getFreeBono(5, "FAMILIAR"));
+		int var=1;
+		if(var==1)return;
 		// auxiliar variables
 		String fullName, email;
 		boolean valid = false;
@@ -385,20 +398,18 @@ public class Main {
 						input.nextLine();
 						int idUser = UsuarioHandler.getInstance().getAllUsers().get(indexIdUser).getId();
 
-						CircuitHandler.getInstance().printAllPistas();
-						System.out.println("Introduce el ID de la pista para crear");
-						int indexIdPista = input.nextInt();
-						input.nextLine();
-						int idPista = CircuitHandler.getInstance().getAllPistas().get(indexIdPista).getId();
-
 						System.out.println("Introduce el tiempo que quieras estar");
 						int time = input.nextInt();
 						input.nextLine();
 
 						int price = ReservaHandler.getInstance().calculatePrice(time);
 
-						int tipoReserva = 0, modalidadReserva = 0, discount = 0;
-
+						int tipoReserva 		= 0;
+						int numChilds 			= 0;
+						int numAdults 			= 0;
+						int  modalidadReserva 	= 0;
+						int discount 			= 0;
+						DificultadPista dif = DificultadPista.FAMILIAR;
 						do {
 							System.out.println("Que tipo de reserva quieres?");
 							System.out.println("1.Tipo familiar");
@@ -407,14 +418,34 @@ public class Main {
 							tipoReserva = input.nextInt();
 							input.nextLine();
 						} while (tipoReserva > 3 || tipoReserva < 0);
-
-						System.out.println("Cuantos adultos desean ir?");
-						int numAdults = input.nextInt();
+						if(tipoReserva == 1) {
+							dif= DificultadPista.FAMILIAR;
+						}else if (tipoReserva == 2) {
+							dif = DificultadPista.ADULTOS;
+						}
+						else if (tipoReserva == 3) {
+							dif = DificultadPista.INFANTIL;
+						}
+						if(tipoReserva == 1 || tipoReserva == 2) {
+							System.out.println("Cuantos adultos desean ir?");
+							numAdults = input.nextInt();
+							input.nextLine();
+						}
+						if(tipoReserva == 1 || tipoReserva == 3) {
+							System.out.println("Cuantos niños desean ir?");
+							numChilds = input.nextInt();
+							input.nextLine();
+						}
+						
+						System.out.println("Las pistas que cumplen son:");
+						
+						for(Pista it : CircuitHandler.getInstance().getFreePistas(numAdults+numChilds,dif)) {
+							System.out.println("Pista[id = "+it.getId()+",nombre= "+it.getName()+" ]");	
+						}
+						System.out.println("Elija el id de la pista que quiera");
+						int idPista = input.nextInt();
 						input.nextLine();
 
-						System.out.println("Cuantos niños desean ir?");
-						int numChilds = input.nextInt();
-						input.nextLine();
 
 						do {
 							System.out.println("Que modalidad de reserva quieres?");

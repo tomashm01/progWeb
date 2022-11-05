@@ -27,7 +27,7 @@ public class ModalidadIndividual extends ModalidadAbstracta{
 	@Override
 	public ReservaFamiliar createReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults,Integer numChilds) {
 		ReservaFamiliar modalidad = new ReservaFamiliar( idUser,  date,  time,  idPista,  price, discount, numAdults, numChilds);
-		if(!ReservaHandler.getInstance().addReservaBono(modalidad)) modalidad=null;
+		if(!ReservaHandler.getInstance().addReservaIndividual(modalidad)) modalidad=null;
 		return modalidad;
 	}
 	
