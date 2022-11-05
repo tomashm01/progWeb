@@ -115,19 +115,20 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-		//TODO revertir la insercion de la reserva y de los karts si alguno da fallo
+
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-		if(daoReserva.insert(new ReserveDTO(reserve))) {
-			int idReserva =daoReserva.getByPistaDate(reserve.getIdPista(),reserve.getDate());
-			for(Kart it : pista.getKartsList()) {
-				if( ! daoReserva.pairKartReserve(idReserva,it.getId())) {
-					return false;
-				}
-			}
-		}else {
+
+		if (!daoReserva.insert(new ReserveDTO(reserve))) {
 			return false;
+		}
+		int idReserva = daoReserva.getByPistaDate(reserve.getIdPista(), reserve.getDate());
+		for (Kart it : pista.getKartsList()) {
+			if (!daoReserva.pairKartReserve(idReserva, it.getId())) {
+				daoReserva.delete(idReserva);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -207,28 +208,26 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-		//TODO revertir la insercion de la reserva y de los karts si alguno da fallo
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
 
-
-		// reservesList.add(reserve);
-		if( ! daoReserva.insert(new ReserveDTO(reserve))) {
+		if (!daoReserva.insert(new ReserveDTO(reserve))) {
 			return false;
 		}
-		int idReserva =daoReserva.getByPistaDate(reserve.getIdPista(),reserve.getDate());
-		for(Kart it : pista.getKartsList()) {
-			if( ! daoReserva.pairKartReserve(idReserva,it.getId())) {
+		int idReserva = daoReserva.getByPistaDate(reserve.getIdPista(), reserve.getDate());
+		for (Kart it : pista.getKartsList()) {
+			if (!daoReserva.pairKartReserve(idReserva, it.getId())) {
+				daoReserva.delete(idReserva);
 				return false;
 			}
 		}
 		int idBono = daoBono.getFreeBono(reserve.getIdUser(), reserve.getType().toString());
-		
-		if(idBono == -1) {
-			idBono= daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS)));
+
+		if (idBono == -1) {
+			idBono = daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS)));
 		}
-		daoBono.pairReserveBono(idBono,idReserva);
+		daoBono.pairReserveBono(idBono, idReserva);
 		return true;
 	}
 
@@ -246,7 +245,7 @@ public class ReservaHandler {
 
 	public ArrayList<Bono> getAllBonosByIDUser(Integer idUser) {
 		ArrayList<Bono> bonoList = new ArrayList<Bono>();
-		for(BonoDTO it : daoBono.getAllBonoByUser(idUser)) {
+		for (BonoDTO it : daoBono.getAllBonoByUser(idUser)) {
 			it.setReserves(daoBono.getAllIdByBono(it.getId()));
 			bonoList.add(new Bono(it));
 		}
@@ -267,7 +266,7 @@ public class ReservaHandler {
 			return false;
 		}
 		ReserveDTO aux = daoReserva.get(reserve.getId());
-		if(aux == null) {
+		if (aux == null) {
 			System.out.println("No se ha encontrado la reserva a modificar (Id no encontrado)");
 			return false;
 		}
@@ -338,15 +337,13 @@ public class ReservaHandler {
 	 */
 	public ReservaAbstracta getReserveByID(Integer id) {
 		ReserveDTO aux = daoReserva.get(id);
-		if(aux==null) {
+		if (aux == null) {
 			return null;
-		}
-		else if(aux.getTipo().equals("FAMILIAR")) {
+		} else if (aux.getTipo().equals("FAMILIAR")) {
 			return new ReservaFamiliar(aux);
-		}else if(aux.getTipo().equals("ADULTOS")) {
+		} else if (aux.getTipo().equals("ADULTOS")) {
 			return new ReservaAdultos(aux);
-		}
-		else {
+		} else {
 			return new ReservaInfantil(aux);
 		}
 	}
@@ -393,12 +390,12 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getReserveByPista(Integer idPista) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
 		for (ReserveDTO it : daoReserva.getAllReservesByPista(idPista)) {
-			if(it.getTipo().equals("FAMILIAR")) {
-				 reserversFiltered.add(new ReservaFamiliar(it));
-			}else if(it.getTipo().equals("ADULTOS")) {
+			if (it.getTipo().equals("FAMILIAR")) {
+				reserversFiltered.add(new ReservaFamiliar(it));
+			} else if (it.getTipo().equals("ADULTOS")) {
 				reserversFiltered.add(new ReservaAdultos(it));
-			}else {
-				reserversFiltered.add(new ReservaInfantil(it));				
+			} else {
+				reserversFiltered.add(new ReservaInfantil(it));
 			}
 		}
 		return reserversFiltered;
@@ -413,12 +410,12 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getReserveByUser(Integer idUser) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
 		for (ReserveDTO it : daoReserva.getAllReservesByUser(idUser)) {
-			if(it.getTipo().equals("FAMILIAR")) {
-				 reserversFiltered.add(new ReservaFamiliar(it));
-			}else if(it.getTipo().equals("ADULTOS")) {
+			if (it.getTipo().equals("FAMILIAR")) {
+				reserversFiltered.add(new ReservaFamiliar(it));
+			} else if (it.getTipo().equals("ADULTOS")) {
 				reserversFiltered.add(new ReservaAdultos(it));
-			}else {
-				reserversFiltered.add(new ReservaInfantil(it));				
+			} else {
+				reserversFiltered.add(new ReservaInfantil(it));
 			}
 		}
 		return reserversFiltered;
@@ -432,12 +429,12 @@ public class ReservaHandler {
 	public ArrayList<ReservaAbstracta> getAllReserves() {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
 		for (ReserveDTO it : daoReserva.getAll()) {
-			if(it.getTipo().equals("FAMILIAR")) {
-				 reserversFiltered.add(new ReservaFamiliar(it));
-			}else if(it.getTipo().equals("ADULTOS")) {
+			if (it.getTipo().equals("FAMILIAR")) {
+				reserversFiltered.add(new ReservaFamiliar(it));
+			} else if (it.getTipo().equals("ADULTOS")) {
 				reserversFiltered.add(new ReservaAdultos(it));
-			}else {
-				reserversFiltered.add(new ReservaInfantil(it));				
+			} else {
+				reserversFiltered.add(new ReservaInfantil(it));
 			}
 		}
 		return reserversFiltered;
@@ -450,13 +447,12 @@ public class ReservaHandler {
 	 */
 	public ArrayList<Bono> getAllBonos() {
 		ArrayList<Bono> bonoList = new ArrayList<Bono>();
-		for(BonoDTO it : daoBono.getAll()) {
+		for (BonoDTO it : daoBono.getAll()) {
 			it.setReserves(daoBono.getAllIdByBono(it.getId()));
 			bonoList.add(new Bono(it));
 		}
 		return bonoList;
 	}
-
 
 	/**
 	 * Imprime las reservas
@@ -498,7 +494,7 @@ public class ReservaHandler {
 			System.out.println("ERROR: No se ha podido leer el fichero");
 		}
 	}
-	
+
 	/**
 	 * Carga fichero de reservas
 	 */
@@ -532,8 +528,9 @@ public class ReservaHandler {
 		try {
 			FileInputStream fis = new FileInputStream(bono_file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
+			ArrayList<Bono> bonoList=new ArrayList<Bono>();
 			if (bono_file.length() != 0) {
-				 ArrayList <Bono> bonoList = (ArrayList<Bono>) ois.readObject();
+				bonoList = (ArrayList<Bono>) ois.readObject();
 			}
 			ois.close();
 			fis.close();
@@ -549,5 +546,4 @@ public class ReservaHandler {
 		}
 	}
 
-	
 }

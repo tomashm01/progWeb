@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,35 +22,11 @@ import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
-import es.pw.uco.data.common.Conexion;
-import es.pw.uco.data.dao.BonoDAO;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		/*
-		 * CircuitHandler.getInstance(); UsuarioHandler.getInstance();
-		 * ReservaHandler.getInstance();
-		 */
-		/*
-		ReservaInfantil b = new ReservaInfantil(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
-		ReservaAdultos c = new ReservaAdultos(1, LocalDateTime.now(), 100, 2, 100f, 10f, 1, 1);
-		ReserveDTO d = new ReserveDTO(1, LocalDate.now(), 100, 2, 100f, 10f, 1,"FAMILIAR", 1,1);
-		2024-01-01 00:00:00
-		
-		LocalDateTime localdate = LocalDateTime.of(2124, Month.JANUARY, 1, 10, 10, 30);
-		ReservaFamiliar a = new ReservaFamiliar(1, localdate, 100, 2, 100f, 10f, 1, 1, 1);
-		ReserveDTO reserv = new ReserveDTO(a);
-		ReserveDAO resDAO = new ReserveDAO();
-		System.out.println(resDAO.insert(reserv));
-		System.out.println(reserv.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
-		 */
-		/*
-		 * BonoDAO a = new BonoDAO(); System.out.println(a.getFreeBono(5, "FAMILIAR"));
-		 * int var=1; if(var==1)return;
-		 */
-		// auxiliar variables
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
@@ -246,7 +221,7 @@ public class Main {
 						state.add(EstadoKart.DISPONIBLE);
 						state.add(EstadoKart.MANTENIMIENTO);
 						state.add(EstadoKart.RESERVADO);
-
+						CircuitHandler.getInstance().printAllKarts();
 						do {
 							System.out.println("Selecciona el id del kart que quiera modificar.");
 							idKart = input.nextInt();
@@ -270,13 +245,14 @@ public class Main {
 						kart.setState(state.get(input.nextInt() - 1));
 						input.nextLine();
 						int idPista = 0;
+						CircuitHandler.getInstance().printAllPistasWithoutKarts();
 						do {
 							System.out.println(
 									"Indique el id de la pista a la que se va a asignar el idPista el kart, -1 si no quiere asignarlo a ninguna pista");
 							idPista = input.nextInt();
 							input.nextLine();
 						} while (!CircuitHandler.getInstance().existPista(idPista) && idPista != -1);
-						
+						kart.setIdPista(idPista);
 						CircuitHandler.getInstance().editKart(kart);
 						System.out.println("Kart modificado");
 						System.out.println(CircuitHandler.getInstance().getKartByID(idKart).toString());
