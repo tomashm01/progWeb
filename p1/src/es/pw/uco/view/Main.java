@@ -445,21 +445,21 @@ public class Main {
 						if (modalidadReserva == 1) { // Modalidad individual
 							if (tipoReserva == 1) { // Tipo familiar
 								if (new ModalidadIndividual().createReservaFamiliar(idUser, date, time, idPista, price,
-										discount, numAdults, numChilds) != null) {
+										discount,-1, numAdults, numChilds) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
 								}
 							} else if (tipoReserva == 2) { // Tipo adultos
 								if (new ModalidadIndividual().createReservaAdultos(idUser, date, time, idPista, price,
-										discount, numAdults) != null) {
+										discount,-1, numAdults) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
 								}
 							} else { // Tipo infantil
 								if (new ModalidadIndividual().createReservaInfantil(idUser, date, time, idPista, price,
-										discount, numChilds) != null) {
+										discount,-1, numChilds) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
@@ -468,21 +468,21 @@ public class Main {
 						} else { // Modalidad bono
 							if (tipoReserva == 1) { // Tipo familiar
 								if (new ModalidadBono().createReservaFamiliar(idUser, date, time, idPista, price,
-										discount, numAdults, numChilds) != null) {
+										discount,-1, numAdults, numChilds) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
 								}
 							} else if (tipoReserva == 2) { // Tipo adultos
 								if (new ModalidadBono().createReservaAdultos(idUser, date, time, idPista, price,
-										discount, numAdults) != null) {
+										discount,-1, numAdults) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
 								}
 							} else { // Tipo infantil
 								if (new ModalidadBono().createReservaInfantil(idUser, date, time, idPista, price,
-										discount, numChilds) != null) {
+										discount,-1, numChilds) != null) {
 									System.out.println("Reserva creada correctamente");
 								} else {
 									System.out.println("Reserva no ha sido creada correctamente");
