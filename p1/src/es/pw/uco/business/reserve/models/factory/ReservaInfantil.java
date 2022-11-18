@@ -15,12 +15,12 @@ public class ReservaInfantil extends ReservaAbstracta {
 	
 	public ReservaInfantil() {};
 	
-	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds) {
+	public ReservaInfantil(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id);
 		this.numChilds = numChilds;
 	}
 	
-	public ReservaInfantil(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numChilds) {
+	public ReservaInfantil(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount);
 		this.numChilds = numChilds;
 	}

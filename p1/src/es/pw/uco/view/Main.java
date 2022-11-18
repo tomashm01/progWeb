@@ -57,6 +57,7 @@ public class Main {
 						valid = false;
 						fullName = "";
 						email = "";
+						
 						LocalDate date2 = LocalDate.now();
 
 						System.out
@@ -79,7 +80,7 @@ public class Main {
 						email = input.nextLine();
 
 						System.out.println("Añ adiendo usuario...");
-						UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2, email));
+						//UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2, email));
 						System.out.println("El usuario ha sido añadido correctamente.");
 					}
 
@@ -90,9 +91,8 @@ public class Main {
 						email = "";
 						LocalDate date1 = LocalDate.now();
 
-						System.out.println("Selecciona el id del usuario que quieres modificar.");
-						Usuario userMod = UsuarioHandler.getInstance().getUserByID(input.nextInt());
-						input.nextLine();
+						System.out.println("Selecciona el correo del usuario que quieres modificar.");
+						Usuario userMod = UsuarioHandler.getInstance().getUserByEmail(input.nextLine());
 
 						System.out.println("Nombre completo:");
 						fullName = input.nextLine();
@@ -136,7 +136,7 @@ public class Main {
 								input.nextLine();
 								if (UsuarioHandler.getInstance().getAllUsers().size() > index) {
 									UsuarioHandler.getInstance()
-											.removeUser(UsuarioHandler.getInstance().getAllUsers().get(index).getId());
+											.removeUser(UsuarioHandler.getInstance().getAllUsers().get(index).getEmail());
 									valid = true;
 								}
 							} catch (Exception e) {
@@ -369,10 +369,10 @@ public class Main {
 					if (subMainSelect == 1) { // Añadir reserva
 
 						UsuarioHandler.getInstance().printNameUsers();
-						System.out.println("Introduce el ID del usuario encargado de la reserva");
+						System.out.println("Introduce el email del usuario encargado de la reserva");
 						int indexIdUser = input.nextInt();
 						input.nextLine();
-						int idUser = UsuarioHandler.getInstance().getAllUsers().get(indexIdUser).getId();
+						String idUser = UsuarioHandler.getInstance().getAllUsers().get(indexIdUser).getEmail();
 
 						System.out.println("Introduce el tiempo que quieras estar");
 						int time = input.nextInt();
@@ -383,7 +383,7 @@ public class Main {
 						int tipoReserva 		= 0;
 						int numChilds 			= 0;
 						int numAdults 			= 0;
-						int  modalidadReserva 	= 0;
+						int modalidadReserva 	= 0;
 						int discount 			= 0;
 						DificultadPista dif = DificultadPista.FAMILIAR;
 						do {

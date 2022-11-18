@@ -1,13 +1,10 @@
 package es.pw.uco.business.circuit.handlers;
 
 import java.io.BufferedReader;
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -314,65 +311,4 @@ public class CircuitHandler {
 		}
 	}
 
-	/**
-	 * Carga datos del fichero pista
-	 */
-    @SuppressWarnings("unchecked")
-	public static void loadPistaFile() {
-		try {
-			FileInputStream fis = new FileInputStream(pistas_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			
-			if(pistas_file.length()!=0){
-				ArrayList<Pista> pistaList = (ArrayList<Pista>) ois.readObject();
-			}
-
-			ois.close();
-			fis.close();
-		}catch(FileNotFoundException e){
-			System.out.println("El fichero "+pistas_file+" no existe. No hay lista de Pistas cargadas.");
-		}catch(EOFException e){
-			System.out.println("El fichero "+pistas_file+" esta vacio.");
-		}catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-    
-    /**
-     * Carga datos del fichero karts
-     */
-	@SuppressWarnings("unchecked")
-	public static void loadKartFile() {
-		try {
-			FileInputStream fis = new FileInputStream(karts_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			if(karts_file.length() != 0) {
-				ArrayList<Kart> kartList = (ArrayList<Kart>) ois.readObject();					
-			}
-			
-			ois.close();
-			fis.close();
-			
-			fis = new FileInputStream(pistas_file);
-			ois = new ObjectInputStream(fis);
-
-			
-			ArrayList<Pista> pistaList = (ArrayList<Pista>) ois.readObject();	
-			
-			ois.close();
-			fis.close();
-		}  catch(FileNotFoundException e){
-			System.out.println("El fichero "+karts_file+" no existe. No hay lista de Karts cargadas.");
-		}catch(EOFException e){
-			System.out.println("El fichero "+karts_file+" esta vacio.");
-		}catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 }

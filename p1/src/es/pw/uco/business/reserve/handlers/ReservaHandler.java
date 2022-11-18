@@ -1,19 +1,10 @@
 package es.pw.uco.business.reserve.handlers;
 
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Properties;
-
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
 import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
@@ -30,8 +21,6 @@ import es.pw.uco.data.dao.BonoDAO;
 import es.pw.uco.data.dao.ReserveDAO;
 
 public class ReservaHandler {
-	public static String reserves_file;
-	public static String bono_file;
 	private static ReservaHandler instance = null;
 	private static ReserveDAO daoReserva;
 	private static BonoDAO daoBono;
@@ -60,12 +49,12 @@ public class ReservaHandler {
 			System.out.println("El id de la pista no existe");
 			return false;
 		}
-		if (!UsuarioHandler.getInstance().existUser(reserve.getIdUser())) {
+		if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
 			System.out.println("El usuario que va a reservar no existe en la bd");
 			return false;
 		}
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
-		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
+		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
 
 		if (!user.isMayorEdad()) {
 			System.out.println("El responsble de la reserva no es mayor de edad.");
@@ -153,12 +142,12 @@ public class ReservaHandler {
 			System.out.println("El id de la pista no existe");
 			return false;
 		}
-		if (!UsuarioHandler.getInstance().existUser(reserve.getIdUser())) {
+		if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
 			System.out.println("El usuario que va a reservar no existe en la bd");
 			return false;
 		}
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
-		Usuario user = UsuarioHandler.getInstance().getUserByID(reserve.getIdUser());
+		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
 
 		if (!user.isMayorEdad()) {
 			System.out.println("El responsble de la reserva no es mayor de edad.");
@@ -407,7 +396,7 @@ public class ReservaHandler {
 	 * @param id
 	 * @return ArrayList<ReservaAbstracta>
 	 */
-	public ArrayList<ReservaAbstracta> getReserveByUser(Integer idUser) {
+	public ArrayList<ReservaAbstracta> getReserveByUser(String idUser) {
 		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
 		for (ReserveDTO it : daoReserva.getAllReservesByUser(idUser)) {
 			if (it.getTipo().equals("FAMILIAR")) {
@@ -472,78 +461,5 @@ public class ReservaHandler {
 		}
 	}
 
-	/**
-	 * Carga los paths de reservas y bonos
-	 */
-
-	public static void loadFilesPath() {
-		Properties prop = new Properties();
-		String filename = "src/data.properties";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-			prop.load(reader);
-
-			String path = "datos/";
-			reserves_file = path + prop.getProperty("reserves_file");
-			bono_file = path + prop.getProperty("bono_file");
-
-			// Captura de excepciones
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
-			System.out.println("ERROR: No se ha podido leer el fichero");
-		}
-	}
-
-	/**
-	 * Carga fichero de reservas
-	 */
-	@SuppressWarnings("unchecked")
-	public static void loadReserveFile() {
-		try {
-			FileInputStream fis = new FileInputStream(reserves_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			if (reserves_file.length() != 0) {
-				ArrayList<ReservaAbstracta> reserveList = (ArrayList<ReservaAbstracta>) ois.readObject();
-			}
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("El fichero " + reserves_file + " no existe. No hay lista de reservas cargadas.");
-		} catch (EOFException e) {
-			System.out.println("El fichero " + reserves_file + " esta vacio.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Carga fichero de bonos
-	 */
-	@SuppressWarnings("unchecked")
-	public static void loadReserveBonoFile() {
-		try {
-			FileInputStream fis = new FileInputStream(bono_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			ArrayList<Bono> bonoList=new ArrayList<Bono>();
-			if (bono_file.length() != 0) {
-				bonoList = (ArrayList<Bono>) ois.readObject();
-			}
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("El fichero " + bono_file + " no existe. No hay lista de reservas cargadas.");
-		} catch (EOFException e) {
-			System.out.println("El fichero " + bono_file + " esta vacio.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 }

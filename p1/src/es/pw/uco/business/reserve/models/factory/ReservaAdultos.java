@@ -15,12 +15,12 @@ public class ReservaAdultos extends ReservaAbstracta{
 	
 	public ReservaAdultos() {};
 	
-	public ReservaAdultos(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults) {
+	public ReservaAdultos(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id);
 		this.numAdults = numAdults;
 	}
 	
-	public ReservaAdultos(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults) {
+	public ReservaAdultos(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults) {
 		super(idUser,  date,  time,  idPista,  price, discount);
 		this.numAdults = numAdults;
 	}

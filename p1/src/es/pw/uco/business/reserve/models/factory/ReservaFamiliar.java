@@ -16,13 +16,13 @@ public class ReservaFamiliar extends ReservaAbstracta{
 	
 	public ReservaFamiliar() {};
 	
-public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
+public ReservaFamiliar(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numAdults,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount,  id);
 		this.numAdults = numAdults;
 		this.numChilds = numChilds;
 	}
 	
-	public ReservaFamiliar(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults,Integer numChilds) {
+	public ReservaFamiliar(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount,Integer numAdults,Integer numChilds) {
 		super(idUser,  date,  time,  idPista,  price, discount);
 		this.numAdults = numAdults;
 		this.numChilds = numChilds;

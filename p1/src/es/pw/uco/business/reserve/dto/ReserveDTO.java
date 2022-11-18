@@ -6,7 +6,7 @@ import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
 
 public class ReserveDTO {
 	private Integer id;
-	private Integer idUser;
+	private String idUser;
 	private Integer idPista;
 	private float price;
 	private float discount;
@@ -16,7 +16,7 @@ public class ReserveDTO {
 	private Integer numAdultos;
 	private Integer numMenores;
 	
-	public ReserveDTO( Integer idUser, LocalDateTime date,Integer time, Integer idPista, float price, float discount,Integer id,
+	public ReserveDTO( String idUser,LocalDateTime date,Integer time, Integer idPista, float price, float discount,Integer id,
 			 String tipo,Integer numAdultos,Integer numMenores) {
 		this.id = id;
 		this.idUser = idUser;
@@ -30,7 +30,7 @@ public class ReserveDTO {
 		this.numMenores=numMenores;
 	}
 	
-	public ReserveDTO( Integer idUser, Integer idPista, float price, float discount, LocalDateTime date,
+	public ReserveDTO( String idUser, Integer idPista, float price, float discount, LocalDateTime date,
 			Integer time, String tipo,Integer numAdultos,Integer numMenores) {
 		this.id = null;
 		this.idUser = idUser;
@@ -85,11 +85,11 @@ public class ReserveDTO {
 		this.id = id;
 	}
 
-	public Integer getIdUser() {
+	public String getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(Integer idUser) {
+	public void setIdUser(String idUser) {
 		this.idUser = idUser;
 	}
 
@@ -100,7 +100,7 @@ public class ReserveDTO {
 	public void setIdPista(Integer idPista) {
 		this.idPista = idPista;
 	}
-
+	
 	public float getPrice() {
 		return price;
 	}

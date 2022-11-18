@@ -1,5 +1,5 @@
 package es.pw.uco.business.user.models;
-import java.io.Serializable;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -7,44 +7,30 @@ import es.pw.uco.business.user.dto.UserDTO;
 
 //Esta clase representa a una persona usuaria de las instalaciones de la empresa de karts
 
-public class Usuario implements Serializable {
-
+public class Usuario{
 	private String fullName;
 	private LocalDate birthdayDate;	
 	private LocalDate inscriptionDate;
 	private String email;
+	private String password;
+	private String rol;
 
-	private static final long serialVersionUID = 1L;
-	public static final int MAX_RANDOM = 999999999;
-	private Integer id;
-	
+	public Usuario(String fullName, LocalDate birthdayDate, LocalDate inscriptionDate, String email, String password,
+			String rol){
+		super();
+		this.fullName = fullName;
+		this.birthdayDate = birthdayDate;
+		this.inscriptionDate = inscriptionDate;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+	}
+
 	public Usuario() {
-		this.id=(int) (Math.random()*MAX_RANDOM);
+		this.email="";
 		this.inscriptionDate = LocalDate.now();
-	}
-	
-	public Usuario(Integer id,String fullName, LocalDate birthdayDate, String email, LocalDate inscriptionDate) {
-		this.fullName = fullName;
-		this.birthdayDate = birthdayDate;
-		this.inscriptionDate = inscriptionDate;
-		this.email = email;
-		this.id = id;
-	}
-	
-	public Usuario(String fullName, LocalDate birthdayDate, String email, LocalDate inscriptionDate) {
-		this.fullName = fullName;
-		this.birthdayDate = birthdayDate;
-		this.inscriptionDate = inscriptionDate;
-		this.email = email;
-		this.id=(int) (Math.random()*MAX_RANDOM);
-	}
-
-	public Usuario(String fullName, LocalDate birthdayDate, String email) {
-		this.fullName = fullName;
-		this.birthdayDate = birthdayDate;
-		this.inscriptionDate = LocalDate.now();
-		this.email = email;
-		this.id=(int) (Math.random()*MAX_RANDOM);
+		this.password="";
+		this.rol="USER";
 	}
 
 	public Usuario(UserDTO user) {
@@ -52,12 +38,13 @@ public class Usuario implements Serializable {
 		this.birthdayDate = user.getFecha();
 		this.inscriptionDate =user.getFechaIncripcion();
 		this.email = user.getEmail();
-		this.id = user.getId();
+		this.rol=user.getRol();
+		this.password=user.getPassword();
 	}
 
 
-	public Usuario(Integer id) {
-		this.id = id;
+	public Usuario( String email) {
+		this.email = email;
 	}
 		
 	public String getFullName() {
@@ -92,18 +79,26 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public Integer getId() {
-		return id;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
 	@Override
 	public String toString() {
 		return "Usuario [fullName=" + fullName + ", birthdayDate=" + birthdayDate + ", inscriptionDate="
-				+ inscriptionDate + ", email=" + email + ", id=" + id + "]";
+				+ inscriptionDate + ", email=" + email + ", password=" + password + ", rol=" + rol + "]";
 	}
 
 	/*

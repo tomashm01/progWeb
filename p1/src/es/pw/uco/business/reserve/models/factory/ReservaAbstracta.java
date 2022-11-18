@@ -9,7 +9,8 @@ import es.pw.uco.business.reserve.dto.ReserveDTO;
 public abstract class ReservaAbstracta implements Serializable {
 
 	protected static final long serialVersionUID = 1L;
-	protected Integer idUser;
+	protected String idUser;
+	protected Integer idBono;
 	protected LocalDateTime date;
 	protected Integer time;
 	protected Integer idPista;
@@ -22,7 +23,7 @@ public abstract class ReservaAbstracta implements Serializable {
 	public ReservaAbstracta() {
 	}
 
-	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,
+	public ReservaAbstracta(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,
 			float discount, Integer id) {
 		this.idUser = idUser;
 		this.date = date;
@@ -33,7 +34,7 @@ public abstract class ReservaAbstracta implements Serializable {
 		this.id = id;
 	}
 
-	public ReservaAbstracta(Integer idUser, LocalDateTime date, Integer time, Integer idPista, float price,
+	public ReservaAbstracta(String idUser, LocalDateTime date, Integer time, Integer idPista, float price,
 			float discount) {
 		this.idUser = idUser;
 		this.date = date;
@@ -68,11 +69,11 @@ public abstract class ReservaAbstracta implements Serializable {
 		return 0;
 	}
 
-	public Integer getIdUser() {
+	public String getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(Integer idUser) {
+	public void setIdUser(String idUser) {
 		this.idUser = idUser;
 	}
 
@@ -98,6 +99,14 @@ public abstract class ReservaAbstracta implements Serializable {
 
 	public void setIdPista(Integer idPista) {
 		this.idPista = idPista;
+	}
+	
+	public Integer getIdBono() {
+		return idBono;
+	}
+
+	public void setIdBono(Integer idBono) {
+		this.idBono = idBono;
 	}
 
 	public float getPrice() {

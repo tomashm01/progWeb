@@ -21,7 +21,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 		String query = conexController.getSql().getProperty("INSERT_RESERVE");
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1, a.getIdUser());
+			st.setString(1, a.getIdUser());
 			st.setInt(2, a.getIdPista());
 			st.setFloat(3, a.getPrice());
 			st.setFloat(4, a.getDiscount());
@@ -63,7 +63,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			ResultSet rs = st.executeQuery();
 			ArrayList<ReserveDTO> reserves = new ArrayList<ReserveDTO>();
 			while (rs.next()) {
-				reserves.add(new ReserveDTO(rs.getInt("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+				reserves.add(new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
 						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")),
 						rs.getInt("duracion"), rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"),
 						rs.getInt("id"), rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
@@ -83,7 +83,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 		String query = conexController.getSql().getProperty("UPDATE_RESERVE");
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1, a.getIdUser());
+			st.setString(1, a.getIdUser());
 			st.setInt(2, a.getIdPista());
 			st.setFloat(3, a.getPrice());
 			st.setString(4,a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
@@ -110,7 +110,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
 			if (rs.next())
-				return new ReserveDTO(rs.getInt("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+				return new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
 						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")), rs.getInt("duracion"),
 						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
 						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores"));
@@ -140,18 +140,18 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 
 	
 	
-	public ArrayList<ReserveDTO> getAllReservesByUser(Integer idUser) {
+	public ArrayList<ReserveDTO> getAllReservesByUser(String idUser) {
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("SELECT_RESERVE_BY_USER");
 		ArrayList<ReserveDTO> array = new ArrayList<ReserveDTO>();
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1, idUser);
+			st.setString(1, idUser);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				
-				array.add( new ReserveDTO(rs.getInt("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
+				array.add( new ReserveDTO(rs.getString("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
 						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
 						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
 			}
@@ -173,7 +173,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				
-				array.add( new ReserveDTO(rs.getInt("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
+				array.add( new ReserveDTO(rs.getString("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
 						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
 						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
 			}

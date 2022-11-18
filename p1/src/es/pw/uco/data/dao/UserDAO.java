@@ -21,9 +21,11 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 		try{
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setString(1,a.getEmail());
-			st.setDate(2,Date.valueOf(a.getFecha()));
-			st.setString(3,a.getNombreCompleto());
-			st.setDate(4, Date.valueOf(a.getFechaIncripcion()));
+			st.setString(2,a.getPassword());
+			st.setString(3,a.getRol());
+			st.setDate(4,Date.valueOf(a.getFecha()));
+			st.setString(5,a.getNombreCompleto());
+			st.setDate(6, Date.valueOf(a.getFechaIncripcion()));
 			
 			return st.executeUpdate()==1;
 		}catch (SQLException e) {
@@ -39,11 +41,28 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 		String query=conexController.getSql().getProperty("UPDATE_USER");
 		try{
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setString(1,a.getEmail());
-			st.setDate(2,Date.valueOf(a.getFecha()));
-			st.setString(3,a.getNombreCompleto());
-			st.setDate(4, Date.valueOf(a.getFechaIncripcion()));
-			st.setInt(5,a.getId());
+			
+			st.setString(1,a.getPassword());
+			st.setString(2,a.getRol());
+			st.setDate(3,Date.valueOf(a.getFecha()));
+			st.setString(4,a.getNombreCompleto());
+			st.setDate(5, Date.valueOf(a.getFechaIncripcion()));
+			st.setString(6,a.getEmail());
+			return st.executeUpdate()==1;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean delete(String email){
+		Conexion conexController=Conexion.getInstance();
+		Connection conex=conexController.getConnection();
+		String query=conexController.getSql().getProperty("DELETE_USER");
+		try{
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setString(1,email);
+			
 			return st.executeUpdate()==1;
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -53,17 +72,6 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 
 	@Override
 	public boolean delete(Integer id){
-		Conexion conexController=Conexion.getInstance();
-		Connection conex=conexController.getConnection();
-		String query=conexController.getSql().getProperty("DELETE_USER");
-		try{
-			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1,id);
-			
-			return st.executeUpdate()==1;
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 
@@ -77,7 +85,7 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 			ResultSet rs=st.executeQuery();
 			ArrayList<UserDTO> users=new ArrayList<UserDTO>();
 			while(rs.next()) {
-				users.add(new UserDTO(rs.getInt("id"),rs.getString("email"), rs.getDate("fechaNacimiento").toLocalDate(), rs.getString("nombreCompleto"), rs.getDate("fechaInscripcion").toLocalDate()));
+				users.add(new UserDTO(rs.getString("email"),rs.getString("password"),rs.getString("rol"), rs.getDate("fechaNacimiento").toLocalDate(), rs.getString("nombreCompleto"), rs.getDate("fechaInscripcion").toLocalDate()));
 			}
 			return users;
 		} catch (SQLException e) {
@@ -86,21 +94,25 @@ public class UserDAO implements DAO<UserDTO,Integer>{
 		
 		return null;
 	}
-
-	@Override
-	public UserDTO get(Integer id){
+	
+	public UserDTO get(String email){
 		Conexion conexController=Conexion.getInstance();
 		Connection conex=conexController.getConnection();
-		String query=conexController.getSql().getProperty("SELECT_ID_USER");
+		String query=conexController.getSql().getProperty("SELECT_EMAIL_USER");
 		try{
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1,id);
+			st.setString(1,email);
 			ResultSet rs=st.executeQuery();
-			if(rs.next()) return new UserDTO(rs.getInt("id"),rs.getString("email"), rs.getDate("fechaNacimiento").toLocalDate(), rs.getString("nombreCompleto"), rs.getDate("fechaInscripcion").toLocalDate());
+			if(rs.next()) return new UserDTO(rs.getString("email"),rs.getString("password"),rs.getString("rol"), rs.getDate("fechaNacimiento").toLocalDate(), rs.getString("nombreCompleto"), rs.getDate("fechaInscripcion").toLocalDate());
 
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	@Override
+	public UserDTO get(Integer id){
 		return null;
 	}
 

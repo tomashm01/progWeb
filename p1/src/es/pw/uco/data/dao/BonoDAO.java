@@ -140,13 +140,13 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		return null;
 	}
 	
-	public int getFreeBono(int idUser,String tipo){
+	public int getFreeBono(String idUser,String tipo){
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("SELECT_FREEBONO_BY_USER");
 		try {
 			PreparedStatement st = conex.prepareStatement(query);
-			st.setInt(1, idUser);
+			st.setString(1, idUser);
 			st.setString(2, tipo);
 			ResultSet rs = st.executeQuery();
 			if (rs.next())

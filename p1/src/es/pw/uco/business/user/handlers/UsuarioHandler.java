@@ -1,18 +1,6 @@
 package es.pw.uco.business.user.handlers;
-
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Properties;
-
 import es.pw.uco.business.user.dto.UserDTO;
-
 import es.pw.uco.business.user.models.Usuario;
 import es.pw.uco.data.dao.UserDAO;
 
@@ -23,7 +11,6 @@ import es.pw.uco.data.dao.UserDAO;
  *
  */
 public class UsuarioHandler {
-	public static String users_file;
 	private static UsuarioHandler instance = null;
 	private static UserDAO dao;
 
@@ -42,7 +29,7 @@ public class UsuarioHandler {
 	 * @return boolean
 	 */
 	public boolean addUser(Usuario u) {
-		if (existUser(u.getId()) || existEmail(u.getEmail()))
+		if ( existEmail(u.getEmail()))
 			return false;
 		return dao.insert(new UserDTO(u));
 	}
@@ -62,44 +49,15 @@ public class UsuarioHandler {
 	}
 
 	/**
-	 * Busca si el idUsuario existe en la lista actual de usuarios
-	 * 
-	 * @param id
-	 * @return boolean
-	 */
-
-	public boolean existUser(Integer id) {
-		for (Usuario user : getAllUsers()) {
-			if (user.getId().equals(id))
-				return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Busca si existe el usuario por id y lo devuelve
 	 * 
 	 * @param id
 	 * @return Usuario
 	 */
-	public Usuario getUserByID(Integer id) {
-		for (Usuario user : getAllUsers()) {
-			if (user.getId().equals(id))
-				return user;
-		}
-		return null;
-	}
-
-	/**
-	 * Devuelve el id de usuario a partir de su correo
-	 * 
-	 * @param email
-	 * @return Integer
-	 */
-	public Integer getIdByEmail(String email) {
+	public Usuario getUserByEmail(String email) {
 		for (Usuario user : getAllUsers()) {
 			if (user.getEmail().equals(email))
-				return user.getId();
+				return user;
 		}
 		return null;
 	}
@@ -123,9 +81,10 @@ public class UsuarioHandler {
 	 * @param id
 	 * @return boolean
 	 */
-	public boolean removeUser(Integer id) {
-		return dao.delete(id);
+	public boolean removeUser(String email) {
+		return dao.delete(email);
 	}
+	
 
 	/**
 	 * Edita el usuario de la lista si existe
@@ -150,56 +109,6 @@ public class UsuarioHandler {
 		for (Usuario us : getAllUsers()) {
 			System.out.println(count + ") " + us.getFullName());
 			count++;
-		}
-	}
-
-	/**
-	 * Carga fichero de usuario
-	 */
-	@SuppressWarnings("unchecked")
-	public static void loadUserFile() {
-		try {
-			FileInputStream fis = new FileInputStream(users_file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			if (users_file.length() != 0) {
-				ArrayList<Usuario> usersList = (ArrayList<Usuario>) ois.readObject();
-			}
-
-			ois.close();
-			fis.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("El fichero " + users_file + " no existe. No hay lista de usuarios cargadas.");
-		} catch (EOFException e) {
-			System.out.println("El fichero " + users_file + " esta vacio.");
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	/**
-	 * Carga el path del fichero del usuario
-	 */
-
-	public static void loadFilesPath() {
-		Properties prop = new Properties();
-		String filename = "src/data.properties";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-			prop.load(reader);
-
-			String path = "datos/";
-			users_file = path + prop.getProperty("users_file");
-
-			// Captura de excepciones
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
-			System.out.println("ERROR: No se ha podido leer el fichero");
 		}
 	}
 
