@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: oraclepr.uco.es
--- Tiempo de generación: 05-11-2022 a las 15:01:31
+-- Tiempo de generación: 02-12-2022 a las 17:57:47
 -- Versión del servidor: 5.1.73
 -- Versión de PHP: 5.3.3
 -- 
@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS `Bono` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fechaExpiracion` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -34,10 +35,12 @@ CREATE TABLE IF NOT EXISTS `BonoReserva` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idBono` int(11) NOT NULL,
   `idReserva` int(11) NOT NULL,
+  `posicion` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idBono` (`idBono`,`idReserva`),
   KEY `fk_bono_reserva` (`idReserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -53,7 +56,8 @@ CREATE TABLE IF NOT EXISTS `Kart` (
   `idPista` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idPista` (`idPista`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -69,9 +73,8 @@ CREATE TABLE IF NOT EXISTS `KartReserva` (
   PRIMARY KEY (`id`),
   KEY `idKart` (`idKart`),
   KEY `fk_kart_reserva` (`idReserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=latin1 AUTO_INCREMENT=106 ;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
 
 -- 
 -- Estructura de tabla para la tabla `Pista`
@@ -85,7 +88,8 @@ CREATE TABLE IF NOT EXISTS `Pista` (
   `maxKarts` int(11) NOT NULL,
   `disponible` int(8) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -96,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `Pista` (
 DROP TABLE IF EXISTS `Reserva`;
 CREATE TABLE IF NOT EXISTS `Reserva` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idUser` int(11) NOT NULL,
+  `idUser` varchar(32) NOT NULL,
   `idPista` int(11) NOT NULL,
   `precio` float NOT NULL,
   `descuento` float NOT NULL,
@@ -108,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `Reserva` (
   PRIMARY KEY (`id`),
   KEY `fk_reserva_user` (`idUser`),
   KEY `fk_reserva_pista` (`idPista`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -118,14 +122,15 @@ CREATE TABLE IF NOT EXISTS `Reserva` (
 
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `rol` varchar(32) NOT NULL,
   `fechaNacimiento` date NOT NULL,
   `nombreCompleto` varchar(64) NOT NULL,
   `fechaInscripcion` date NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- 
 -- Filtros para las tablas descargadas (dump)
@@ -156,4 +161,4 @@ ALTER TABLE `KartReserva`
 -- 
 ALTER TABLE `Reserva`
   ADD CONSTRAINT `fk_reserva_pista` FOREIGN KEY (`idPista`) REFERENCES `Pista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_reserva_user` FOREIGN KEY (`idUser`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_reserva_user` FOREIGN KEY (`idUser`) REFERENCES `User` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;

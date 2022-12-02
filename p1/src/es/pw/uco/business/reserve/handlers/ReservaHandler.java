@@ -216,7 +216,11 @@ public class ReservaHandler {
 		if (idBono == -1) {
 			idBono = daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS)));
 		}
-		daoBono.pairReserveBono(idBono, idReserva);
+		int posicion = daoBono.getNextPositicon(idBono);
+		if(posicion == -1) {
+			posicion=0;
+		}
+		daoBono.pairReserveBono(idBono, idReserva,posicion);
 		return true;
 	}
 

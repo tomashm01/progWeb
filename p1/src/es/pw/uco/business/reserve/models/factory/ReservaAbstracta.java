@@ -10,7 +10,6 @@ public abstract class ReservaAbstracta implements Serializable {
 
 	protected static final long serialVersionUID = 1L;
 	protected String idUser;
-	protected Integer idBono;
 	protected LocalDateTime date;
 	protected Integer time;
 	protected Integer idPista;
@@ -101,14 +100,6 @@ public abstract class ReservaAbstracta implements Serializable {
 		this.idPista = idPista;
 	}
 	
-	public Integer getIdBono() {
-		return idBono;
-	}
-
-	public void setIdBono(Integer idBono) {
-		this.idBono = idBono;
-	}
-
 	public float getPrice() {
 		return price;
 	}

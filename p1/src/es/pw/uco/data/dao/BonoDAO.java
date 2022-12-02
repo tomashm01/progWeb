@@ -197,7 +197,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		return null;
 	}
 	
-	public boolean pairReserveBono(Integer idBono,Integer idReserva) {
+	public boolean pairReserveBono(Integer idBono,Integer idReserva,Integer posicion) {
 		Conexion conexController = Conexion.getInstance();
 		Connection conex = conexController.getConnection();
 		String query = conexController.getSql().getProperty("INSERT_BONO_RESERVE");
@@ -205,11 +205,28 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 			PreparedStatement st = conex.prepareStatement(query);
 			st.setInt(1,idBono);
 			st.setInt(2, idReserva);
+			st.setInt(3,posicion);
 			return st.executeUpdate() == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	public Integer getNextPositicon(Integer idBono) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_POSITION_BONO");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, idBono);
+			ResultSet rs = st.executeQuery();
+			if (rs.next())
+				return rs.getInt("num");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 }

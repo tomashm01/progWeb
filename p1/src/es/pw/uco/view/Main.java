@@ -11,22 +11,28 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import es.pw.uco.business.enums.EstadoKart;
+import es.pw.uco.business.enums.DificultadPista;
+
 import es.pw.uco.business.circuit.handlers.CircuitHandler;
 import es.pw.uco.business.circuit.models.Kart;
 import es.pw.uco.business.circuit.models.Pista;
-import es.pw.uco.business.enums.DificultadPista;
-import es.pw.uco.business.enums.EstadoKart;
+
 import es.pw.uco.business.reserve.handlers.ReservaHandler;
 import es.pw.uco.business.reserve.models.factory.ModalidadBono;
 import es.pw.uco.business.reserve.models.factory.ModalidadIndividual;
 import es.pw.uco.business.reserve.models.factory.ReservaAbstracta;
+import es.pw.uco.business.reserve.models.factory.ReservaFamiliar;
+
 import es.pw.uco.business.user.handlers.UsuarioHandler;
 import es.pw.uco.business.user.models.Usuario;
 
 public class Main {
 
 	public static void main(String[] args) {
-
+		/*String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds*/
+		System.out.println(ReservaHandler.getInstance().addReservaBono(new ReservaFamiliar("174@uco.es",LocalDateTime.of(2030, 8, 12, 12, 12),10,1,10f,0f,1,1)));
+		if(true)return;
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
@@ -79,8 +85,8 @@ public class Main {
 						System.out.println("Correo electronico:");
 						email = input.nextLine();
 
-						System.out.println("Añ adiendo usuario...");
-						//UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2, email));
+						System.out.println("Añadiendo usuario...");
+						UsuarioHandler.getInstance().addUser(new Usuario(fullName, date2,LocalDate.now(), email,"1234","ADMIN"));
 						System.out.println("El usuario ha sido añadido correctamente.");
 					}
 
