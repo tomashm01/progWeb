@@ -31,8 +31,6 @@ public class Main {
 
 	public static void main(String[] args) {
 		/*String idUser, LocalDateTime date, Integer time, Integer idPista, float price,float discount, Integer id,Integer numChilds*/
-		System.out.println(ReservaHandler.getInstance().addReservaBono(new ReservaFamiliar("174@uco.es",LocalDateTime.of(2030, 8, 12, 12, 12),10,1,10f,0f,1,1)));
-		if(true)return;
 		String fullName, email;
 		boolean valid = false;
 		int mainSelect = 0;
