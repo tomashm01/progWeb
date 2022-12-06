@@ -1,0 +1,83 @@
+body {
+    background: #32373B;
+   }
+   .cajaRoja{
+   transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: rgb(220, 171, 171);
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+    }
+   .form-style-6{
+       font: 95% Arial, Helvetica, sans-serif;
+       max-width: 400px;
+       margin: 10px auto;
+       padding: 16px;
+       background: #DBDEDF;
+   }
+   .form-style-6 h1{
+       background: #43D1AF;
+       padding: 20px 0;
+       font-size: 140%;
+       font-weight: 300;
+       text-align: center;
+       color: #fff;
+       margin: -16px -16px 16px -16px;
+   }
+   .cajaBlanca
+   {
+   		transition: all 0.3s ease-in-out;
+       -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+       -ms-transition: all 0.30s ease-in-out;
+       -o-transition: all 0.30s ease-in-out;
+       outline: none;
+       box-sizing: border-box;
+       -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+       width: 100%;
+       background: #fff;
+       margin-bottom: 4%;
+       border: 1px solid #ccc;
+       padding: 3%;
+       color: #555;
+       font: 95% Arial, Helvetica, sans-serif;
+   }
+   .cajaBlanca:focus
+   {
+       box-shadow: 0 0 5px #43D1AF;
+       padding: 3%;
+       border: 1px solid #43D1AF;
+   }
+ 
+   .form-style-6 input[type="submit"],
+   .form-style-6 input[type="reset"],
+   .form-style-6 input[type="button"]{
+       box-sizing: border-box;
+       -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+       width: 100%;
+       padding: 3%;
+       background: #38A595;
+       border-bottom-style: 2px solid #fff;
+       border-top-style: 2px solid #fff;
+       border-right-style: 2px solid #fff;
+       border-left-style: 2px solid #fff;	
+       color: #fff;
+   }
+   .form-style-6 input[type="submit"]:hover,
+   .form-style-6 input[type="reset"]:hover,
+   .form-style-6 input[type="button"]:hover{
+       background: #32373B;
+   }
