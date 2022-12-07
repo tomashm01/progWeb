@@ -12,7 +12,7 @@
 <%
 request.getSession().removeAttribute("User");
 %>
-<jsp:forward page="../../index.jsp" />
+<jsp:forward page="../../../index.jsp" />
 
 </body>
 </html>

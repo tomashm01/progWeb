@@ -37,6 +37,5 @@ public class BonoDTO {
 	public void setReserves(ArrayList<Integer> reserves) {
 		this.reserves = reserves;
 	}
-	
 
 }

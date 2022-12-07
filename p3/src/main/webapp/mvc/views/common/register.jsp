@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Registro</title>
 </head>
-    <link rel="stylesheet" href="../../css/estilos.css">
+    <link rel="stylesheet" href="../../../css/estilos.css">
   <body>
     <div class="form-style-6">
     <%
@@ -17,7 +17,7 @@
 	<%
 	}
     %>
-      <form id="formulario"  method="post" action= "../controllers/registerController.jsp">
+      <form id="formulario"  method="post" action= "../../controllers/common/registerController.jsp">
         <div class="formulario__grupo" id="grupoUsuario">
             <input class="cajaBlanca" type="text" 	placeholder="Nombre Apellido1 Apellido2" id="nombrecompleto" name="nombrecompleto">
         </div>
@@ -30,8 +30,8 @@
       </form> 
       
     </div>
-        <a href="../controllers/loginController.jsp">Login</a>
+        <a href="../../controllers/common/loginController.jsp">Login</a>
   </body>
-  <script src="../../js/script.js"></script>
+  <script src="../../../js/script.js"></script>
 
 </html>

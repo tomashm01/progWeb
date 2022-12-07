@@ -22,12 +22,12 @@
 	
 	if( email == null ){
 	%>
-		<jsp:forward page="../views/register.jsp" />
+		<jsp:forward page="../../views/common/register.jsp" />
 	<%
 	}
 	if( fechaNacimiento == null){
 	%>
-		<jsp:forward page="../views/register.jsp">
+		<jsp:forward page="../../views/common/register.jsp">
 	    	<jsp:param name="ErrorRegister" value="true" />
 		</jsp:forward>
 	<%
@@ -36,7 +36,7 @@
 	Usuario register = new Usuario(nombreCompleto,nacimiento,inscripcion,email,password,rol);
 	if( ! UsuarioHandler.getInstance().addUser(register)){
 	%>
-		<jsp:forward page="../views/register.jsp">
+		<jsp:forward page="../../views/common/register.jsp">
 		    <jsp:param name="ErrorRegister" value="true" />
 		</jsp:forward>
 	<%
@@ -53,7 +53,7 @@
 		<jsp:setProperty property="antiguedad" 		value="<%=register.antiquity()%>" name="User"/>
 		<jsp:setProperty property="mayorEdad" 		value="<%=register.isMayorEdad()%>" name="User"/>
 		
-		<jsp:forward page="../../index.jsp" />
+		<jsp:forward page="../../../index.jsp" />
 	<%
 	}
 	%>

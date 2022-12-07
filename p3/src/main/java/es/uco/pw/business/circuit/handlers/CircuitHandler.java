@@ -1,12 +1,6 @@
 package es.uco.pw.business.circuit.handlers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import es.uco.pw.business.enums.DificultadPista;
 import es.uco.pw.business.circuit.dto.KartDTO;
@@ -288,27 +282,4 @@ public class CircuitHandler {
 		return pistaList;
 	}	
 	
-	
-	/**
-	 * Carga path de karts y pistas
-	 */
-	public static void loadFilesPath() {
-		Properties prop = new Properties();
-		String filename = "src/data.properties";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-			prop.load(reader);
-
-			String path = "datos/";
-			karts_file = path + prop.getProperty("karts_file");
-			pistas_file = path + prop.getProperty("pistas_file");
-
-			// Captura de excepciones
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
-			System.out.println("ERROR: No se ha podido leer el fichero");
-		}
-	}
-
 }

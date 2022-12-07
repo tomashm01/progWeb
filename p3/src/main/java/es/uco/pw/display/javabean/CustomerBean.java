@@ -1,9 +1,11 @@
 package es.uco.pw.display.javabean;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class CustomerBean {
+public class CustomerBean implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private LocalDate fechaNacimiento;
 	private LocalDate fechaIncripcion;

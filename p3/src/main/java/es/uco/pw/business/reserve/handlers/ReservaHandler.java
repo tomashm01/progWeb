@@ -35,6 +35,71 @@ public class ReservaHandler {
 		return ReservaHandler.instance;
 	}
 
+	public boolean verifyReserve(ReservaAbstracta reserve) {
+		
+		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
+			//System.out.println("El id de la pista no existe");
+			return false;
+		}
+		if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
+			//System.out.println("El usuario que va a reservar no existe en la bd");
+			return false;
+		}
+		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
+		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
+
+		if (!user.isMayorEdad()) {
+			//System.out.println("El responsble de la reserva no es mayor de edad.");
+			return false;
+		}
+		if (!pista.isAvailable()) {
+			//System.out.println("La pista no est� disponible para reservas.");
+			return false;
+		}
+		if (!pista.getDifficulty().equals(reserve.getType())) {
+			//System.out.println("La dificultad de la pista no coincide con la dificultad de la reserva.");
+			return false;
+		}
+		if (!(pista.getMaxKarts() >= reserve.getNumPlayers())) {
+			//System.out.println("Hay m�s personas que el numero m�ximo permitido en la pista.");
+			return false;
+		}
+		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
+			//System.out.println("No hay suficientes karts disponibles para todos los reservantes.");
+			return false;
+		}
+		if (reserve.getNumPlayers() == 0) {
+			//System.out.println("El numero de integrantes de la reserva no puede ser cero.");
+			return false;
+		}
+		if (!reserve.validate()) {
+			//System.out.println("Los integrantes de la reserva no est�n permitidos en el tipo de pista seleccionado.");
+			return false;
+		}
+
+		if (reserve.getDate().isBefore(LocalDateTime.now())) {
+			//System.out.println("No se puede hacer una reserva en el pasado");
+			return false;
+		}
+		if (reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))) {
+			//System.out.println("No se puede reservar a 24h o antes de la fecha de la reserva");
+			return false;
+		}
+		for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
+			LocalDateTime t11 = t1.getDate();
+			LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
+			LocalDateTime t21 = reserve.getDate();
+			LocalDateTime t22 = reserve.getDate().plus(reserve.getTime(), ChronoUnit.MINUTES);
+
+			if (!((t12.isBefore(t21) && t12.isBefore(t22)) || (t11.isAfter(t21) && t11.isAfter(t22)))) {
+				//System.out.println("Ya hay una reserva en el intervalo que se quiere reservar, en esa misma pista.");
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Hacer reservas individuales: Las reservas deberán realizarse por un usuario
 	 * registrado y en una pista que cumpla las condiciones de la reserva (número de
@@ -46,70 +111,16 @@ public class ReservaHandler {
 	 */
 	public boolean addReservaIndividual(ReservaAbstracta reserve) {
 
-		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
-			System.out.println("El id de la pista no existe");
+		if(! ReservaHandler.getInstance().verifyReserve(reserve))
 			return false;
-		}
-		if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
-			System.out.println("El usuario que va a reservar no existe en la bd");
-			return false;
-		}
+		
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
-
-		if (!user.isMayorEdad()) {
-			System.out.println("El responsble de la reserva no es mayor de edad.");
-			return false;
-		}
-		if (!pista.isAvailable()) {
-			System.out.println("La pista no est� disponible para reservas.");
-			return false;
-		}
-		if (!pista.getDifficulty().equals(reserve.getType())) {
-			System.out.println("La dificultad de la pista no coincide con la dificultad de la reserva.");
-			return false;
-		}
-		if (!(pista.getMaxKarts() >= reserve.getNumPlayers())) {
-			System.out.println("Hay m�s personas que el numero m�ximo permitido en la pista.");
-			return false;
-		}
-		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
-			System.out.println("No hay suficientes karts disponibles para todos los reservantes.");
-			return false;
-		}
-		if (reserve.getNumPlayers() == 0) {
-			System.out.println("El numero de integrantes de la reserva no puede ser cero.");
-			return false;
-		}
-		if (!reserve.validate()) {
-			System.out.println("Los integrantes de la reserva no est�n permitidos en el tipo de pista seleccionado.");
-			return false;
-		}
-
-		if (reserve.getDate().isBefore(LocalDateTime.now())) {
-			System.out.println("No se puede hacer una reserva en el pasado");
-			return false;
-		}
-		if (reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))) {
-			System.out.println("No se puede reservar a 24h o antes de la fecha de la reserva");
-			return false;
-		}
-		for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
-			LocalDateTime t11 = t1.getDate();
-			LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
-			LocalDateTime t21 = reserve.getDate();
-			LocalDateTime t22 = reserve.getDate().plus(reserve.getTime(), ChronoUnit.MINUTES);
-
-			if (!((t12.isBefore(t21) && t12.isBefore(t22)) || (t11.isAfter(t21) && t11.isAfter(t22)))) {
-				System.out.println("Ya hay una reserva en el intervalo que se quiere reservar, en esa misma pista.");
-				return false;
-			}
-		}
-
+		
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-
+		
 		if (!daoReserva.insert(new ReserveDTO(reserve))) {
 			return false;
 		}
@@ -120,6 +131,8 @@ public class ReservaHandler {
 				return false;
 			}
 		}
+
+		
 		return true;
 	}
 
@@ -139,69 +152,16 @@ public class ReservaHandler {
 
 	public boolean addReservaBono(ReservaAbstracta reserve) {
 
-		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
-			System.out.println("El id de la pista no existe");
+		if(! ReservaHandler.getInstance().verifyReserve(reserve))
 			return false;
-		}
-		if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
-			System.out.println("El usuario que va a reservar no existe en la bd");
-			return false;
-		}
+		
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
-
-		if (!user.isMayorEdad()) {
-			System.out.println("El responsble de la reserva no es mayor de edad.");
-			return false;
-		}
-		if (!pista.isAvailable()) {
-			System.out.println("La pista no est� disponible para reservas.");
-			return false;
-		}
-		if (!pista.getDifficulty().equals(reserve.getType())) {
-			System.out.println("La dificultad de la pista no coincide con la dificultad de la reserva.");
-			return false;
-		}
-		if (!(pista.getMaxKarts() >= reserve.getNumPlayers())) {
-			System.out.println("Hay m�s personas que el numero m�ximo permitido en la pista.");
-			return false;
-		}
-		if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
-			System.out.println("No hay suficientes karts disponibles para todos los reservantes.");
-			return false;
-		}
-		if (reserve.getNumPlayers() == 0) {
-			System.out.println("El numero de integrantes de la reserva no puede ser cero.");
-			return false;
-		}
-		if (!reserve.validate()) {
-			System.out.println("Los integrantes de la reserva no est�n permitidos en el tipo de pista seleccionado.");
-			return false;
-		}
-
-		if (reserve.getDate().isBefore(LocalDateTime.now())) {
-			System.out.println("No se puede hacer una reserva en el pasado");
-			return false;
-		}
-		if (reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))) {
-			System.out.println("No se puede reservar a 24h o antes de la fecha de la reserva");
-			return false;
-		}
-		for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
-			LocalDateTime t11 = t1.getDate();
-			LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
-			LocalDateTime t21 = reserve.getDate();
-			LocalDateTime t22 = reserve.getDate().plus(reserve.getTime(), ChronoUnit.MINUTES);
-
-			if (!((t12.isBefore(t21) && t12.isBefore(t22)) || (t11.isAfter(t21) && t11.isAfter(t22)))) {
-				System.out.println("Ya hay una reserva en el intervalo que se quiere reservar, en esa misma pista.");
-				return false;
-			}
-		}
+		
 		reserve.setPrice(calculatePrice(reserve.getTime()));
 		float aux = (user.antiquity() > 2) ? 0.10f : 0f;
 		reserve.setDiscount(aux);
-
+		
 		if (!daoReserva.insert(new ReserveDTO(reserve))) {
 			return false;
 		}

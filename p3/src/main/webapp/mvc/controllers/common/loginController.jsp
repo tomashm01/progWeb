@@ -17,12 +17,12 @@
 	
 	if(email == null){
 	%>	
-		<jsp:forward page="../views/login.jsp" />
+		<jsp:forward page="../../views/common/login.jsp" />
 	<%
 	}
 	else if( ! UsuarioHandler.getInstance().checkout(email,password)){
 	%>
-		<jsp:forward page="../views/login.jsp">
+		<jsp:forward page="../../views/common/login.jsp">
 		    <jsp:param name="Errorlogin" value="true" />
 		</jsp:forward>
 	<%
@@ -38,7 +38,7 @@
 		<jsp:setProperty property="antiguedad" 		value="<%=login.antiquity()%>" 			name="User"/>
 		<jsp:setProperty property="mayorEdad" 	value="<%=login.isMayorEdad()%>" 		name="User"/>
 		
-		<jsp:forward page="../../index.jsp" />
+		<jsp:forward page="../../../index.jsp" />
 	<%
 	}
 	%>

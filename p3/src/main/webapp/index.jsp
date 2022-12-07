@@ -7,20 +7,22 @@
 
 <jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 
-<%! boolean debug=true; %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>PW</title>
 </head>
-    <link rel="stylesheet" href="./css/estilos.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
   <body>
+  
+
   	<%
+
   	if(User.getEmail() == null || User.getRol() == null){
   	%>
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/registerController.jsp">Registrarse</a></p>
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/loginController.jsp">Login</a></p>
+		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/registerController.jsp">Sign in</a></p>
+		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/loginController.jsp">Login</a></p>
   	<%
   	}else if(User.getRol().equals("ADMIN")){
 	%>
@@ -48,8 +50,8 @@
 	  </tbody>
 	</table>
 
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/logoutController.jsp">logout</a></p>
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/modifyUserController.jsp">ModificarUsuario</a></p>
+		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/logoutController.jsp">logout</a></p>
+  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/modifyUserController.jsp">ModificarUsuario</a></p>
   	<%
   	}else if(User.getRol().equals("USER")){
   		String fecha = LocalDate.now().toString();
@@ -65,8 +67,8 @@
 	<%
 	  	}
   	%>	
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/logoutController.jsp">logout</a></p>
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/modifyUserController.jsp">ModificarUsuario</a></p>
+  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/logoutController.jsp">logout</a></p>
+  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/common/modifyUserController.jsp">ModificarUsuario</a></p>
   	<% 	
   	}
   	%>

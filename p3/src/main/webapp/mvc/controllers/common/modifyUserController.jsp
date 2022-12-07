@@ -21,7 +21,7 @@
 	String nombreCompleto = request.getParameter("nombrecompleto");
 	if( password == null && fechaNacimiento == null && nombreCompleto == null){
 	%>
-		<jsp:forward page="../views/modifyUserView.jsp" />
+		<jsp:forward page="../../views/common/modifyUserView.jsp" />
 	<%
 	}
 	
@@ -39,7 +39,7 @@
 	Usuario modify = new Usuario(nombreCompleto,nacimiento,inscripcion,email,password,rol);
 	if( ! UsuarioHandler.getInstance().editUser(modify)){
 	%>
-		<jsp:forward page="../views/modifyUserView.jsp">
+		<jsp:forward page="../../views/common/modifyUserView.jsp">
 		    <jsp:param name="ErrorModificacion" value="true" />
 		</jsp:forward>
 	<%
@@ -54,7 +54,7 @@
 		<jsp:setProperty property="antiguedad" 		value="<%=modify.antiquity()%>" name="User"/>
 		<jsp:setProperty property="mayorEdad" 		value="<%=modify.isMayorEdad()%>" name="User"/>
 		
-		<jsp:forward page="../../index.jsp" />
+		<jsp:forward page="../../../index.jsp" />
 	<%
 	}
 	%>
