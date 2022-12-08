@@ -1,12 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ page import="es.uco.pw.business.circuit.models.Pista" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Modify Kart</title>
 </head>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
 
+	<%
+	String indexViewPath = application.getInitParameter("index");
+	ArrayList<Pista> pistas = new ArrayList<Pista>(); 
+	if(request.getAttribute("arrayPistas") != null){
+		pistas = (ArrayList<Pista>)request.getAttribute("arrayPistas");
+	}
+	%>
+	    <div class="form-style-6">
+			<form id="formulario"  method="get" action= "/p3/modifyKart">
+			 <label>Id</label>
+			   <input class="cajaBlanca" type="number" name="id" id="id">
+			  <div class="formulario__grupo" id="grupoKart">
+			  	<label>Tipo</label>
+			  	<div class="cajaBlanca">
+			      <input type="radio" name="tipoKart" value="true" checked> Adulto
+			      <input type="radio" name="tipoKart" value="false"> Infantil
+			 	 </div>
+			  </div>
+			  <label>Estado</label>
+			  <select class="cajaBlanca" id="estadoKart" name="estadoKart">
+			    <option value="DISPONIBLE">Disponible</option>
+			    <option value="RESERVADO">Reservado</option>
+			    <option value="MANTENIMIENTO">Mantenimiento</option>
+			  </select><br>
+			  <label>Pista asignada</label>
+			  <select class="cajaBlanca" id="idPista" name="idPista">
+				<%for(Pista it : pistas){ %>
+			    	<option value="<%=it.getId()%>"><%=it.getName()%></option>
+			    <%} %>
+			    <option value="-1">Ninguna</option>
+			  </select><br>
+			  <input type="submit" id="submit" value="Submit"><br><br>
+			  <input type="reset" id="reset">
+			</form>
+		<%
+		if(request.getAttribute("response") != null){
+			if(request.getAttribute("response") == "success"){
+		%>
+				<p class="cajaBlanca"><%=request.getAttribute("response")%></p>
+			<%}else{%>
+				<p class="cajaRoja"><%=request.getAttribute("response")%></p>
+		<% 
+			}
+		} 
+		%>
+		</div>
+		<p><a href="${pageContext.request.contextPath}<%=indexViewPath%>">Inicio</a></p>
 </body>
 </html>

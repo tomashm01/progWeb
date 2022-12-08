@@ -4,12 +4,119 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    
+<!-- properties -->
+    
    <context-param>
       <param-name>propertiesFileSQL</param-name>
-      <param-value>./sql.properties</param-value>
+      <param-value>/p3/WEB-INF/sql.properties</param-value>
    </context-param>
+   
    <context-param>
       <param-name>propertiesFileCONFIG</param-name>
-      <param-value>./config.properties</param-value>
+      <param-value>/p3/WEB-INF/config.properties</param-value>
    </context-param>
+   
+<!-- controllers -->
+   <context-param>
+      <param-name>loginController</param-name>
+      <param-value>/mvc/controllers/common/loginController.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>logoutController</param-name>
+      <param-value>/mvc/controllers/common/logoutController.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>modifyUserController</param-name>
+      <param-value>/mvc/controllers/common/modifyUserController.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>registerController</param-name>
+      <param-value>/mvc/controllers/common/registerController.jsp</param-value>
+   </context-param>
+
+   <context-param>
+      <param-name>pruebasController</param-name>
+      <param-value>/mvc/controllers/common/pruebas.jsp</param-value>
+   </context-param> 
+<!-- views --> 
+	
+   <!-- admin -->
+	 
+   <context-param>
+      <param-name>addKartView</param-name>
+      <param-value>/mvc/views/admin/addKartView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>addPistaView</param-name>
+      <param-value>/mvc/views/admin/addPistaView.jsp</param-value>
+   </context-param>
+
+   <context-param>
+      <param-name>deleteReserveView</param-name>
+      <param-value>/mvc/views/admin/deleteReserveView.jsp</param-value>
+   </context-param>   
+   
+   <context-param>
+      <param-name>modifyKartView</param-name>
+      <param-value>/mvc/views/admin/modifyKartView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>modifyPistaView</param-name>
+      <param-value>/mvc/views/admin/modifyPistaView.jsp</param-value>
+   </context-param> 
+   
+   <!-- common -->
+   
+   <context-param>
+      <param-name>login</param-name>
+      <param-value>/mvc/views/common/login.jsp</param-value>
+   </context-param>    
+
+   <context-param>
+      <param-name>modifyUserView</param-name>
+      <param-value>/mvc/views/common/modifyUserView.jsp</param-value>
+   </context-param> 
+   
+   <context-param>
+      <param-name>register</param-name>
+      <param-value>/mvc/views/common/register.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>pruebasView</param-name>
+      <param-value>/mvc/views/common/pruebasView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>index</param-name>
+      <param-value>/index.jsp</param-value>
+   </context-param> 
+   
+   <!-- user -->
+ 
+   <context-param>
+      <param-name>addReserveView</param-name>
+      <param-value>/mvc/views/user/addReserveView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>modifyReserve</param-name>
+      <param-value>/mvc/views/user/modifyReserve.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>reserveView</param-name>
+      <param-value>/mvc/views/user/reserveView.jsp</param-value>
+   </context-param>    
+   
+<!-- servlets -->   
+
+
+          
 </web-app>

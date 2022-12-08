@@ -13,6 +13,9 @@
 </head>
 <body>
 	<%
+	String registerViewPath = application.getInitParameter("register");
+	String indexViewPath = application.getInitParameter("index");
+	
 	String email = request.getParameter("email");
 	String password = request.getParameter("password");
 	String fechaNacimiento = request.getParameter("date");;
@@ -22,12 +25,12 @@
 	
 	if( email == null ){
 	%>
-		<jsp:forward page="../../views/common/register.jsp" />
+		<jsp:forward page="<%=registerViewPath%>" />
 	<%
 	}
 	if( fechaNacimiento == null){
 	%>
-		<jsp:forward page="../../views/common/register.jsp">
+		<jsp:forward page="<%=registerViewPath%>">
 	    	<jsp:param name="ErrorRegister" value="true" />
 		</jsp:forward>
 	<%
@@ -36,7 +39,7 @@
 	Usuario register = new Usuario(nombreCompleto,nacimiento,inscripcion,email,password,rol);
 	if( ! UsuarioHandler.getInstance().addUser(register)){
 	%>
-		<jsp:forward page="../../views/common/register.jsp">
+		<jsp:forward page="<%=registerViewPath%>">
 		    <jsp:param name="ErrorRegister" value="true" />
 		</jsp:forward>
 	<%
@@ -53,7 +56,7 @@
 		<jsp:setProperty property="antiguedad" 		value="<%=register.antiquity()%>" name="User"/>
 		<jsp:setProperty property="mayorEdad" 		value="<%=register.isMayorEdad()%>" name="User"/>
 		
-		<jsp:forward page="../../../index.jsp" />
+		<jsp:forward page="<%=indexViewPath%>" />
 	<%
 	}
 	%>

@@ -148,7 +148,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setString(1,email);
 			ResultSet rs = st.executeQuery();
 			if (rs.next())
-				return  rs.getInt("num");
+				return  rs.getInt(1);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -12,17 +12,21 @@
 </head>
 <body>
 	<%
+	String loginViewPath = application.getInitParameter("login");
+	String indexViewPath = application.getInitParameter("index");
+	
 	String email = request.getParameter("email");
 	String password = request.getParameter("password");
+
 	
 	if(email == null){
 	%>	
-		<jsp:forward page="../../views/common/login.jsp" />
+	<jsp:forward page="<%=loginViewPath%>" />
 	<%
 	}
 	else if( ! UsuarioHandler.getInstance().checkout(email,password)){
 	%>
-		<jsp:forward page="../../views/common/login.jsp">
+		<jsp:forward page="<%=loginViewPath%>">
 		    <jsp:param name="Errorlogin" value="true" />
 		</jsp:forward>
 	<%
@@ -36,9 +40,9 @@
 		<jsp:setProperty property="rol" 			value="<%=login.getRol()%>" 			name="User"/>
 		<jsp:setProperty property="password" 		value="<%=password%>" 					name="User"/>
 		<jsp:setProperty property="antiguedad" 		value="<%=login.antiquity()%>" 			name="User"/>
-		<jsp:setProperty property="mayorEdad" 	value="<%=login.isMayorEdad()%>" 		name="User"/>
+		<jsp:setProperty property="mayorEdad" 	value="<%=login.isMayorEdad()%>" 			name="User"/>
 		
-		<jsp:forward page="../../../index.jsp" />
+		<jsp:forward page="<%=indexViewPath%>" />
 	<%
 	}
 	%>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Reserve view</title>
+<title>Pruebas vista</title>
 </head>
 <body>
 
