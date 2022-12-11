@@ -110,8 +110,10 @@ public class addReserveServlet extends HttpServlet {
 						resultado =  ReservaHandler.getInstance().addReservaBono(reserva);
 					}
 				}
-				
-				request.setAttribute("response",respuesta);
+				String salida = "fail";
+				if(resultado)salida="success";
+				request.setAttribute("response",salida);
+				request.setAttribute("error",respuesta);
 				request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
 				return;
 			}

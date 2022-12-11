@@ -5,18 +5,6 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
-<!-- properties -->
-    
-   <context-param>
-      <param-name>propertiesFileSQL</param-name>
-      <param-value>/WEB-INF/sql.properties</param-value>
-   </context-param>
-   
-   <context-param>
-      <param-name>propertiesFileCONFIG</param-name>
-      <param-value>/WEB-INF/config.properties</param-value>
-   </context-param>
-   
 <!-- controllers -->
    <context-param>
       <param-name>loginController</param-name>
