@@ -1,5 +1,6 @@
 package es.uco.pw.business.circuit.handlers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import es.uco.pw.business.enums.DificultadPista;
@@ -239,6 +240,14 @@ public class CircuitHandler {
 			}
 		}
 		return pistasFree;
+	}
+	
+	public ArrayList<Pista> getFreePistas(DificultadPista tipo,LocalDateTime fechaInicio,LocalDateTime fechaFin,Integer numAdults,Integer numChilds){
+		ArrayList<Pista> pistaList = new ArrayList<Pista>();
+		for(PistaDTO it : daoPista.getFreePistas(tipo,fechaInicio,fechaFin,numAdults,numChilds)) {
+			pistaList.add( new Pista(it));
+		}
+		return pistaList;
 	}
 	
 	/**

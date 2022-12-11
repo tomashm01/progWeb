@@ -22,7 +22,6 @@
 	  	%>
 			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">Sign in</a></p>
 			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">Login</a></p>
-			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("pruebasController")%>">Pruebas</a></p>
 	  	<%
   	}else if(User.getRol().equals("ADMIN")){
 		%>
@@ -72,9 +71,9 @@
 		<%
 		  	}
 	  	%>	
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("addReserveView")%>">Nueva reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyReserve")%>">Modificar reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("reserveView")%>">Ver reserva</a></p>
+	  		<p><a href="${pageContext.request.contextPath}/addReserve">Nueva reserva</a></p>
+	  		<p><a href="${pageContext.request.contextPath}/modifyReserve">Modificar reserva</a></p>
+	  		<p><a href="${pageContext.request.contextPath}/viewReserve">Ver reserva</a></p>
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>
 	  	<% 	

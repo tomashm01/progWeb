@@ -23,8 +23,6 @@ import es.uco.pw.business.circuit.handlers.CircuitHandler;
 import es.uco.pw.business.circuit.models.Kart;
 import es.uco.pw.business.circuit.models.Pista;
 
-
-
 public class ReservaHandler {
 	private static ReservaHandler instance = null;
 	private static ReserveDAO daoReserva;
@@ -38,7 +36,60 @@ public class ReservaHandler {
 		}
 		return ReservaHandler.instance;
 	}
-
+	
+	public String KnowMyFault(ReservaAbstracta reserve) {
+			
+			if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
+				return("El id de la pista no existe");
+			}
+			if (!UsuarioHandler.getInstance().existEmail(reserve.getIdUser())) {
+				return("El usuario que va a reservar no existe en la bd");
+			}
+			Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
+			Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
+	
+			if (!user.isMayorEdad()) {
+				return("El responsble de la reserva no es mayor de edad.");
+			}
+			if (!pista.isAvailable()) {
+				return("La pista no est� disponible para reservas.");
+			}
+			if (!pista.getDifficulty().equals(reserve.getType())) {
+				return("La dificultad de la pista no coincide con la dificultad de la reserva.");
+			}
+			if (!(pista.getMaxKarts() >= reserve.getNumPlayers())) {
+				return("Hay más personas que el numero m�ximo permitido en la pista.");
+			}
+			if ((reserve.getNumPlayers() > pista.consultarKartsDisponibles().size())) {
+				return("No hay suficientes karts disponibles para todos los reservantes.");
+			}
+			if (reserve.getNumPlayers() == 0) {
+				return("El numero de integrantes de la reserva no puede ser cero.");
+			}
+			if (!reserve.validate()) {
+				return("Los integrantes de la reserva no est�n permitidos en el tipo de pista seleccionado.");
+			}
+	
+			if (reserve.getDate().isBefore(LocalDateTime.now())) {
+				return("No se puede hacer una reserva en el pasado");
+			}
+			if (reserve.getDate().isBefore(LocalDateTime.now().minus(24, ChronoUnit.HOURS))) {
+				return("No se puede reservar a 24h o antes de la fecha de la reserva");
+			}
+			for (ReservaAbstracta t1 : getReserveByPistaDay(reserve.getIdPista(), reserve.getDate().toLocalDate())) {
+				LocalDateTime t11 = t1.getDate();
+				LocalDateTime t12 = t1.getDate().plus(t1.getTime(), ChronoUnit.MINUTES);
+				LocalDateTime t21 = reserve.getDate();
+				LocalDateTime t22 = reserve.getDate().plus(reserve.getTime(), ChronoUnit.MINUTES);
+	
+				if (!((t12.isBefore(t21) && t12.isBefore(t22)) || (t11.isAfter(t21) && t11.isAfter(t22)))) {
+					return("Ya hay una reserva en el intervalo que se quiere reservar, en esa misma pista.");
+				}
+			}
+			
+			return "success";
+		}
+	
 	public boolean verifyReserve(ReservaAbstracta reserve) {
 		
 		if (!CircuitHandler.getInstance().existPista(reserve.getIdPista())) {
@@ -135,8 +186,6 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-
-		
 		return true;
 	}
 
@@ -389,6 +438,20 @@ public class ReservaHandler {
 			}
 		}
 		return reserversFiltered;
+	}
+	
+	public ArrayList<ReservaAbstracta> geReservesByUserByDates(LocalDate fechaInicio,LocalDate fechaFin,String idUser){
+		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
+		for (ReserveDTO it : daoReserva.geReservesByUserByDates(fechaInicio,fechaFin,idUser)) {
+			if (it.getTipo().equals("FAMILIAR")) {
+				reserversFiltered.add(new ReservaFamiliar(it));
+			} else if (it.getTipo().equals("ADULTOS")) {
+				reserversFiltered.add(new ReservaAdultos(it));
+			} else {
+				reserversFiltered.add(new ReservaInfantil(it));
+			}
+		}
+		return reserversFiltered;		
 	}
 
 	/**

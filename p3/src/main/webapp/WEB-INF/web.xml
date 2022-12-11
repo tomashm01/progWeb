@@ -9,12 +9,12 @@
     
    <context-param>
       <param-name>propertiesFileSQL</param-name>
-      <param-value>/p3/WEB-INF/sql.properties</param-value>
+      <param-value>/WEB-INF/sql.properties</param-value>
    </context-param>
    
    <context-param>
       <param-name>propertiesFileCONFIG</param-name>
-      <param-value>/p3/WEB-INF/config.properties</param-value>
+      <param-value>/WEB-INF/config.properties</param-value>
    </context-param>
    
 <!-- controllers -->
@@ -38,10 +38,6 @@
       <param-value>/mvc/controllers/common/registerController.jsp</param-value>
    </context-param>
 
-   <context-param>
-      <param-name>pruebasController</param-name>
-      <param-value>/mvc/controllers/common/pruebas.jsp</param-value>
-   </context-param> 
 <!-- views --> 
 	
    <!-- admin -->
@@ -86,11 +82,6 @@
    <context-param>
       <param-name>register</param-name>
       <param-value>/mvc/views/common/register.jsp</param-value>
-   </context-param>
-   
-   <context-param>
-      <param-name>pruebasView</param-name>
-      <param-value>/mvc/views/common/pruebasView.jsp</param-value>
    </context-param>
    
    <context-param>

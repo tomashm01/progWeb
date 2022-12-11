@@ -33,13 +33,14 @@ public class addKartServlet extends HttpServlet {
 		String pista = request.getParameter("idPista");
 		String estadoKart = request.getParameter("estadoKart");
 		String tipo = request.getParameter("tipoKart");
+		String numero = request.getParameter("cantidad");
 		
-		if(pista == null && estadoKart == null && tipo == null) {
+		if(pista == null && estadoKart == null && tipo == null && numero == null ) {
 			request.setAttribute("arrayPistas",CircuitHandler.getInstance().getAllPistas());
 			request.getRequestDispatcher(getServletContext().getInitParameter("addKartView")).forward(request, response);
 			return;
 		}
-		if(pista == null || estadoKart == null || tipo == null) {
+		if(pista == null || estadoKart == null || tipo == null || numero == null) {
 			request.setAttribute("response","fail");
 			request.getRequestDispatcher(getServletContext().getInitParameter("addKartView")).forward(request, response);
 			return;
@@ -48,7 +49,15 @@ public class addKartServlet extends HttpServlet {
 			Integer idPista = Integer.parseInt(pista);
 			EstadoKart estado = Kart.toEstadoKart(estadoKart);
 			boolean isAdult = Boolean.parseBoolean(tipo);
-			CircuitHandler.getInstance().addKart(new Kart(isAdult,estado,idPista));
+			Integer n =  Integer.parseInt(numero);
+			if(n<1) {
+				request.setAttribute("response","fail");
+				request.getRequestDispatcher(getServletContext().getInitParameter("addKartView")).forward(request, response);
+				return;
+			}
+			for(int i=0;i<n;i++) {
+				CircuitHandler.getInstance().addKart(new Kart(isAdult,estado,idPista));				
+			}
 			request.setAttribute("response","success");
 		}catch(Exception e) {
 			request.setAttribute("response","fail");

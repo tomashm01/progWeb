@@ -3,6 +3,8 @@
     
 <%@ page import="es.uco.pw.business.circuit.models.Pista" %>
 <%@ page import="java.util.ArrayList" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,10 +43,13 @@
 			    <%} %>
 			    <option value="-1">Ninguna</option>
 			  </select><br>
+			  <label>Número de Karts con estas caracteristicas a crear</label>
+			  <input class="cajaBlanca" type="number" id="cantidad" name="cantidad">
 			  <input type="submit" id="submit" value="Submit"><br><br>
 			  <input type="reset" id="reset">
 			</form>
 		<%
+
 		if(request.getAttribute("response") != null){
 			if(request.getAttribute("response") == "success"){
 		%>

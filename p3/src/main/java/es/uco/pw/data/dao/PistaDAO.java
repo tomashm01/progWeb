@@ -3,9 +3,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import es.uco.pw.business.circuit.dto.*;
+import es.uco.pw.business.enums.DificultadPista;
 import es.uco.pw.data.common.Conexion;
 
 public class PistaDAO implements DAO<PistaDTO,Integer>{
@@ -101,5 +104,32 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 		return null;
 	}
 
-
+	/*SELECT_PISTAS_BY_PARAMS = SELECT distinct Pista.* FROM Pista 
+	WHERE Pista.disponible = 1
+	 AND Pista.dificultad = ?  
+	 AND (Pista.maxKarts >= ?) 
+	  AND Pista.id not in (Select Reserva.idPista from Reserva where Reserva.idPista = Pista.id AND Reserva.fecha BETWEEN ? AND ?);
+	*/
+	public ArrayList<PistaDTO> getFreePistas(DificultadPista tipo,LocalDateTime fechaInicio,LocalDateTime fechaFin,Integer numAdults,Integer numChilds){
+		Conexion conexController=Conexion.getInstance();
+		Connection conex=conexController.getConnection();
+		String query=conexController.getSql().getProperty("SELECT_PISTAS_BY_PARAMS");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setString(1,tipo.toString());
+			st.setInt(2, (numAdults+numChilds) );
+			st.setString(3,(fechaInicio.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00"));
+			st.setString(4,(fechaFin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00"));
+			ResultSet rs=st.executeQuery();
+			ArrayList<PistaDTO> pistas=new ArrayList<PistaDTO>();
+			while(rs.next()) {
+				pistas.add(new PistaDTO(rs.getInt("id"),rs.getString("nombre"), rs.getString("dificultad"), rs.getInt("maxKarts"),rs.getInt("disponible")));
+			}
+			return pistas;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }
