@@ -13,9 +13,13 @@
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
+	<!-- ACL -->
+	<%String aclUser = application.getInitParameter("aclUser"); %>
+	<jsp:include page="<%=aclUser%>"></jsp:include>
+	<!-- ACL -->
 	<%  
-	String indexViewPath = application.getInitParameter("index");
 	
+	String indexViewPath = application.getInitParameter("index");
 	if(request.getAttribute("arrayReserves") == null){	%>
 		    <div class="form-style-6">
 				<form id="formulario"  method="get" action= "/p3/viewReserve">

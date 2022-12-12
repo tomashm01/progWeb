@@ -5,12 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modify reserve</title>
+<title>Control Access</title>
 </head>
 <body>
-	<!-- ACL -->
-	<%String aclUser = application.getInitParameter("aclUser"); %>
-	<jsp:include page="<%=aclUser%>"></jsp:include>
-	<!-- ACL -->
+	<%
+	String returnPath = application.getInitParameter("index");
+
+	if(User.getRol() != null ){
+		%>
+		<jsp:forward page="<%= returnPath %>">
+		  <jsp:param name="ACL" value="Not allowed to go there" />
+		</jsp:forward>
+		<%
+	}
+	%>
 </body>
 </html>

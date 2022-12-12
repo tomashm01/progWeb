@@ -38,8 +38,11 @@ public class addReserveServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
-		
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
+		if(User == null ||! User.getRol().equals("USER")) {
+			request.setAttribute("ACL","Not allowed to go there");
+			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
+		}
 		String idUser = User.getEmail();
 		String Sfecha = request.getParameter("date");
 		String Sduracion = request.getParameter("time");
@@ -63,8 +66,13 @@ public class addReserveServlet extends HttpServlet {
 				DificultadPista dif = DificultadPista.valueOf(Stipo);
 				LocalDateTime fecha = LocalDateTime.parse(Sfecha,DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 				Integer duracion = Integer.parseInt(Sduracion);
-				Integer numAdults = Integer.parseInt(SnumAdults);
-				Integer numChilds = Integer.parseInt(SnumChilds);
+				
+				Integer numAdults = (SnumAdults == null)? 0: Integer.parseInt(SnumAdults);
+				Integer numChilds = (SnumChilds == null)? 0: Integer.parseInt(SnumChilds);
+				if(numAdults<0 || numChilds<0 || numAdults+numChilds <0) {
+					request.setAttribute("response","fail");
+					request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+				}
 				LocalDateTime fechaFin = fecha.plusMinutes(duracion);
 				
 				request.setAttribute("arrayPistas",CircuitHandler.getInstance().getFreePistas(dif,fecha,fechaFin,numAdults,numChilds));
@@ -110,8 +118,8 @@ public class addReserveServlet extends HttpServlet {
 						resultado =  ReservaHandler.getInstance().addReservaBono(reserva);
 					}
 				}
-				String salida = "fail";
-				if(resultado)salida="success";
+
+				String salida = (resultado) ? "sucess" : "fail";
 				request.setAttribute("response",salida);
 				request.setAttribute("error",respuesta);
 				request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
@@ -120,7 +128,7 @@ public class addReserveServlet extends HttpServlet {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("response","fail4");
+			request.setAttribute("response","fail");
 			request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
 			return;
 		}

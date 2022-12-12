@@ -6,8 +6,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import es.uco.pw.business.reserve.handlers.ReservaHandler;
+import es.uco.pw.display.javabean.CustomerBean;
 
 /**
  * Servlet implementation class deleteReserveServlet
@@ -27,6 +29,12 @@ public class deleteReserveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession  session = request.getSession();
+		CustomerBean User = (CustomerBean)session.getAttribute("User");
+		if(User == null ||! User.getRol().equals("ADMIN")) {
+			request.setAttribute("ACL","Not allowed to go there");
+			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
+		}
 		String id = request.getParameter("id");
 
 		
@@ -37,8 +45,9 @@ public class deleteReserveServlet extends HttpServlet {
 		}
 		try {
 			Integer idReserve = Integer.parseInt(id);
-			ReservaHandler.getInstance().removeReserve(idReserve);
-			request.setAttribute("response","success");
+			boolean resultado =ReservaHandler.getInstance().removeReserve(idReserve);
+			String respuesta = (resultado) ? "sucess" : "fail";
+			request.setAttribute("response",respuesta);
 		}catch(Exception e) {
 			request.setAttribute("response","fail");
 		}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +8,11 @@
 </head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <body>
+  
+<!-- ACL -->
+<%String aclNew = application.getInitParameter("aclNew"); %>
+<jsp:include page="<%=aclNew%>"></jsp:include>
+<!-- ACL -->
     <div class="form-style-6">
       <form id="formulario" method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">
         <input class="cajaBlanca" type="email" placeholder="email" name="email" id="email" ><br>

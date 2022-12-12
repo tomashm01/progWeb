@@ -15,7 +15,10 @@
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
-
+	<!-- ACL -->
+	<%String aclUser = application.getInitParameter("aclUser"); %>
+	<jsp:include page="<%=aclUser%>"></jsp:include>
+	<!-- ACL -->
 	<div class="form-style-6">
 	<%
 	String indexViewPath = application.getInitParameter("index");

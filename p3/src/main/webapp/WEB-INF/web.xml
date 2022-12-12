@@ -4,7 +4,7 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    
+
 <!-- controllers -->
    <context-param>
       <param-name>loginController</param-name>
@@ -96,6 +96,20 @@
    
 <!-- servlets -->   
 
+<!-- includes -->
 
-          
+   <context-param>
+      <param-name>aclAdmin</param-name>
+      <param-value>/include/aclAdmin.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>aclUser</param-name>
+      <param-value>/include/aclUser.jsp</param-value>
+   </context-param>
+
+   <context-param>
+      <param-name>aclNew</param-name>
+      <param-value>/include/aclNew.jsp</param-value>
+   </context-param>          
 </web-app>

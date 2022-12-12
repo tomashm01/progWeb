@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +9,10 @@
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
+	<!-- ACL -->
+	<%String aclAdmin = application.getInitParameter("aclAdmin"); %>
+	<jsp:include page="<%=aclAdmin%>"></jsp:include>
+	<!-- ACL -->
 	<div class="form-style-6">
 		<form id="formulario" method="get" action="/p3/addPista">
 			<label>Nombre</label>

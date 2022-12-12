@@ -3,6 +3,8 @@
     
 <%@ page import="es.uco.pw.business.reserve.models.factory.*" %>
 <%@ page import="java.util.ArrayList" %>
+
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +13,10 @@
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
+	<!-- ACL -->
+	<%String aclAdmin = application.getInitParameter("aclAdmin"); %>
+	<jsp:include page="<%=aclAdmin%>"></jsp:include>
+	<!-- ACL -->
 
 	<%
 	String indexViewPath = application.getInitParameter("index");

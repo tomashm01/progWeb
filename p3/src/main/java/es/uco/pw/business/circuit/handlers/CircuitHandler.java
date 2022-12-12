@@ -178,6 +178,7 @@ public class CircuitHandler {
 		}
 		return null;
 	}
+
 	
 	/**
 	 * Elimina pista de la lista
@@ -197,7 +198,14 @@ public class CircuitHandler {
 		return daoPista.update(new PistaDTO(pista));
 	}
 
-
+	public boolean canAddKart(Integer id) {
+		Pista pista = CircuitHandler.getInstance().getPistaByID(id);
+		if(pista == null)return false;
+		Integer numKarts = daoPista.getNumKartsByPista(id);
+		if(numKarts <0)return false;
+		return (pista.getMaxKarts() >numKarts);
+	}
+	
 	/**
 	 * Obtiene la dificultad sabiendo el idPista
 	 * @param idPista

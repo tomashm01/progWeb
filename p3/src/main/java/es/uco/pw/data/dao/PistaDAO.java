@@ -132,4 +132,19 @@ public class PistaDAO implements DAO<PistaDTO,Integer>{
 		
 		return null;
 	}
+	
+	public Integer getNumKartsByPista (Integer idPista) {
+		Conexion conexController=Conexion.getInstance();
+		Connection conex=conexController.getConnection();
+		String query=conexController.getSql().getProperty("SELECT_NUM_KARTS_BY_PISTA");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1,idPista);
+			ResultSet rs=st.executeQuery();
+			if(rs.next())return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }

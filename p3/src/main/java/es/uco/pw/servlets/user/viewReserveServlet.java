@@ -8,8 +8,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import es.uco.pw.business.reserve.handlers.ReservaHandler;
+import es.uco.pw.display.javabean.CustomerBean;
 
 /**
  * Servlet implementation class viewReserveServlet
@@ -30,10 +32,21 @@ public class viewReserveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession  session = request.getSession();
+		CustomerBean User = (CustomerBean)session.getAttribute("User");
+		if(User == null ||! User.getRol().equals("USER")) {
+			request.setAttribute("ACL","Not allowed to go there");
+			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
+		}
 		String fechaInicio = request.getParameter("fechaInicio");
 		String fechaFin = request.getParameter("fechaFin");
 		String idUser = request.getParameter("email");
 		if( fechaInicio == null && fechaFin == null && idUser == null) {
+			request.getRequestDispatcher(getServletContext().getInitParameter("reserveView")).forward(request, response);
+			return;
+		}
+		if( fechaInicio == null || fechaFin == null || idUser == null) {
+			request.setAttribute("response","fail");
 			request.getRequestDispatcher(getServletContext().getInitParameter("reserveView")).forward(request, response);
 			return;
 		}

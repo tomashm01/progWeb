@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+ <jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +9,10 @@
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
+	<!-- ACL -->
+	<%String aclAdmin = application.getInitParameter("aclAdmin"); %>
+	<jsp:include page="<%=aclAdmin%>"></jsp:include>
+	<!-- ACL -->
 	<div class="form-style-6">
 		<form id="formulario" method="get" action="/p3/modifyPista">
 		 	<label>Id</label>
@@ -18,12 +24,6 @@
 				<input type="radio" name="isAvailible" value="true" checked> Disponible
 				<input type="radio" name="isAvailible" value="false"> No Disponible
 			</div>
-			<label>Dificultad</label>
-			<select class="cajaBlanca" id="dificulty" name="dificulty">
-				<option value="FAMILIAR">Familiar</option>
-				<option value="ADULTOS">Adultos</option>
-				<option value="INFANTIL">Infantil</option>
-			</select><br>
 			<label>Máximo de karts</label>
 			<input type="number" name="maxKarts" class="cajaBlanca"><br>
 			<input type="submit" id="submit" value="Submit"><br><br>

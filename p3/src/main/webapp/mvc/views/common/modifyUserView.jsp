@@ -8,6 +8,19 @@
 <meta charset="UTF-8">
 <title>Modify User</title>
 </head>
+<!-- ACL -->
+<%
+	String returnPath = application.getInitParameter("index");
+
+	if(User.getRol() == null ){
+		%>
+		<jsp:forward page="<%= returnPath %>">
+		  <jsp:param name="ACL" value="Not allowed to go there" />
+		</jsp:forward>
+		<%
+	}
+	%>
+<!-- ACL -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <body>
     <div class="form-style-6">

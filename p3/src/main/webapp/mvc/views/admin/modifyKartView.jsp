@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%@ page import="es.uco.pw.business.circuit.models.Pista" %>
+<%@ page import="es.uco.pw.business.circuit.models.Kart" %>
 <%@ page import="java.util.ArrayList" %>
+
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,17 +14,34 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
 
+	<!-- ACL -->
+	<%String aclAdmin = application.getInitParameter("aclAdmin"); %>
+	<jsp:include page="<%=aclAdmin%>"></jsp:include>
+	<!-- ACL -->
+
 	<%
+	
 	String indexViewPath = application.getInitParameter("index");
 	ArrayList<Pista> pistas = new ArrayList<Pista>(); 
+	ArrayList<Kart> karts = new ArrayList<Kart>();
 	if(request.getAttribute("arrayPistas") != null){
 		pistas = (ArrayList<Pista>)request.getAttribute("arrayPistas");
+		
 	}
+	if(request.getAttribute("arrayKarts") != null){
+		karts = (ArrayList<Kart>)request.getAttribute("arrayKarts");
+	}
+	
 	%>
 	    <div class="form-style-6">
 			<form id="formulario"  method="get" action= "/p3/modifyKart">
 			 <label>Id</label>
-			   <input class="cajaBlanca" type="number" name="id" id="id">
+			   <select class="cajaBlanca" id="id" name="id">
+				<%for(Kart it : karts){ %>
+			    	<option value="<%=it.getId()%>"><%=it%></option>
+			    <%} %>
+			    <option value="-1">Ninguna</option>
+			  </select><br>
 			  <div class="formulario__grupo" id="grupoKart">
 			  	<label>Tipo</label>
 			  	<div class="cajaBlanca">

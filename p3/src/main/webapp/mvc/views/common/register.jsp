@@ -9,6 +9,10 @@
 </head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <body>
+<!-- ACL -->
+<%String aclNew = application.getInitParameter("aclNew"); %>
+<jsp:include page="<%=aclNew%>"></jsp:include>
+<!-- ACL -->
     <div class="form-style-6">
     <%
 	if(request.getParameter("ErrorRegister") != null) {
