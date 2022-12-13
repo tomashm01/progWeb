@@ -11,6 +11,10 @@
 <title>Loading...</title>
 </head>
 <body>
+<!-- ACL -->
+<%String aclNew = application.getInitParameter("aclNew"); %>
+<jsp:include page="<%=aclNew%>"></jsp:include>
+<!-- ACL -->
 	<%
 	String loginViewPath = application.getInitParameter("login");
 	String indexViewPath = application.getInitParameter("index");

@@ -6,6 +6,7 @@
     </welcome-file-list>
 
 <!-- controllers -->
+	<!-- common -->
    <context-param>
       <param-name>loginController</param-name>
       <param-value>/mvc/controllers/common/loginController.jsp</param-value>
@@ -25,14 +26,34 @@
       <param-name>registerController</param-name>
       <param-value>/mvc/controllers/common/registerController.jsp</param-value>
    </context-param>
-
+   
+   <!-- admin -->
+  <context-param>
+      <param-name>adminMenuController</param-name>
+      <param-value>/mvc/controllers/admin/adminMenuController.jsp</param-value>
+   </context-param>
+   
+	<!-- user -->
+	<context-param>
+      <param-name>userMenuController</param-name>
+      <param-value>/mvc/controllers/user/userMenuController.jsp</param-value>
+   </context-param>
 <!-- views --> 
 	
    <!-- admin -->
-	 
+ 	<context-param>
+      <param-name>adminMenuView</param-name>
+      <param-value>/mvc/views/admin/adminMenuView.jsp</param-value>
+   </context-param>
+   
    <context-param>
       <param-name>addKartView</param-name>
       <param-value>/mvc/views/admin/addKartView.jsp</param-value>
+   </context-param>
+ 
+   <context-param>
+      <param-name>pairKartView</param-name>
+      <param-value>/mvc/views/admin/pairKartView.jsp</param-value>
    </context-param>
    
    <context-param>
@@ -78,7 +99,12 @@
    </context-param> 
    
    <!-- user -->
- 
+   
+   <context-param>
+      <param-name>userMenuView</param-name>
+      <param-value>/mvc/views/user/userMenuView.jsp</param-value>
+   </context-param>
+   
    <context-param>
       <param-name>addReserveView</param-name>
       <param-value>/mvc/views/user/addReserveView.jsp</param-value>

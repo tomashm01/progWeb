@@ -9,10 +9,16 @@
 </head>
 <body>
 	<%
-	String returnPath = application.getInitParameter("index");
-
 	String IntendedRole = "ADMIN";
-	if(User.getRol() == null || ! User.getRol().equals(IntendedRole)){
+	if(User.getRol() == null){
+		String returnPath = application.getInitParameter("index");
+		%>
+		<jsp:forward page="<%= returnPath %>">
+		  <jsp:param name="ACL" value="Not allowed to go there" />
+		</jsp:forward>
+		<%
+	}else if(! User.getRol().equals(IntendedRole)){
+		String returnPath = application.getInitParameter("userMenuView");
 		%>
 		<jsp:forward page="<%= returnPath %>">
 		  <jsp:param name="ACL" value="Not allowed to go there" />
@@ -20,5 +26,7 @@
 		<%
 	}
 	%>
+		
+
 </body>
 </html>

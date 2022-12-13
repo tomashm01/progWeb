@@ -2,7 +2,6 @@ package es.uco.pw.display.javabean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class CustomerBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,7 +13,6 @@ public class CustomerBean implements Serializable {
 	private String password;
 	private int antiguedad;
 	private boolean mayorEdad;
-	private LocalDateTime proxReserva;
 	
 	public CustomerBean() {}
 
@@ -82,13 +80,6 @@ public class CustomerBean implements Serializable {
 		this.mayorEdad = mayorEdad;
 	}
 	
-	public LocalDateTime getProxReserva() {
-		return proxReserva;
-	}
-
-	public void setProxReserva(LocalDateTime proxReserva) {
-		this.proxReserva = proxReserva;
-	}
 
 	@Override
 	public String toString() {

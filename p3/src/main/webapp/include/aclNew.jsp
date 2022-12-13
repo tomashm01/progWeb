@@ -8,16 +8,18 @@
 <title>Control Access</title>
 </head>
 <body>
-	<%
-	String returnPath = application.getInitParameter("index");
-
-	if(User.getRol() != null ){
-		%>
-		<jsp:forward page="<%= returnPath %>">
-		  <jsp:param name="ACL" value="Not allowed to go there" />
-		</jsp:forward>
-		<%
+<%
+if(User.getRol() != null ){
+	String returnPath = application.getInitParameter("adminMenuView");;
+	if( User.getRol().equals("USER")){
+		returnPath = application.getInitParameter("userMenuView");
 	}
 	%>
+	<jsp:forward page="<%=returnPath%>">
+	  <jsp:param name="ACL" value="Not allowed to go there" />
+	</jsp:forward>
+<%}%>
 </body>
 </html>
+
+

@@ -32,59 +32,15 @@
 			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">Login</a></p>
 	  	<%
   	}else if(User.getRol().equals("ADMIN")){
-		%>
-		<table>
-		  <thead>
-		    <tr>
-		      <th>Full Name</th>
-		      <th>Antiquity</th>
-		      <th>Completed Reservations</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <% for( Usuario it : UsuarioHandler.getInstance().getAllUsers()){
-		        if(it.getRol().equals("USER")){
-		          Integer reservas = ReservaHandler.getInstance().completedReservationsByUser(it.getEmail());
-		    %>
-		          <tr>
-		            <td><%=it.getFullName()%></td>
-		            <td><%=it.antiquity()%></td>
-		            <td><%=reservas%></td>
-		          </tr>
-		    <% 
-		   	 	}
-		      } %>
-		  </tbody>
-		</table>
-
-			<p><a href="${pageContext.request.contextPath}/addKart">Dar de alta Karts</a></p>
-			<p><a href="${pageContext.request.contextPath}/addPista">Dar de alta Pista</a></p>
-			<p><a href="${pageContext.request.contextPath}/modifyKart">Modificar Karts</a></p>
-			<p><a href="${pageContext.request.contextPath}/modifyPista">Modificar Pista</a></p>
-			<p><a href="${pageContext.request.contextPath}/deleteReserve">Eliminar reservas</a></p>
-			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>
-	  	<%
+  		String adminMenu=application.getInitParameter("adminMenuController");
+  		%>
+  		<jsp:forward page="<%=adminMenu%>"/>
+  		<%
   	}else if(User.getRol().equals("USER")){
-	  		String fecha = LocalDate.now().toString();
-	  %>
-	  		<p>Bienvenido <jsp:getProperty property="nombreCompleto" name="User"/></p>
-	  		<p>Hoy es <%=fecha%></p>
-	  		<p>Tu antiguedad es: <jsp:getProperty property="antiguedad" name="User"/> años</p> 
-	  	<%
-		  	if( ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()) != null){
-		  		 String reserva = ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()).getDate().toString();
-		%>
-		  		<p>Tu siguiente reserva es el dia :<%=reserva %> </p>
-		<%
-		  	}
-	  	%>	
-	  		<p><a href="${pageContext.request.contextPath}/addReserve">Nueva reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}/modifyReserve">Modificar reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}/viewReserve">Ver reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>
-	  	<% 	
+  		String userMenu=application.getInitParameter("userMenuController");
+  		%>
+  		<jsp:forward page="<%=userMenu%>"/>
+  		<%
   	}
   		%>
   	</div>

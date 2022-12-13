@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modify Kart</title>
+<title>Pair Kart</title>
 </head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
@@ -34,25 +34,12 @@
 	
 	%>
 	    <div class="form-style-6">
-			<form id="formulario"  method="get" action= "/p3/modifyKart">
+			<form id="formulario"  method="get" action= "/p3/pairKart">
 			 <label>Id</label>
 			   <select class="cajaBlanca" id="id" name="id">
 				<%for(Kart it : karts){ %>
 			    	<option value="<%=it.getId()%>"><%=it%></option>
 			    <%} %>
-			  </select><br>
-			  <div class="formulario__grupo" id="grupoKart">
-			  	<label>Tipo</label>
-			  	<div class="cajaBlanca">
-			      <input type="radio" name="tipoKart" value="true" checked> Adulto
-			      <input type="radio" name="tipoKart" value="false"> Infantil
-			 	 </div>
-			  </div>
-			  <label>Estado</label>
-			  <select class="cajaBlanca" id="estadoKart" name="estadoKart">
-			    <option value="DISPONIBLE">Disponible</option>
-			    <option value="RESERVADO">Reservado</option>
-			    <option value="MANTENIMIENTO">Mantenimiento</option>
 			  </select><br>
 			  <label>Pista asignada</label>
 			  <select class="cajaBlanca" id="idPista" name="idPista">
