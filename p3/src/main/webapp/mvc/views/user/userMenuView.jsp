@@ -27,6 +27,7 @@
 	}else if (request.getAttribute("ACL")!=null){
 		%>
 		<p class="cajaRoja"><%=request.getAttribute("ACL")%></p>
+		
 		<%
 	}
   	%>
