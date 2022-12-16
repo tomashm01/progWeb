@@ -17,12 +17,16 @@
 
 <%
 String userMenuViewPath = application.getInitParameter("userMenuView");
-LocalDateTime Lreserva = ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()).getDate();
 
 DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-String todayDate= formatter1.format(LocalDate.now()).toString();
 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
-String reserva = formatter2.format(Lreserva).toString();
+
+String reserva = "none";
+if(ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()) != null){
+	reserva = formatter2.format(ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()).getDate()).toString();
+}
+
+String todayDate= formatter1.format(LocalDate.now()).toString();
 %>
 <jsp:forward page="<%=userMenuViewPath%>">
   <jsp:param name="reserva" value="<%=reserva%>" />

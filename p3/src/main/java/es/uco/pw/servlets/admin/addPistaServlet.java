@@ -33,9 +33,10 @@ public class addPistaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null ||! User.getRol().equals("ADMIN")) {
+		if(User == null ||User.getRol() == null||! User.getRol().equals("ADMIN")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
+			return;
 		}
 		String name = request.getParameter("name");
 		String disponible = request.getParameter("isAvailible");
@@ -64,6 +65,8 @@ public class addPistaServlet extends HttpServlet {
 			request.setAttribute("response",respuesta);
 		}catch(Exception e) {
 			request.setAttribute("response","fail");
+			request.getRequestDispatcher(getServletContext().getInitParameter("addKartView")).forward(request, response);
+			return;
 		}
 
 		request.getRequestDispatcher(getServletContext().getInitParameter("addPistaView")).forward(request, response);

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import es.uco.pw.business.circuit.handlers.CircuitHandler;
 import es.uco.pw.business.circuit.models.Kart;
+import es.uco.pw.business.circuit.models.Pista;
 import es.uco.pw.business.enums.DificultadPista;
 import es.uco.pw.business.enums.EstadoKart;
 import es.uco.pw.display.javabean.CustomerBean;
@@ -34,16 +35,17 @@ public class modifyKartServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null ||! User.getRol().equals("ADMIN")) {
+		if(User == null ||User.getRol() == null||! User.getRol().equals("ADMIN")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
+			return;
 		}
 		String id = request.getParameter("id");
-		String pista = request.getParameter("idPista");
+		String Spista = request.getParameter("idPista");
 		String estadoKart = request.getParameter("estadoKart");
 		String tipo = request.getParameter("tipoKart");
 		
-		if(pista == null && estadoKart == null && tipo == null && id == null) {
+		if(Spista == null && estadoKart == null && tipo == null && id == null) {
 			request.setAttribute("arrayKarts",CircuitHandler.getInstance().getAllKarts());
 			request.setAttribute("arrayPistas",CircuitHandler.getInstance().getAllPistas());
 			request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartView")).forward(request, response);
@@ -56,15 +58,20 @@ public class modifyKartServlet extends HttpServlet {
 				request.setAttribute("response","fail");
 				request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartView")).forward(request, response);
 			}
-			Integer idPista = Integer.parseInt(pista);
+			Integer idPista = Integer.parseInt(Spista);
 			EstadoKart estado = Kart.toEstadoKart(estadoKart);
 			boolean isAdult = Boolean.parseBoolean(tipo);
-			//coincide pista con dificultad de kart
 			if (idPista != (-1)){
-				DificultadPista difPista =  CircuitHandler.getInstance().getPistaByID(idPista).getDifficulty();
+				Pista pista = CircuitHandler.getInstance().getPistaByID(idPista);
+				if(pista == null || pista.getKartsList().size() >= pista.getMaxKarts()) {
+					request.setAttribute("response","fail");
+					request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
+					return;
+				}
+				DificultadPista difPista =  pista.getDifficulty();
 				if((difPista.equals(DificultadPista.ADULTOS) && ! isAdult)|| (difPista.equals(DificultadPista.INFANTIL) && isAdult) ) {
 					request.setAttribute("response","fail");
-					request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartView")).forward(request, response);
+					request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
 					return;
 				}
 			}
@@ -74,6 +81,8 @@ public class modifyKartServlet extends HttpServlet {
 
 		}catch(Exception e) {
 			request.setAttribute("response","fail");
+			request.getRequestDispatcher(getServletContext().getInitParameter("addKartView")).forward(request, response);
+			return;
 		}
 
 		request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartView")).forward(request, response);

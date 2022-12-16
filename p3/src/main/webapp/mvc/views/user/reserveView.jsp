@@ -20,7 +20,7 @@
 	<%  
 	
 	String indexViewPath = application.getInitParameter("index");
-	if(request.getAttribute("arrayReserves") == null){	%>
+	if(request.getAttribute("response") == null){	%>
 		    <div class="form-style-6">
 				<form id="formulario"  method="get" action= "/p3/viewReserve">
 					<label>Fecha de inicio</label>
@@ -33,11 +33,13 @@
 			</div>
 	<% }else{
 		
-		ArrayList<ReservaAbstracta> reservas = (ArrayList<ReservaAbstracta>)request.getAttribute("arrayReserves");
-
+		ArrayList<ReservaAbstracta> reservasPre = (ArrayList<ReservaAbstracta>)request.getAttribute("arrayReservesPre");
+		ArrayList<ReservaAbstracta> reservasPost = (ArrayList<ReservaAbstracta>)request.getAttribute("arrayReservesPost");
+		
 		if(request.getAttribute("response") != "success"){
 			%>	<p class="cajaRoja"><%=request.getAttribute("response")%></p>  <%
 		}else{
+		if (reservasPre.size()>0){
 		%>
 		<div class="cajaBlanca">
 			<table>
@@ -54,7 +56,39 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-				<% for(ReservaAbstracta it : reservas){ %>
+				<% for(ReservaAbstracta it : reservasPre){ %>
+				          <tr>
+				            <td><%=it.getIdPista()%></td>
+				            <td><%=it.getDate()%></td>
+				            <td><%=it.getTime()%></td>
+				            <td><%=it.getType()%></td>
+				            <td><%=it.getNumChilds()%></td>
+				            <td><%=it.getNumAdults()%></td>
+				            <td><%=it.getPrice()%></td>
+				            <td><%=it.getDiscount()%></td>
+				          </tr>
+				<%  }  %>
+			  </tbody>
+			</table>
+		</div>
+		<%}
+		if(reservasPre.size()>0){%>
+		<div class="cajaBlanca">
+			<table>
+			  <thead>
+			    <tr>
+			      <th>Pista</th>
+			      <th>Fecha</th>
+			      <th>Duracion</th>
+			      <th>tipo</th>
+			      <th>Numero de niños</th>
+			      <th>Numero de adultos</th>
+			      <th>Precio</th>
+			      <th>Descuento</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+				<% for(ReservaAbstracta it : reservasPost){ %>
 				          <tr>
 				            <td><%=it.getIdPista()%></td>
 				            <td><%=it.getDate()%></td>
@@ -70,6 +104,7 @@
 			</table>
 		</div>
 	<%
+		}
 		}
 	}
 	%>

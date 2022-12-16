@@ -51,6 +51,16 @@
       <param-value>/mvc/views/admin/addKartView.jsp</param-value>
    </context-param>
  
+    <context-param>
+      <param-name>modifyKartStateView</param-name>
+      <param-value>/mvc/views/admin/modifyKartStateView.jsp</param-value>
+   </context-param>
+ 
+     <context-param>
+      <param-name>modifyPistaStateView</param-name>
+      <param-value>/mvc/views/admin/modifyPistaStateView.jsp</param-value>
+   </context-param>
+ 
    <context-param>
       <param-name>pairKartView</param-name>
       <param-value>/mvc/views/admin/pairKartView.jsp</param-value>
@@ -111,14 +121,19 @@
    </context-param>
    
    <context-param>
-      <param-name>modifyReserve</param-name>
-      <param-value>/mvc/views/user/modifyReserve.jsp</param-value>
+      <param-name>modifyReserveView</param-name>
+      <param-value>/mvc/views/user/modifyReserveView.jsp</param-value>
    </context-param>
    
    <context-param>
       <param-name>reserveView</param-name>
       <param-value>/mvc/views/user/reserveView.jsp</param-value>
    </context-param>    
+
+   <context-param>
+      <param-name>addBonoView</param-name>
+      <param-value>/mvc/views/user/addBonoView.jsp</param-value>
+   </context-param>
    
 <!-- servlets -->   
 

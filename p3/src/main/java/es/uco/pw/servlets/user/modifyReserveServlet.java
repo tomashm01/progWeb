@@ -40,7 +40,7 @@ public class modifyReserveServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null ||! User.getRol().equals("USER")) {
+		if(User == null||User.getRol() == null ||! User.getRol().equals("USER")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
 		}

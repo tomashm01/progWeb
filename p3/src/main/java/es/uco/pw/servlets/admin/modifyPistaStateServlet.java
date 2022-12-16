@@ -10,53 +10,56 @@ import javax.servlet.http.HttpSession;
 
 import es.uco.pw.business.circuit.handlers.CircuitHandler;
 import es.uco.pw.business.circuit.models.Pista;
-import es.uco.pw.business.enums.DificultadPista;
 import es.uco.pw.display.javabean.CustomerBean;
 
 /**
- * Servlet implementation class modifyPistaServlet
+ * Servlet implementation class modifyPistaStateServlet
  */
-@WebServlet(name="modifyPista", urlPatterns="/modifyPista")
-public class modifyPistaServlet extends HttpServlet {
+@WebServlet(name="modifyPistaState", urlPatterns="/modifyPistaState")
+public class modifyPistaStateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public modifyPistaServlet() {
+    public modifyPistaStateServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null||User.getRol() == null ||! User.getRol().equals("ADMIN")) {
+		if(User == null||User.getRol() == null || ! User.getRol().equals("ADMIN")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
 			return;
 		}
 		String id = request.getParameter("id");
-		String name = request.getParameter("name");
 		String disponible = request.getParameter("isAvailible");
-		String Karts = request.getParameter("maxKarts");
 		
 
-		if( id==null || name == null || disponible == null || Karts == null) {
+		if( id==null &&  disponible == null ) {
 			request.setAttribute("arrayPistas",CircuitHandler.getInstance().getAllPistas());
-			request.getRequestDispatcher(getServletContext().getInitParameter("modifyPistaView")).forward(request, response);
+			request.getRequestDispatcher(getServletContext().getInitParameter("modifyPistaStateView")).forward(request, response);
 			return;
 		}
 
 		try {
-			Integer idPista = Integer.parseInt(id);
-			boolean isAvailible = Boolean.parseBoolean(disponible);
-			DificultadPista difficulty = CircuitHandler.getInstance().getPistaByID(idPista).getDifficulty();
-			Integer maxKarts = Integer.parseInt(Karts);
 			
-			boolean resultado = CircuitHandler.getInstance().editPista(new Pista(idPista,name,isAvailible,difficulty,maxKarts));
+			Integer idPista = Integer.parseInt(id);
+			Pista pista = CircuitHandler.getInstance().getPistaByID(idPista);
+			if(pista== null) {
+				request.setAttribute("response","fail");
+				request.getRequestDispatcher(getServletContext().getInitParameter("modifyPistaStateView")).forward(request, response);
+			}
+			boolean isAvailible = Boolean.parseBoolean(disponible);
+			pista.setAvailable(isAvailible);
+			
+			boolean resultado = CircuitHandler.getInstance().editPista(pista);
 			String respuesta = (resultado) ? "success" : "fail";
 			request.setAttribute("response",respuesta);
 	
@@ -65,7 +68,7 @@ public class modifyPistaServlet extends HttpServlet {
 			request.setAttribute("response","fail");
 		}
 
-		request.getRequestDispatcher(getServletContext().getInitParameter("modifyPistaView")).forward(request, response);
+		request.getRequestDispatcher(getServletContext().getInitParameter("modifyPistaStateView")).forward(request, response);
 
 	}
 

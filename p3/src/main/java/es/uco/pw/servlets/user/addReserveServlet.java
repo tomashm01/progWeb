@@ -39,7 +39,7 @@ public class addReserveServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null ||! User.getRol().equals("USER")) {
+		if(User == null ||User.getRol() == null||! User.getRol().equals("USER")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
 		}
@@ -119,7 +119,7 @@ public class addReserveServlet extends HttpServlet {
 					}
 				}
 
-				String salida = (resultado) ? "sucess" : "fail";
+				String salida = (resultado) ? "success" : "fail";
 				request.setAttribute("response",salida);
 				request.setAttribute("error",respuesta);
 				request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);

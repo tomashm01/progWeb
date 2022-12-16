@@ -22,6 +22,7 @@ import es.uco.pw.business.user.handlers.UsuarioHandler;
 import es.uco.pw.business.circuit.handlers.CircuitHandler;
 import es.uco.pw.business.circuit.models.Kart;
 import es.uco.pw.business.circuit.models.Pista;
+import es.uco.pw.business.enums.DificultadPista;
 
 public class ReservaHandler {
 	private static ReservaHandler instance = null;
@@ -208,6 +209,17 @@ public class ReservaHandler {
 		if(! ReservaHandler.getInstance().verifyReserve(reserve))
 			return false;
 		
+		int idBono = daoBono.getFreeBono(reserve.getIdUser(), reserve.getType().toString());
+
+		if (idBono == -1) {
+			return false;
+		}
+		int posicion = daoBono.getNextPositicon(idBono);
+		if(posicion == -1) {
+			posicion=0;
+		}
+		
+		
 		Pista pista = CircuitHandler.getInstance().getPistaByID(reserve.getIdPista());
 		Usuario user = UsuarioHandler.getInstance().getUserByEmail(reserve.getIdUser());
 		
@@ -225,17 +237,19 @@ public class ReservaHandler {
 				return false;
 			}
 		}
-		int idBono = daoBono.getFreeBono(reserve.getIdUser(), reserve.getType().toString());
+		daoBono.pairReserveBono(idBono, idReserva,posicion);
+		
+		return true;
+	}
+	
+	public boolean asociarBono(String idUser,DificultadPista tipo) {
+		int idBono = daoBono.getFreeBono(idUser, tipo.toString());
 
 		if (idBono == -1) {
-			idBono = daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS)));
+			idBono = daoBono.insertGettingId(new BonoDTO(null, LocalDate.now().plus(1, ChronoUnit.YEARS),idUser));
+			return (idBono != (-1));
 		}
-		int posicion = daoBono.getNextPositicon(idBono);
-		if(posicion == -1) {
-			posicion=0;
-		}
-		daoBono.pairReserveBono(idBono, idReserva,posicion);
-		return true;
+		return false;
 	}
 
 	/**

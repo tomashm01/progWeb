@@ -48,13 +48,13 @@
 		</table>
 <%	} %>
 	
-		
-
 			<p><a href="${pageContext.request.contextPath}/addKart">Dar de alta Karts</a></p>
 			<p><a href="${pageContext.request.contextPath}/addPista">Dar de alta Pista</a></p>
 			<p><a href="${pageContext.request.contextPath}/modifyKart">Modificar Karts</a></p>
+			<p><a href="${pageContext.request.contextPath}/modifyKartState">Modificar estado de Kart</a></p>
 			<p><a href="${pageContext.request.contextPath}/pairKart">Asociar Karts a pistas</a></p>
 			<p><a href="${pageContext.request.contextPath}/modifyPista">Modificar Pista</a></p>
+			<p><a href="${pageContext.request.contextPath}/modifyPistaState">Modificar estado de  Pista</a></p>
 			<p><a href="${pageContext.request.contextPath}/deleteReserve">Eliminar reservas</a></p>
 			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>

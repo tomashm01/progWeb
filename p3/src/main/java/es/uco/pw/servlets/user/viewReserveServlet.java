@@ -25,7 +25,6 @@ public class viewReserveServlet extends HttpServlet {
      */
     public viewReserveServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -34,7 +33,7 @@ public class viewReserveServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession  session = request.getSession();
 		CustomerBean User = (CustomerBean)session.getAttribute("User");
-		if(User == null ||! User.getRol().equals("USER")) {
+		if(User == null ||User.getRol() == null||! User.getRol().equals("USER")) {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
 		}
@@ -52,8 +51,14 @@ public class viewReserveServlet extends HttpServlet {
 		}
 		LocalDate fechaInicioDate = LocalDate.parse(fechaInicio);
 		LocalDate fechaFinDate = LocalDate.parse(fechaFin);
+		if(fechaFinDate.isBefore(fechaInicioDate)) {
+			request.setAttribute("response","fail");
+			request.getRequestDispatcher(getServletContext().getInitParameter("reserveView")).forward(request, response);
+			return;
+		}
 		
-		request.setAttribute("arrayReserves",ReservaHandler.getInstance().geReservesByUserByDates(fechaInicioDate,fechaFinDate,idUser));
+		request.setAttribute("arrayReservesPre",ReservaHandler.getInstance().geReservesByUserByDates(fechaInicioDate,LocalDate.now(),idUser));
+		request.setAttribute("arrayReservesPost",ReservaHandler.getInstance().geReservesByUserByDates(LocalDate.now(),fechaFinDate,idUser));
 		request.setAttribute("response","success");
 		request.getRequestDispatcher(getServletContext().getInitParameter("reserveView")).forward(request, response);
 		

@@ -37,11 +37,12 @@
 	  		<p>Hoy es <%=request.getParameter("fechaActual")%></p>
 	  		<p>Tu antiguedad es: <jsp:getProperty property="antiguedad" name="User"/> años</p> 
 	  	
-		<% if( request.getParameter("reserva")!= null){%>
+		<% if(! request.getParameter("reserva").equals("none")){%>
   			<p>Tu siguiente reserva es el dia:<%=request.getParameter("reserva")%></p>
 		<%} %>
 
 	  		<p><a href="${pageContext.request.contextPath}/addReserve">Nueva reserva</a></p>
+	  		<p><a href="${pageContext.request.contextPath}/addBono">Nuevo Bono</a></p>
 	  		<p><a href="${pageContext.request.contextPath}/modifyReserve">Modificar reserva</a></p>
 	  		<p><a href="${pageContext.request.contextPath}/viewReserve">Ver reserva</a></p>
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>

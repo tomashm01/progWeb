@@ -10,21 +10,20 @@ import javax.servlet.http.HttpSession;
 
 import es.uco.pw.business.circuit.handlers.CircuitHandler;
 import es.uco.pw.business.circuit.models.Kart;
-import es.uco.pw.business.circuit.models.Pista;
-import es.uco.pw.business.enums.DificultadPista;
+import es.uco.pw.business.enums.EstadoKart;
 import es.uco.pw.display.javabean.CustomerBean;
 
 /**
- * Servlet implementation class pairKartServlet
+ * Servlet implementation class modifyKartStateServlet
  */
-@WebServlet(name="pairKart", urlPatterns="/pairKart")
-public class pairKartServlet extends HttpServlet {
+@WebServlet(name="modifyKartState", urlPatterns="/modifyKartState")
+public class modifyKartStateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public pairKartServlet() {
+    public modifyKartStateServlet() {
         super();
     }
 
@@ -40,13 +39,12 @@ public class pairKartServlet extends HttpServlet {
 			return;
 		}
 		String id = request.getParameter("id");
-		String Spista = request.getParameter("idPista");
+		String estadoKart = request.getParameter("estadoKart");
 
 		
-		if(Spista == null  && id == null) {
+		if( estadoKart == null  && id == null) {
 			request.setAttribute("arrayKarts",CircuitHandler.getInstance().getAllKarts());
-			request.setAttribute("arrayPistas",CircuitHandler.getInstance().getAllPistas());
-			request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
+			request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartStateView")).forward(request, response);
 			return;
 		}
 
@@ -55,35 +53,24 @@ public class pairKartServlet extends HttpServlet {
 			Kart kart = CircuitHandler.getInstance().getKartByID(idKart);
 			if(kart == null) {
 				request.setAttribute("response","fail");
-				request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
+				request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartStateView")).forward(request, response);
 			}
-			
-			Integer idPista = Integer.parseInt(Spista);
 
-			if (idPista != (-1)){
-				Pista pista = CircuitHandler.getInstance().getPistaByID(idPista);
-				if(pista == null || pista.getKartsList().size() >= pista.getMaxKarts()) {
-					request.setAttribute("response","fail");
-					request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
-					return;
-				}
-				DificultadPista difPista =  pista.getDifficulty();
-				if((difPista.equals(DificultadPista.ADULTOS) && ! kart.isAdult())|| (difPista.equals(DificultadPista.INFANTIL) && kart.isAdult()) ) {
-					request.setAttribute("response","fail");
-					request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
-					return;
-				}
-			}
-			kart.setIdPista(idPista);
+			EstadoKart estado = Kart.toEstadoKart(estadoKart);
+
+			//coincide pista con dificultad de kart
+			kart.setState(estado);
 			boolean resultado =CircuitHandler.getInstance().editKart(kart);
-			String respuesta = (resultado) ? "sucess" : "fail";
+			String respuesta = (resultado) ? "success" : "fail";
 			request.setAttribute("response",respuesta);
 
 		}catch(Exception e) {
 			request.setAttribute("response","fail");
 		}
 
-		request.getRequestDispatcher(getServletContext().getInitParameter("pairKartView")).forward(request, response);
+		request.getRequestDispatcher(getServletContext().getInitParameter("modifyKartStateView")).forward(request, response);
 	}
+
+
 
 }
