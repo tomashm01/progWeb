@@ -3,8 +3,6 @@ package es.uco.pw.business.reserve.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import es.uco.pw.business.enums.DificultadPista;
-
 public class BonoDTO {
 	private Integer id;
 	private LocalDate expirationDate;
