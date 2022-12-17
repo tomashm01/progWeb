@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 <title>User Menu</title>
 </head>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
   <body>
   	<!-- ACL -->
@@ -31,6 +32,11 @@
 		<%
 	}
   	%>
+  	  <aside>
+    <jsp:include page="/include/sidebar.jsp"></jsp:include>
+  </aside>
+<main>
+  <jsp:include page="/include/header.jsp"></jsp:include>
   	<div class="form-style-6">
 
 	  		<p>Bienvenido <jsp:getProperty property="nombreCompleto" name="User"/></p>
@@ -48,5 +54,7 @@
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
 	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>
   	</div>
+  	 <jsp:include page="/include/footer.html"></jsp:include>
+</main>
   </body>
 </html>

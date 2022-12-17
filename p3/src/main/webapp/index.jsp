@@ -13,8 +13,15 @@
 <meta charset="UTF-8">
 <title>PW</title>
 </head>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
+
   <body>
+  <aside>
+    <jsp:include page="/include/sidebar.jsp"></jsp:include>
+  </aside>
+<main>
+  <jsp:include page="/include/header.jsp"></jsp:include>
   	<div class="form-style-6">
   	<%
 	if(request.getParameter("ACL")!= null){
@@ -44,5 +51,8 @@
   	}
   		%>
   	</div>
+  	  <jsp:include page="/include/footer.html"></jsp:include>
+</main>
+  	   
   </body>
 </html>

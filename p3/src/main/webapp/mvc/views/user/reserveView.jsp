@@ -11,12 +11,19 @@
 <meta charset="UTF-8">
 <title>View reserve</title>
 </head>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
 	<!-- ACL -->
 	<%String aclUser = application.getInitParameter("aclUser"); %>
 	<jsp:include page="<%=aclUser%>"></jsp:include>
 	<!-- ACL -->
+	  <aside>
+    	<jsp:include page="/include/sidebar.jsp"></jsp:include>
+  	</aside>
+<main>
+  <jsp:include page="/include/header.jsp"></jsp:include>
+
 	<%  
 	
 	String indexViewPath = application.getInitParameter("index");
@@ -109,6 +116,7 @@
 	}
 	%>
 
-		<p><a href="${pageContext.request.contextPath}<%=indexViewPath%>">Inicio</a></p>
+ <jsp:include page="/include/footer.html"></jsp:include>
+</main>
 </body>
 </html>

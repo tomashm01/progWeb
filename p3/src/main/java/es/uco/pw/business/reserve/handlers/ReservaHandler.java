@@ -252,6 +252,20 @@ public class ReservaHandler {
 		return false;
 	}
 
+	public ArrayList<ReservaAbstracta> getFutureReservesByUSer(String idUser){
+		ArrayList<ReservaAbstracta> reserversFiltered = new ArrayList<ReservaAbstracta>();
+		for (ReserveDTO it : daoReserva.geFutureReservesByUser(idUser)) {
+			if (it.getTipo().equals("FAMILIAR")) {
+				reserversFiltered.add(new ReservaFamiliar(it));
+			} else if (it.getTipo().equals("ADULTOS")) {
+				reserversFiltered.add(new ReservaAdultos(it));
+			} else {
+				reserversFiltered.add(new ReservaInfantil(it));
+			}
+		}
+
+		return reserversFiltered;
+	}
 	/**
 	 * El precio de una reserva se establece en funci�n de la duraci�n de esta: 60
 	 * minutos (20eur), 90 minutos (30eur), 120 minutos (40eur).

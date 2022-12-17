@@ -1,6 +1,4 @@
-body {
-    background: #32373B;
-   }
+	
    .cajaRoja{
    transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.30s ease-in-out;
@@ -81,3 +79,7 @@ body {
    .form-style-6 input[type="button"]:hover{
        background: #32373B;
    }
+
+
+
+   

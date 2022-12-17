@@ -19,6 +19,7 @@ import es.uco.pw.business.reserve.models.factory.ReservaFamiliar;
 import es.uco.pw.business.reserve.models.factory.ReservaInfantil;
 import es.uco.pw.display.javabean.CustomerBean;
 import es.uco.pw.display.javabean.ResponseBean;
+import es.uco.pw.data.dao.ReserveDAO;
 
 /**
  * Servlet implementation class modifyReserveServlet
@@ -51,12 +52,12 @@ public class modifyReserveServlet extends HttpServlet {
 		String SnumChilds = request.getParameter("numChilds");
 		String Stipo = request.getParameter("tipo");
 		String SidPista = request.getParameter("idPista");
-		String Sbono = request.getParameter("isBono");
-		
+		String Sbono = "";
 		boolean resultado = false;
 
-		if(Sfecha == null && Sduracion == null && SnumAdults == null && SnumChilds == null && Stipo == null && SidPista == null && Sbono == null){
-			request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+		if(Sfecha == null && Sduracion == null && SnumAdults == null && SnumChilds == null && Stipo == null && SidPista == null ){
+			request.setAttribute("arrayReservas",ReservaHandler.getInstance().getFutureReservesByUSer(idUser));
+			request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 			return;
 		}
 	
@@ -72,20 +73,20 @@ public class modifyReserveServlet extends HttpServlet {
 				Integer numChilds = (SnumChilds == null)? 0: Integer.parseInt(SnumChilds);
 				if(numAdults<0 || numChilds<0 || numAdults+numChilds <0) {
 					request.setAttribute("response","fail");
-					request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+					request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 				}
 				LocalDateTime fechaFin = fecha.plusMinutes(duracion);
 				
 				request.setAttribute("arrayPistas",CircuitHandler.getInstance().getFreePistas(dif,fecha,fechaFin,numAdults,numChilds));
 				ResponseBean form1Data = new ResponseBean(dif,fecha,duracion,numAdults,numChilds,fechaFin);
 				session.setAttribute("form1Data",form1Data);
-				request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+				request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 				return;
 			}else {
 				ResponseBean bean= (ResponseBean)session.getAttribute("form1Data");
 				if(bean == null) {
 					request.setAttribute("response","fail2");
-					request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+					request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 					return;
 				}
 				
@@ -123,14 +124,14 @@ public class modifyReserveServlet extends HttpServlet {
 				String salida = (resultado) ? "success" : "fail";
 				request.setAttribute("response",salida);
 				request.setAttribute("error",respuesta);
-				request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+				request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 				return;
 			}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("response","fail");
-			request.getRequestDispatcher(getServletContext().getInitParameter("addReserveView")).forward(request, response);
+			request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 			return;
 		}
 	}

@@ -18,7 +18,7 @@
 		</jsp:forward>
 		<%
 	}else if(! User.getRol().equals(IntendedRole)){
-		String returnPath = application.getInitParameter("adminMenuView");
+		String returnPath = application.getInitParameter("adminMenuController");
 		%>
 		<jsp:forward page="<%= returnPath %>">
 		  <jsp:param name="ACL" value="Not allowed to go there" />

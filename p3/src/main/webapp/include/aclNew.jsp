@@ -10,9 +10,9 @@
 <body>
 <%
 if(User.getRol() != null ){
-	String returnPath = application.getInitParameter("adminMenuView");;
+	String returnPath = application.getInitParameter("adminMenuController");;
 	if( User.getRol().equals("USER")){
-		returnPath = application.getInitParameter("userMenuView");
+		returnPath = application.getInitParameter("userMenuController");
 	}
 	%>
 	<jsp:forward page="<%=returnPath%>">
