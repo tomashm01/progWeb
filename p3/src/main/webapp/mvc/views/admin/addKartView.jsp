@@ -11,6 +11,7 @@
 <meta charset="UTF-8">
 <title>Add Kart</title>
 </head>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
 	<!-- ACL -->
@@ -24,6 +25,12 @@
 		pistas = (ArrayList<Pista>)request.getAttribute("arrayPistas");
 	}
 	%>
+	 <aside>
+    	<jsp:include page="/include/sidebarAdmin.jsp"></jsp:include>
+  	</aside>
+<main>
+  <jsp:include page="/include/headerAdmin.jsp"></jsp:include>
+	
 	    <div class="form-style-6">
 			<form id="formulario"  method="get" action= "/p3/addKart">
 			  <div class="formulario__grupo" id="grupoKart">
@@ -48,7 +55,7 @@
 			  </select><br>
 			  <label>Número de Karts con estas caracteristicas a crear</label>
 			  <input class="cajaBlanca" type="number" id="cantidad" name="cantidad">
-			  <input type="submit" id="submit" value="Submit"><br><br>
+			  <input type="submit" id="submit" value="Dar de alta Kart"><br><br>
 			  <input type="reset" id="reset">
 			</form>
 		<%
@@ -64,6 +71,7 @@
 		} 
 		%>
 		</div>
-		<p><a href="${pageContext.request.contextPath}<%=indexViewPath%>">Inicio</a></p>
+	 <jsp:include page="/include/footer.html"></jsp:include>
+	</main>
 </body>
 </html>

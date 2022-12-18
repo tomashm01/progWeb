@@ -47,12 +47,7 @@
   			<p>Tu siguiente reserva es el dia:<%=request.getParameter("reserva")%></p>
 		<%} %>
 
-	  		<p><a href="${pageContext.request.contextPath}/addReserve">Nueva reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}/addBono">Nuevo Bono</a></p>
-	  		<p><a href="${pageContext.request.contextPath}/modifyReserve">Modificar reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}/viewReserve">Ver reserva</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">logout</a></p>
-	  		<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>">ModificarUsuario</a></p>
+
   	</div>
   	 <jsp:include page="/include/footer.html"></jsp:include>
 </main>

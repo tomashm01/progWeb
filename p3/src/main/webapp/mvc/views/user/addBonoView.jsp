@@ -36,8 +36,7 @@
 				<option value="ADULTOS">Adultos</option>
 				<option value="INFANTIL">Infantil</option>
 			</select><br>
-			<input type="submit" id="submit" value="Reservar"><br><br>
-			<input type="reset" id="reset">
+			<input type="submit" id="submit" value="Crear un nuevo Bono"><br><br>
 		</form>
 	<%
 	if(request.getAttribute("response") != null){

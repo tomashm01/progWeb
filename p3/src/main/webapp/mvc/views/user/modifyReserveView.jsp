@@ -47,7 +47,7 @@
 				<option value="ADULTOS">Adultos</option>
 				<option value="INFANTIL">Infantil</option>
 			</select><br>
-			<input type="submit" id="submit" value="Reservar"><br><br>
+			<input type="submit" id="submit" value="Modificar Reserva"><br><br>
 			<input type="reset" id="reset">
 		</form>
 	<%}else{

@@ -34,7 +34,7 @@
 				 	<input type="date" name="fechaInicio" id="fechaInicio">
 				 	<input type="date" name="fechaFin" id="fechaFin">
 				 	<input type="hidden" name="email" value="<jsp:getProperty property="email" name="User"/>" />
-				 	 <input type="submit" id="submit" value="Submit"><br><br>
+				 	 <input type="submit" id="submit" value="Ver reservas entre fechas"><br><br>
 				  	<input type="reset" id="reset">
 				</form>
 			</div>
@@ -115,7 +115,6 @@
 		}
 	}
 	%>
-
  <jsp:include page="/include/footer.html"></jsp:include>
 </main>
 </body>

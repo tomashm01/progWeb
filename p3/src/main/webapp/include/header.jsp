@@ -1,3 +1,6 @@
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
+
+
 <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/headers/">   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -24,14 +27,14 @@
   <div class="px-3 py-2 text-bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <div href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+        <div class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
          <a href="/p3/index.jsp" class="nav-link text-grey" style="color:#FFC600;">
                 <img src="/p3/images/super-mario.svg" class="bi d-block mx-auto mb-1"  width="24" height="24">
                 </a>
         </div>
             <a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>" class="nav-link text-grey" style="color:#DBDEDF;">
               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle" style="color:#DBDEDF ;"/></svg>
-              Clientes
+              <jsp:getProperty property="nombreCompleto" name="User"/>
             </a>
       </div>
     </div>

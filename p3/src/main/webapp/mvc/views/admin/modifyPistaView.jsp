@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8"><title>Modify Pista</title>
 </head>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 <body>
 	<!-- ACL -->
@@ -25,6 +26,11 @@
 
 	
 	%>
+		 <aside>
+    	<jsp:include page="/include/sidebarAdmin.jsp"></jsp:include>
+  	</aside>
+<main>
+  <jsp:include page="/include/headerAdmin.jsp"></jsp:include>
 	<div class="form-style-6">
 		<form id="formulario" method="get" action="/p3/modifyPista">
 		 	<label>Id</label>
@@ -43,7 +49,7 @@
 			</div>
 			<label>Máximo de karts</label>
 			<input type="number" name="maxKarts" class="cajaBlanca"><br>
-			<input type="submit" id="submit" value="Submit"><br><br>
+			<input type="submit" id="submit" value="Modificar Pista"><br><br>
 			<input type="reset" id="reset">
 		</form>
 	<%
@@ -57,8 +63,9 @@
 			}
 		}
 		%>
-	</div>
-		<p><a href="${pageContext.request.contextPath}<%=indexViewPath%>">Inicio</a></p>
+		</div>
+	 <jsp:include page="/include/footer.html"></jsp:include>
+	</main>
 </body>
   <script src="${pageContext.request.contextPath}/js/script.js"></script> 
 </html>

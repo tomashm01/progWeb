@@ -1,3 +1,5 @@
+<jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -30,12 +32,12 @@
   <div class="px-3 py-2 text-bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+        <a href="/p3/index.jsp" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
           <img src="/p3/images/super-mario-admin.svg" width="50" height="50"/>
         </a>
-            <a href="#" class="nav-link text-grey" style="color:#FFC600;">
+            <a href="${pageContext.request.contextPath}<%=application.getInitParameter("modifyUserController")%>" class="nav-link text-grey" style="color:#FFC600;">
               <img src="/p3/images/admin.svg" class="bi d-block mx-auto mb-1"  width="24" height="24">
-              Clientes
+              <jsp:getProperty property="nombreCompleto" name="User"/>
             </a>
       </div>
     </div>

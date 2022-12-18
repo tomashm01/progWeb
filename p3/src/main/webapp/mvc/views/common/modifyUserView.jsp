@@ -21,8 +21,22 @@
 	}
 	%>
 <!-- ACL -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <body>
+	   <aside>
+<%if(User.getRol().equals("USER")){ %>
+	    	<jsp:include page="/include/sidebar.jsp"></jsp:include>
+	    </aside>
+	<main>
+ 		<jsp:include page="/include/header.jsp"></jsp:include>
+<%}else{ %>
+	    	<jsp:include page="/include/sidebarAdmin.jsp"></jsp:include>
+	    </aside>
+	<main>
+  		<jsp:include page="/include/headerAdmin.jsp"></jsp:include>
+<%} %>
+
     <div class="form-style-6">
     <%
 	if(request.getParameter("ErrorModificacion") != null) {
@@ -43,7 +57,8 @@
       </form> 
       
     </div>
-        <a href="${pageContext.request.contextPath}/index.jsp">Indice</a>
+	   <jsp:include page="/include/footer.html"></jsp:include>
+  </main>
   </body>
   <script src="${pageContext.request.contextPath}/js/script.js"></script>
 

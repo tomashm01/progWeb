@@ -8,12 +8,13 @@
 <title>Registro</title>
 </head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
   <body>
 <!-- ACL -->
 <%String aclNew = application.getInitParameter("aclNew"); %>
 <jsp:include page="<%=aclNew%>"></jsp:include>
 <!-- ACL -->
-    <div class="form-style-6">
+    
     <%
 	if(request.getParameter("ErrorRegister") != null) {
     %>
@@ -21,20 +22,42 @@
 	<%
 	}
     %>
-      <form id="formulario"  method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">
-        <div class="formulario__grupo" id="grupoUsuario">
-            <input class="cajaBlanca" type="text" 	placeholder="Nombre Apellido1 Apellido2" id="nombrecompleto" name="nombrecompleto">
-        </div>
-        <input class="cajaBlanca" type="email" placeholder="email" id="email" name="email" ><br>
-        <input class="cajaBlanca" type="password" placeholder="password" id="password" name="password"><br>
-        <label>Fecha de nacimiento</label>
-        <input class="cajaBlanca" type="date" placeholder="LocalDate" id="date" name="date"><br>
-        <input type="submit" id="submit" value="Submit"><br><br>
-        <input type="reset" id="reset">
-      </form> 
-      
-    </div>
-        <a href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Login</a>
+    <div class="login-box">
+	  <h2>Register</h2>
+	   <form id="formulario"  method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">
+	       <div class="user-box">
+	     	<input type="text" 	placeholder="Nombre Apellido1 Apellido2" id="nombrecompleto" name="nombrecompleto">
+	      	<label>Nombre Completo</label>
+	    </div>
+	       
+	    <div class="user-box">
+	      <input type="text"  name="email" id="email" >
+	      <label>Email</label>
+	    </div>
+	    <div class="user-box">
+	      <input type="password" placeholder="password" name="password" id="password">
+	      <label>Password</label>
+	    </div>
+	     <div class="user-box">
+	      <input  type="date" placeholder="LocalDate" id="date" name="date">
+	      <label>Fecha de Nacimiento</label>
+	    </div>
+	    <h2>
+	  		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Login</a>
+	  </h2>
+	    <h2>
+	    <div class="submit">
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <input class="sub" type="submit" id="submit" value="Register">
+		</div>
+	    </h2>
+	  </form>
+	  
+	</div>
+    
   </body>
  <script src="${pageContext.request.contextPath}/js/script.js"></script> 
 

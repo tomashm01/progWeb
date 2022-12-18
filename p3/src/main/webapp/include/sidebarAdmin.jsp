@@ -6,77 +6,69 @@
   <body><div class="area"></div><nav class="main-menu">
             <ul>
                 <li>
-                    <a href="http://justinfarrow.com">
+                    <a href="${pageContext.request.contextPath}/addKart">
                         <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
-                            Dashboard
+                            Dar de alta Karts
                         </span>
                     </a>
                   
                 </li>
                 <li class="has-subnav">
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/addPista">
                         <i class="fa fa-laptop fa-2x"></i>
                         <span class="nav-text">
-                            Stars Components
+                            Dar de alta Pista
                         </span>
                     </a>
                     
                 </li>
                 <li class="has-subnav">
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/modifyKart">
                        <i class="fa fa-list fa-2x"></i>
                         <span class="nav-text">
-                            Forms
+                            Modificar Karts
                         </span>
                     </a>
                 </li>
                 <li class="has-subnav">
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/modifyKartState">
                        <i class="fa fa-folder-open fa-2x"></i>
                         <span class="nav-text">
-                            Pages
+                            Modificar estado de Kart
                         </span>
                     </a>
                    
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/pairKart">
                         <i class="fa fa-bar-chart-o fa-2x"></i>
                         <span class="nav-text">
-                            Graphs and Statistics
+                            Asociar Karts a pistas
                         </span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/modifyPista">
                         <i class="fa fa-font fa-2x"></i>
                         <span class="nav-text">
-                           Quotes
+                           Modificar Pista
                         </span>
                     </a>
                 </li>
                 <li>
-                   <a href="#">
+                   <a href="${pageContext.request.contextPath}/modifyPistaState">
                        <i class="fa fa-table fa-2x"></i>
                         <span class="nav-text">
-                            Tables
+                            Modificar estado de Pista
                         </span>
                     </a>
                 </li>
                 <li>
-                   <a href="#">
+                   <a href="${pageContext.request.contextPath}/deleteReserve">
                         <i class="fa fa-map-marker fa-2x"></i>
                         <span class="nav-text">
-                            Maps
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                       <i class="fa fa-info fa-2x"></i>
-                        <span class="nav-text">
-                            Documentation
+                            Borrar Reserva
                         </span>
                     </a>
                 </li>
@@ -84,7 +76,7 @@
 
             <ul class="logout">
                 <li>
-                   <a href="#">
+                   <a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
                             Logout
