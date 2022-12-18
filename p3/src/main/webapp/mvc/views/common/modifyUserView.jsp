@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modify User</title>
+<title>Modificar  Usuario</title>
 </head>
 <!-- ACL -->
 <%
@@ -24,19 +24,20 @@
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <body>
-	   <aside>
-<%if(User.getRol().equals("USER")){ %>
+  <aside>
+		<%if(User.getRol().equals("USER")){ %>
 	    	<jsp:include page="/include/sidebar.jsp"></jsp:include>
-	    </aside>
-	<main>
- 		<jsp:include page="/include/header.jsp"></jsp:include>
-<%}else{ %>
+		<%}else{ %>
 	    	<jsp:include page="/include/sidebarAdmin.jsp"></jsp:include>
-	    </aside>
+		<%} %>
+    </aside>
 	<main>
-  		<jsp:include page="/include/headerAdmin.jsp"></jsp:include>
-<%} %>
-
+		<%if(User.getRol().equals("USER")){ %>
+ 			<jsp:include page="/include/header.jsp"></jsp:include>
+		<%}else{ %>
+  			<jsp:include page="/include/headerAdmin.jsp"></jsp:include>
+		<%} %>
+	   
     <div class="form-style-6">
     <%
 	if(request.getParameter("ErrorModificacion") != null) {

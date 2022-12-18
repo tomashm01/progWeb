@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modify Kart State</title>
+<title>Modificar el estado de un kart</title>
 </head>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">

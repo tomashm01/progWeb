@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Menu</title>
+<title>Menu de usuario</title>
 </head>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
@@ -20,18 +20,7 @@
 	<%String aclUser = application.getInitParameter("aclUser"); %>
 	<jsp:include page="<%=aclUser%>"></jsp:include>
 	<!-- ACL -->
-  	<%
-	if(request.getParameter("ACL")!= null){
-		%>
-		<p class="cajaRoja"><%=request.getParameter("ACL")%></p>
-		<%
-	}else if (request.getAttribute("ACL")!=null){
-		%>
-		<p class="cajaRoja"><%=request.getAttribute("ACL")%></p>
-		
-		<%
-	}
-  	%>
+
   	  <aside>
     <jsp:include page="/include/sidebar.jsp"></jsp:include>
   </aside>
@@ -47,7 +36,18 @@
   			<p>Tu siguiente reserva es el dia:<%=request.getParameter("reserva")%></p>
 		<%} %>
 
-
+  	<%
+	if(request.getParameter("ACL")!= null){
+		%>
+		<p class="cajaRoja">Acceso denegado</p>
+		<%
+	}else if (request.getAttribute("ACL")!=null){
+		%>
+		<p class="cajaRoja">Acceso denegado</p>
+		
+		<%
+	}
+  	%>
   	</div>
   	 <jsp:include page="/include/footer.html"></jsp:include>
 </main>

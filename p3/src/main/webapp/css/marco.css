@@ -19,9 +19,9 @@
     main {
      margin-left: 60px;
      min-height:100%;
-     height:10000px;
+     height:900px;
      padding:0px;
-     background-image: linear-gradient(to right top, #32373b, #364a53, #365d68, #31727b, #2e8889, #2e8889, #2e8889, #2e8889, #31727b, #365d68, #364a53, #32373b);
+     background-color: #DBDEDF;
     /* background-color: #DBDEDF;*/
     }
 

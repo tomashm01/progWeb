@@ -1,4 +1,4 @@
-	
+
    .cajaRoja{
    transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.30s ease-in-out;
@@ -22,7 +22,7 @@
        max-width: 400px;
        margin: 10px auto;
        padding: 16px;
-       background: #DBDEDF;
+       background: #e9f9ff;
    }
    .form-style-6 h1{
        background: #43D1AF;
@@ -79,3 +79,7 @@
    .form-style-6 input[type="button"]:hover{
        background: #32373B;
    }
+   
+
+   
+   

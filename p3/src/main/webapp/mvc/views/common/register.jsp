@@ -17,7 +17,7 @@
     
 
     <div class="login-box">
-	  <h2>Register</h2>
+	  <h2>Registro</h2>
 	   <form id="formulario"  method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">
 	       <div class="user-box">
 	     	<input type="text" 	placeholder="Nombre Apellido1 Apellido2" id="nombrecompleto" name="nombrecompleto">
@@ -41,12 +41,12 @@
 	      <span></span>
 	      <span></span>
 	      <span></span>
-	      <input class="sub" type="submit" id="submit" value="Register">
+	      <input class="sub" type="submit" id="submit" value="Registrarse">
 		</div>
 	
 	  </form>
 	  	<div>
-	  		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Login</a>
+	  		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Iniciar Sesión</a>
 		</div>
 		    <%
 	if(request.getParameter("ErrorRegister") != null) {
@@ -59,5 +59,4 @@
     
   </body>
  <script src="${pageContext.request.contextPath}/js/script.js"></script> 
-
 </html>

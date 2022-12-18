@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"><title>Add Pista</title>
+<meta charset="UTF-8"><title>Añadir una pista</title>
 </head>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
@@ -56,5 +56,5 @@
 	 <jsp:include page="/include/footer.html"></jsp:include>
 	</main>
 </body>
-  <script src="${pageContext.request.contextPath}/js/script.js"></script> 
+ <script src="${pageContext.request.contextPath}/js/script.js"></script> 
 </html>

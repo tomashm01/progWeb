@@ -65,14 +65,6 @@
                     </a>
                 </li>
                 <li>
-                  <li>
-                   <a href="${pageContext.request.contextPath}/modifyPistaState">
-                       <i class="fa fa-bookmark"></i>
-                        <span class="nav-text">
-                            Modificar Reserva
-                        </span>
-                    </a>
-                </li>
                 <li>
                    <a href="${pageContext.request.contextPath}/deleteReserve">
                         <i class="fa fa-trash-o"></i>

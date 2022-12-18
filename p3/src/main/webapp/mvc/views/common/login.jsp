@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Iniciar Sesión</title>
 </head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
@@ -17,7 +17,7 @@
 
 	
 	<div class="login-box">
-	  <h2>Login</h2>
+	  <h2>Iniciar Sesión</h2>
 	   <form id="formulario" method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">  
 	    	<div class="user-box">
 	      		<input type="text"  name="email" id="email" >
@@ -32,7 +32,7 @@
 		      <span></span>
 		      <span></span>
 		      <span></span>
-      		  <input class="sub" type="submit" id="submit" value="Login">
+      		  <input class="sub" type="submit" id="submit" value="Iniciar Sesión">
 			</div>
 	    	
 	  </form>
@@ -48,5 +48,6 @@
 
    </body>
   <script src="${pageContext.request.contextPath}/js/script.js"></script>
+  <script src="${pageContext.request.contextPath}/js/login.js"></script>
 
 </html>

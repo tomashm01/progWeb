@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AdminMenu</title>
+<title>Menú de administrador</title>
 </head>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/marco.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
@@ -23,9 +23,9 @@
   
   	<div class="form-style-6">
 	<%	if(request.getParameter("ACL")!= null){ %>
-				<p class="cajaRoja"><%=request.getParameter("ACL")%></p>	
+				<p class="cajaRoja">Acceso denegado</p>	
 	<%	}else if (request.getAttribute("ACL")!=null){ %>
-				<p class="cajaRoja"><%=request.getAttribute("ACL")%></p>
+				<p class="cajaRoja">Acceso denegado</p>
 	<%	} %>
 	
 

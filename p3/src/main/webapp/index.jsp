@@ -21,11 +21,11 @@
   	<%
 	if(request.getParameter("ACL")!= null){
 		%>
-		<p class="cajaRoja"><%=request.getParameter("ACL")%></p>
+		<p class="cajaRoja">Acceso denegado></p>
 		<%
 	}else if (request.getAttribute("ACL")!=null){
 		%>
-		<p class="cajaRoja"><%=request.getAttribute("ACL")%></p>
+		<p class="cajaRoja">Acceso denegado</p>
 		<%
 	}
   	if(User.getEmail() == null || User.getRol() == null){

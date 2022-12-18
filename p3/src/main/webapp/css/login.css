@@ -5,7 +5,7 @@ body {
   margin:0;
   padding:0;
   font-family: sans-serif;
-  background: #DBDEDF;
+  background-image: radial-gradient(circle, #32373b, #364a53, #365d68, #31727b, #2e8889, #2e8889, #2e8889, #2e8889, #31727b, #365d68, #364a53, #32373b);
 }
 
 .login-box {
