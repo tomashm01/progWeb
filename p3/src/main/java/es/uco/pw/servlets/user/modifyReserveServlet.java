@@ -19,7 +19,6 @@ import es.uco.pw.business.reserve.models.factory.ReservaFamiliar;
 import es.uco.pw.business.reserve.models.factory.ReservaInfantil;
 import es.uco.pw.display.javabean.CustomerBean;
 import es.uco.pw.display.javabean.ResponseBean;
-import es.uco.pw.data.dao.ReserveDAO;
 
 /**
  * Servlet implementation class modifyReserveServlet
@@ -45,6 +44,16 @@ public class modifyReserveServlet extends HttpServlet {
 			request.setAttribute("ACL","Not allowed to go there");
 			request.getRequestDispatcher(getServletContext().getInitParameter("index")).forward(request, response);
 		}
+		
+		/*Entra al formulario, aparece una  lista con todas sus reservas futuras
+		 * Elige una
+		 *  Elige los parametros a modificar, no tienen porque ser todos
+		 * Con esa información sintactica y servletiana, en el servlet proceso los getParameter,
+		 * los que esten a null se aplican con los datos anteriores de la reserva.
+		 * Si esa reserva estaba en un bono, idPista debe de ser la misma que tenia en su bd
+		 * Se rellena la reserva, se comprueba, y se modifica con el handler
+		 *  
+		 *  */ 
 		String idUser = User.getEmail();
 		String Sfecha = request.getParameter("date");
 		String Sduracion = request.getParameter("time");
@@ -52,7 +61,7 @@ public class modifyReserveServlet extends HttpServlet {
 		String SnumChilds = request.getParameter("numChilds");
 		String Stipo = request.getParameter("tipo");
 		String SidPista = request.getParameter("idPista");
-		String Sbono = "";
+		String SidReserva = request.getParameter("idReserva");
 		boolean resultado = false;
 
 		if(Sfecha == null && Sduracion == null && SnumAdults == null && SnumChilds == null && Stipo == null && SidPista == null ){
@@ -64,7 +73,13 @@ public class modifyReserveServlet extends HttpServlet {
 		try {
 	
 			if (SidPista == null) {
-				
+				Integer idReserva = Integer.parseInt(SidReserva);
+				if(ReservaHandler.getInstance().getReserveByID(idReserva)== null) {
+					request.setAttribute("response","fail");
+					request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
+					return;
+				}
+
 				DificultadPista dif = DificultadPista.valueOf(Stipo);
 				LocalDateTime fecha = LocalDateTime.parse(Sfecha,DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 				Integer duracion = Integer.parseInt(Sduracion);
@@ -78,49 +93,38 @@ public class modifyReserveServlet extends HttpServlet {
 				LocalDateTime fechaFin = fecha.plusMinutes(duracion);
 				
 				request.setAttribute("arrayPistas",CircuitHandler.getInstance().getFreePistas(dif,fecha,fechaFin,numAdults,numChilds));
-				ResponseBean form1Data = new ResponseBean(dif,fecha,duracion,numAdults,numChilds,fechaFin);
-				session.setAttribute("form1Data",form1Data);
+				ResponseBean form2Data = new ResponseBean(dif,fecha,duracion,numAdults,numChilds,fechaFin);
+				form2Data.setIdReserva(idReserva);
+				session.setAttribute("form2Data",form2Data);
 				request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 				return;
 			}else {
-				ResponseBean bean= (ResponseBean)session.getAttribute("form1Data");
+				ResponseBean bean= (ResponseBean)session.getAttribute("form2Data");
 				if(bean == null) {
 					request.setAttribute("response","fail2");
 					request.getRequestDispatcher(getServletContext().getInitParameter("modifyReserveView")).forward(request, response);
 					return;
 				}
 				
+	
 				Integer idPista = Integer.parseInt(SidPista);
 				String respuesta="success";
 				if(bean.getDif().equals(DificultadPista.ADULTOS)) {
-					ReservaAdultos reserva = new ReservaAdultos( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f, -1, bean.getNumAdults());
-					if(Sbono == null) {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						 resultado = ReservaHandler.getInstance().addReservaIndividual(reserva);
-					}else {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						resultado =  ReservaHandler.getInstance().addReservaBono(reserva);
-					}
+					ReservaAdultos reserva = new ReservaAdultos( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f, bean.getIdReserva(), bean.getNumAdults());
+					respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);	
+					resultado =  ReservaHandler.getInstance().modifyReserve(reserva);
+					
 				}else if(bean.getDif().equals(DificultadPista.INFANTIL)) {
-					ReservaInfantil reserva = new ReservaInfantil( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f, -1, bean.getNumChilds());
-					if(Sbono == null) {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						 resultado = ReservaHandler.getInstance().addReservaIndividual(reserva);
-					}else {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						resultado =  ReservaHandler.getInstance().addReservaBono(reserva);
-					}
-				}else if(bean.getDif().equals(DificultadPista.FAMILIAR)) {
-					ReservaFamiliar reserva = new ReservaFamiliar( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f, -1, bean.getNumAdults(), bean.getNumChilds());
-					if(Sbono == null) {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						 resultado = ReservaHandler.getInstance().addReservaIndividual(reserva);
-					}else {
-						respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);
-						resultado =  ReservaHandler.getInstance().addReservaBono(reserva);
-					}
-				}
+					ReservaInfantil reserva = new ReservaInfantil( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f,bean.getIdReserva(), bean.getNumChilds());
+					respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);	 
+					resultado = ReservaHandler.getInstance().modifyReserve(reserva);
 
+				}else if(bean.getDif().equals(DificultadPista.FAMILIAR)) {
+					ReservaFamiliar reserva = new ReservaFamiliar( idUser,  bean.getFecha(), bean.getDuracion(),  idPista,  0f, 0f,bean.getIdReserva(), bean.getNumAdults(), bean.getNumChilds());
+					respuesta = ReservaHandler.getInstance().KnowMyFault(reserva);		
+					resultado = ReservaHandler.getInstance().modifyReserve(reserva);
+				}
+				session.setAttribute("form2Data",null);
 				String salida = (resultado) ? "success" : "fail";
 				request.setAttribute("response",salida);
 				request.setAttribute("error",respuesta);

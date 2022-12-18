@@ -22,7 +22,7 @@ overflow:visible;
 .main-menu {
 /*border-right:1px solid #e5e5e5;*/
 background:#212121;
-border-right:1px solid #DBDEDF;
+border-right:1px solid #ffc600;
 position: fixed;
 top:0;
 bottom:0;
@@ -115,7 +115,7 @@ padding:0;
 display: flex; 
 align-items: center;
 color:#fff;
-background-color:#DBDEDF;
+background-color:#ffc600;
 }
 .area {
 float: left;

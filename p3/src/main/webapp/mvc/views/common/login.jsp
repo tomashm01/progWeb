@@ -18,33 +18,32 @@
 	
 	<div class="login-box">
 	  <h2>Login</h2>
-	   <form id="formulario" method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">
-	       
-	    <div class="user-box">
-	      <input type="text"  name="email" id="email" >
-	      <label>Username</label>
-	    </div>
-	    <div class="user-box">
-	      <input type="password" placeholder="password" name="password" id="password">
-	      <label>Password</label>
-	    </div>
-	    <h2>
-	    <div class="submit">
-	      <span></span>
-	      <span></span>
-	      <span></span>
-	      <span></span>
-	      <input class="sub" type="submit" id="submit" value="Login">
-		</div>
-	    </h2>
+	   <form id="formulario" method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">  
+	    	<div class="user-box">
+	      		<input type="text"  name="email" id="email" >
+	      		<label>Username</label>
+	    	</div>
+	   	 	<div class="user-box">
+	      		<input type="password" placeholder="password" name="password" id="password">
+	     		<label>Password</label>
+	    	</div>
+    		<div class="submit">
+		      <span></span>
+		      <span></span>
+		      <span></span>
+		      <span></span>
+      		  <input class="sub" type="submit" id="submit" value="Login">
+			</div>
+	    	
 	  </form>
-	  <h2>
-<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("registerController")%>">Registrarse</a>
-</h2>
-	</div>
-	<%if(request.getParameter("Errorlogin") != null) {%>
+	  <div>
+		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("registerController")%>">Registrarse</a>
+	  </div>
+	  	<%if(request.getParameter("Errorlogin") != null) {%>
 			<p class="cajaRoja"> Email o contraseña incorrectas. </p>
 	<%}	%>
+	</div>
+
 
 
    </body>

@@ -11,6 +11,7 @@ public class ResponseBean {
 	Integer numAdults;
 	Integer numChilds;
 	LocalDateTime fechaFin;
+	Integer idReserva;
 	
 	
 	
@@ -59,11 +60,15 @@ public class ResponseBean {
 	public void setFechaFin(LocalDateTime fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	@Override
-	public String toString() {
-		return "ResponseBean [dif=" + dif + ", fecha=" + fecha + ", duracion=" + duracion + ", numAdults=" + numAdults
-				+ ", numChilds=" + numChilds + ", fechaFin=" + fechaFin + "]";
+	
+	public Integer getIdReserva() {
+		return idReserva;
 	}
+	public void setIdReserva(Integer idReserva) {
+		this.idReserva = idReserva;
+	}
+	
+	
 	
 	
 }

@@ -87,13 +87,13 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setString(1, a.getIdUser());
 			st.setInt(2, a.getIdPista());
 			st.setFloat(3, a.getPrice());
-			st.setString(4,a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
-			st.setInt(5, a.getTime());
-			st.setString(6, a.getTipo());
-			st.setInt(7, a.getNumAdultos());
-			st.setInt(8, a.getNumMenores());
-			st.setInt(9, a.getId());
-
+			st.setFloat(4, a.getDiscount());
+			st.setString(5,a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
+			st.setInt(6, a.getTime());
+			st.setString(7, a.getTipo());
+			st.setInt(8, a.getNumAdultos());
+			st.setInt(9, a.getNumMenores());
+			st.setInt(10, a.getId());
 			return st.executeUpdate() == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,6 +120,23 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public boolean hasBono(Integer id) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_RESERVE_IF_BONO");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if (rs.next())
+				return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public Integer getNextReserveByUser(String email) {

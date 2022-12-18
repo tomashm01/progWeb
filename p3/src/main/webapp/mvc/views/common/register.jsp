@@ -8,20 +8,14 @@
 <title>Registro</title>
 </head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
   <body>
 <!-- ACL -->
 <%String aclNew = application.getInitParameter("aclNew"); %>
 <jsp:include page="<%=aclNew%>"></jsp:include>
 <!-- ACL -->
     
-    <%
-	if(request.getParameter("ErrorRegister") != null) {
-    %>
-		<p class="cajaRoja"> Error en la validacion del formulario, email ya registrado </p>
-	<%
-	}
-    %>
+
     <div class="login-box">
 	  <h2>Register</h2>
 	   <form id="formulario"  method="post" action= "${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">
@@ -42,10 +36,6 @@
 	      <input  type="date" placeholder="LocalDate" id="date" name="date">
 	      <label>Fecha de Nacimiento</label>
 	    </div>
-	    <h2>
-	  		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Login</a>
-	  </h2>
-	    <h2>
 	    <div class="submit">
 	      <span></span>
 	      <span></span>
@@ -53,9 +43,18 @@
 	      <span></span>
 	      <input class="sub" type="submit" id="submit" value="Register">
 		</div>
-	    </h2>
+	
 	  </form>
-	  
+	  	<div>
+	  		<a class="sub" href="${pageContext.request.contextPath}<%= application.getInitParameter("loginController")%>">Login</a>
+		</div>
+		    <%
+	if(request.getParameter("ErrorRegister") != null) {
+    %>
+		<p class="cajaRoja"> Error en la validacion del formulario, email ya registrado </p>
+	<%
+	}
+    %>
 	</div>
     
   </body>

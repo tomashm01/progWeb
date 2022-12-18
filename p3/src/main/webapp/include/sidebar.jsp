@@ -7,7 +7,7 @@
             <ul>
                 <li>
                     <a href="${pageContext.request.contextPath}/addReserve">
-                        <i class="fa fa-home fa-2x"></i>
+                        <i class="fa fa-calendar"></i>
                         <span class="nav-text">
                            Nueva reserva
                         </span>
@@ -16,7 +16,7 @@
                 </li>
                 <li class="has-subnav">
                     <a href="${pageContext.request.contextPath}/addBono">
-                        <i class="fa fa-laptop fa-2x"></i>
+                        <i class="fa fa-ticket"></i>
                         <span class="nav-text">
                             Nuevo Bono
                         </span>
@@ -25,7 +25,7 @@
                 </li>
                 <li class="has-subnav">
                     <a href="${pageContext.request.contextPath}/modifyReserve">
-                       <i class="fa fa-list fa-2x"></i>
+                       <i class="fa fa-pencil-square-o"></i>
                         <span class="nav-text">
                             Modificar reserva
                         </span>
@@ -33,7 +33,7 @@
                 </li>
                 <li class="has-subnav">
                     <a href="${pageContext.request.contextPath}/viewReserve">
-                       <i class="fa fa-folder-open fa-2x"></i>
+                       <i class="fa fa-eye"></i>
                         <span class="nav-text">
                             Ver reservas
                         </span>
@@ -47,7 +47,7 @@
                    <a href="${pageContext.request.contextPath}<%=application.getInitParameter("logoutController")%>">
                          <i class="fa fa-power-off fa-2x"></i>
                         <span class="nav-text">
-                            Logout
+                            Cerrar Sesión
                         </span>
                     </a>
                 </li>  

@@ -10,7 +10,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     width: 100%;
-    background: rgb(220, 171, 171);
+    background: rgb(220, 171, 171) !important;
     margin-bottom: 4%;
     border: 1px solid #ccc;
     padding: 3%;
@@ -79,7 +79,3 @@
    .form-style-6 input[type="button"]:hover{
        background: #32373B;
    }
-
-
-
-   

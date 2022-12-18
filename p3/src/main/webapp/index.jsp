@@ -14,10 +14,10 @@
 <title>PW</title>
 </head>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/index.css">
 
   <body>
- 
-  	<div class="form-style-6">
+  	<div class="login-box">
   	<%
 	if(request.getParameter("ACL")!= null){
 		%>
@@ -30,8 +30,25 @@
 	}
   	if(User.getEmail() == null || User.getRol() == null){
 	  	%>
-			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">Sign in</a></p>
-			<p><a href="${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">Login</a></p>
+	  	<h2> <img src="/p3/images/super-mario-admin.svg" class="bi d-block mx-auto mb-1"  width="24" height="24">MarioResort<img src="/p3/images/super-mario-admin.svg" class="bi d-block mx-auto mb-1"  width="24" height="24"></h2>
+	  	<div class="user-box">
+	  	<div class="submit">
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <span></span>
+			<a href="${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">Registrarse</a>
+		</div>
+	  	</div>
+	  	<div class="user-box">
+	  	<div class="submit">
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <span></span>
+			<a href="${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">Iniciar Sesión</a>
+	  	</div>
+	  	</div>
 	  	<%
   	}else if(User.getRol().equals("ADMIN")){
   		String adminMenu=application.getInitParameter("adminMenuController");
@@ -48,4 +65,5 @@
   	</div>
 
   </body>
+  
 </html>
