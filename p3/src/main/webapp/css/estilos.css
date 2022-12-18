@@ -1,6 +1,4 @@
-body {
-    background: #32373B;
-   }
+
    .cajaRoja{
    transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.30s ease-in-out;
@@ -12,7 +10,7 @@ body {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     width: 100%;
-    background: rgb(220, 171, 171);
+    background: rgb(220, 171, 171) !important;
     margin-bottom: 4%;
     border: 1px solid #ccc;
     padding: 3%;
@@ -24,7 +22,7 @@ body {
        max-width: 400px;
        margin: 10px auto;
        padding: 16px;
-       background: #DBDEDF;
+       background: #e9f9ff;
    }
    .form-style-6 h1{
        background: #43D1AF;
@@ -81,3 +79,7 @@ body {
    .form-style-6 input[type="button"]:hover{
        background: #32373B;
    }
+   
+
+   
+   

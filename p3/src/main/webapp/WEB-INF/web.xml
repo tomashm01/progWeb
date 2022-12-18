@@ -1,19 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-    <display-name>Application Name </display-name>
+    <display-name>ReservaPistaKart </display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/errorPages/error500.jsp</location>
+  </error-page>
+
+    <error-page>
+    <error-code>404</error-code>
+    <location>/errorPages/error404.jsp</location>
+  </error-page>
+
+<error-page>
+    <location>/index.jsp</location>
+</error-page>
+
+<!-- controllers -->
+	<!-- common -->
    <context-param>
-      <param-name>propertiesFileSQL</param-name>
-      <param-value>./sql.properties</param-value>
+      <param-name>loginController</param-name>
+      <param-value>/mvc/controllers/common/loginController.jsp</param-value>
    </context-param>
+   
    <context-param>
-      <param-name>propertiesFileCONFIG</param-name>
-      <param-value>./config.properties</param-value>
+      <param-name>logoutController</param-name>
+      <param-value>/mvc/controllers/common/logoutController.jsp</param-value>
    </context-param>
+   
    <context-param>
-	    <param-name>contextPath</param-name>
-	    <param-value>http://localhost:8080/p3/</param-value>
-	</context-param>
+      <param-name>modifyUserController</param-name>
+      <param-value>/mvc/controllers/common/modifyUserController.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>registerController</param-name>
+      <param-value>/mvc/controllers/common/registerController.jsp</param-value>
+   </context-param>
+   
+   <!-- admin -->
+  <context-param>
+      <param-name>adminMenuController</param-name>
+      <param-value>/mvc/controllers/admin/adminMenuController.jsp</param-value>
+   </context-param>
+   
+	<!-- user -->
+	<context-param>
+      <param-name>userMenuController</param-name>
+      <param-value>/mvc/controllers/user/userMenuController.jsp</param-value>
+   </context-param>
+<!-- views --> 
+	
+   <!-- admin -->
+ 	<context-param>
+      <param-name>adminMenuView</param-name>
+      <param-value>/mvc/views/admin/adminMenuView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>addKartView</param-name>
+      <param-value>/mvc/views/admin/addKartView.jsp</param-value>
+   </context-param>
+ 
+    <context-param>
+      <param-name>modifyKartStateView</param-name>
+      <param-value>/mvc/views/admin/modifyKartStateView.jsp</param-value>
+   </context-param>
+ 
+     <context-param>
+      <param-name>modifyPistaStateView</param-name>
+      <param-value>/mvc/views/admin/modifyPistaStateView.jsp</param-value>
+   </context-param>
+ 
+   <context-param>
+      <param-name>pairKartView</param-name>
+      <param-value>/mvc/views/admin/pairKartView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>addPistaView</param-name>
+      <param-value>/mvc/views/admin/addPistaView.jsp</param-value>
+   </context-param>
+
+   <context-param>
+      <param-name>deleteReserveView</param-name>
+      <param-value>/mvc/views/admin/deleteReserveView.jsp</param-value>
+   </context-param>   
+   
+   <context-param>
+      <param-name>modifyKartView</param-name>
+      <param-value>/mvc/views/admin/modifyKartView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>modifyPistaView</param-name>
+      <param-value>/mvc/views/admin/modifyPistaView.jsp</param-value>
+   </context-param> 
+   
+   <!-- common -->
+   
+   <context-param>
+      <param-name>login</param-name>
+      <param-value>/mvc/views/common/login.jsp</param-value>
+   </context-param>    
+
+   <context-param>
+      <param-name>modifyUserView</param-name>
+      <param-value>/mvc/views/common/modifyUserView.jsp</param-value>
+   </context-param> 
+   
+   <context-param>
+      <param-name>register</param-name>
+      <param-value>/mvc/views/common/register.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>index</param-name>
+      <param-value>/index.jsp</param-value>
+   </context-param> 
+   
+   <!-- user -->
+   
+   <context-param>
+      <param-name>userMenuView</param-name>
+      <param-value>/mvc/views/user/userMenuView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>addReserveView</param-name>
+      <param-value>/mvc/views/user/addReserveView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>modifyReserveView</param-name>
+      <param-value>/mvc/views/user/modifyReserveView.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>reserveView</param-name>
+      <param-value>/mvc/views/user/reserveView.jsp</param-value>
+   </context-param>    
+
+   <context-param>
+      <param-name>addBonoView</param-name>
+      <param-value>/mvc/views/user/addBonoView.jsp</param-value>
+   </context-param>
+   
+<!-- servlets -->   
+
+<!-- includes -->
+
+   <context-param>
+      <param-name>aclAdmin</param-name>
+      <param-value>/include/aclAdmin.jsp</param-value>
+   </context-param>
+   
+   <context-param>
+      <param-name>aclUser</param-name>
+      <param-value>/include/aclUser.jsp</param-value>
+   </context-param>
+
+   <context-param>
+      <param-name>aclNew</param-name>
+      <param-value>/include/aclNew.jsp</param-value>
+   </context-param>          
 </web-app>

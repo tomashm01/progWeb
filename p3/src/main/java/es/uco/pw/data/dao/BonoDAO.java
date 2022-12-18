@@ -38,6 +38,8 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 		try {
 			PreparedStatement st = conex.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			st.setDate(1, Date.valueOf(a.getExpirationDate()));
+			System.out.println(a.getIdUser());
+			st.setString(2,a.getIdUser());
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
 			if(rs.next())
@@ -112,7 +114,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 			ResultSet rs = st.executeQuery();
 			ArrayList<BonoDTO> bonos = new ArrayList<BonoDTO>();
 			while (rs.next()) {
-				bonos.add(new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate()));
+				bonos.add(new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate(),rs.getString("idUser")));
 			}
 			return bonos;
 		} catch (SQLException e) {
@@ -132,7 +134,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery(query);
 			if (rs.next())
-				return new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate());
+				return new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate(),rs.getString("idUser"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,7 +169,7 @@ public class BonoDAO implements DAO<BonoDTO, Integer> {
 			ResultSet rs = st.executeQuery();
 			ArrayList<BonoDTO> bonos = new ArrayList<BonoDTO>();
 			while (rs.next()) {
-				bonos.add(new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate()));
+				bonos.add(new BonoDTO(rs.getInt("id"), rs.getDate("fechaExpiracion").toLocalDate(),rs.getString("idUser")));
 			}
 			return bonos;
 		} catch (SQLException e) {

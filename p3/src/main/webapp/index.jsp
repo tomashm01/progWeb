@@ -2,75 +2,68 @@
 <%@page import="es.uco.pw.business.reserve.handlers.ReservaHandler" %>
 <%@page import="es.uco.pw.business.user.handlers.UsuarioHandler" %>
 <%@page import="es.uco.pw.business.user.models.Usuario" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.time.LocalDateTime" %>
+<%@page import="java.time.LocalDate" %>
+<%@page import="java.time.LocalDateTime" %>
 
 <jsp:useBean  id="User" scope="session" class="es.uco.pw.display.javabean.CustomerBean"></jsp:useBean>
 
-<%! boolean debug=true; %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>PW</title>
 </head>
-    <link rel="stylesheet" href="./css/estilos.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/estilos.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/index.css">
+
   <body>
+  	<div class="login-box">
   	<%
+	if(request.getParameter("ACL")!= null){
+		%>
+		<p class="cajaRoja">Acceso denegado></p>
+		<%
+	}else if (request.getAttribute("ACL")!=null){
+		%>
+		<p class="cajaRoja">Acceso denegado</p>
+		<%
+	}
   	if(User.getEmail() == null || User.getRol() == null){
-  	%>
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/registerController.jsp">Registrarse</a></p>
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/loginController.jsp">Login</a></p>
-  	<%
+	  	%>
+	  	<h2> <img src="/p3/images/super-mario-admin.svg" class="bi d-block mx-auto mb-1"  width="24" height="24">MarioResort<img src="/p3/images/super-mario-admin.svg" class="bi d-block mx-auto mb-1"  width="24" height="24"></h2>
+	  	<div class="user-box">
+	  	<div class="submit">
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <span></span>
+			<a href="${pageContext.request.contextPath}<%=application.getInitParameter("registerController")%>">Registrarse</a>
+		</div>
+	  	</div>
+	  	<div class="user-box">
+	  	<div class="submit">
+	      <span></span>
+	      <span></span>
+	      <span></span>
+	      <span></span>
+			<a href="${pageContext.request.contextPath}<%=application.getInitParameter("loginController")%>">Iniciar Sesión</a>
+	  	</div>
+	  	</div>
+	  	<%
   	}else if(User.getRol().equals("ADMIN")){
-	%>
-	<table>
-	  <thead>
-	    <tr>
-	      <th>Full Name</th>
-	      <th>Antiquity</th>
-	      <th>Completed Reservations</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <% for( Usuario it : UsuarioHandler.getInstance().getAllUsers()){
-	        if(it.getRol().equals("USER")){
-	          Integer reservas = ReservaHandler.getInstance().completedReservationsByUser(it.getEmail());
-	    %>
-	          <tr>
-	            <td><%=it.getFullName()%></td>
-	            <td><%=it.antiquity()%></td>
-	            <td><%=reservas%></td>
-	          </tr>
-	    <% 
-	   	 	}
-	      } %>
-	  </tbody>
-	</table>
-
-		<p><a href="<%=request.getContextPath()%>/mvc/controllers/logoutController.jsp">logout</a></p>
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/modifyUserController.jsp">ModificarUsuario</a></p>
-  	<%
+  		String adminMenu=application.getInitParameter("adminMenuController");
+  		%>
+  		<jsp:forward page="<%=adminMenu%>"/>
+  		<%
   	}else if(User.getRol().equals("USER")){
-  		String fecha = LocalDate.now().toString();
-  	%>
-  		<p>Bienvenido <jsp:getProperty property="nombreCompleto" name="User"/></p>
-  		<p>Hoy es <%=fecha%></p>
-  		<p>Tu antiguedad es: <jsp:getProperty property="antiguedad" name="User"/> años</p> 
-  	<%
-	  	if( ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()) != null){
-	  		 String reserva = ReservaHandler.getInstance().getNextReserveByUser(User.getEmail()).getDate().toString();
-	%>
-	  		<p>Tu siguiente reserva es el dia :<%=reserva %> </p>
-	<%
-	  	}
-  	%>	
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/logoutController.jsp">logout</a></p>
-  		<p><a href="<%=request.getContextPath()%>/mvc/controllers/modifyUserController.jsp">ModificarUsuario</a></p>
-  	<% 	
+  		String userMenu=application.getInitParameter("userMenuController");
+  		%>
+  		<jsp:forward page="<%=userMenu%>"/>
+  		<%
   	}
-  	%>
-  	
-  </body>
+  		%>
+  	</div>
 
+  </body>
+  
 </html>

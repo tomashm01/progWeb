@@ -10,9 +10,10 @@
 </head>
 <body>
 <%
+String indexPath = application.getInitParameter("index");
 request.getSession().removeAttribute("User");
 %>
-<jsp:forward page="../../index.jsp" />
+<jsp:forward page="<%=indexPath%>" />
 
 </body>
 </html>

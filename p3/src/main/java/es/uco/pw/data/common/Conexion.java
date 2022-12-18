@@ -1,13 +1,16 @@
 package es.uco.pw.data.common;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
+
+
 /**
  * A class to manage the MySQL connection (general methods and configuration).
  * @author Aurora Ramirez
@@ -30,14 +33,15 @@ public class Conexion {
         sql=new Properties();
         try {
         	Class.forName("com.mysql.jdbc.Driver");
-        	
-        	String filename1="D:\\universidad\\pw\\progWeb\\p3\\src\\main\\webapp\\WEB-INF\\config.properties";
-        	String filename2="D:\\universidad\\pw\\progWeb\\p3\\src\\main\\webapp\\WEB-INF\\sql.properties";
-        	BufferedReader reader = new BufferedReader(new FileReader(new File(filename1)));
-            config.load( reader );
-            
-            reader = new BufferedReader(new FileReader(new File(filename2)));
-            sql.load( reader );
+ 
+        	InputStream pathConfig = getClass().getClassLoader().getResourceAsStream("/config.properties");
+        	InputStream pathSQL = getClass().getClassLoader().getResourceAsStream("/sql.properties");
+
+        	BufferedReader readerConfig = new BufferedReader(new InputStreamReader(pathConfig));
+        	BufferedReader readerSQL = new BufferedReader(new InputStreamReader(pathSQL));
+
+            config.load( readerConfig );
+            sql.load( readerSQL );
            
             this.url=config.getProperty("URL");
             this.user=config.getProperty("USER");

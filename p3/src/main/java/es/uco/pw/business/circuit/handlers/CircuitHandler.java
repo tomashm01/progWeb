@@ -1,12 +1,7 @@
 package es.uco.pw.business.circuit.handlers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import es.uco.pw.business.enums.DificultadPista;
 import es.uco.pw.business.circuit.dto.KartDTO;
@@ -183,6 +178,7 @@ public class CircuitHandler {
 		}
 		return null;
 	}
+
 	
 	/**
 	 * Elimina pista de la lista
@@ -202,7 +198,14 @@ public class CircuitHandler {
 		return daoPista.update(new PistaDTO(pista));
 	}
 
-
+	public boolean canAddKart(Integer id) {
+		Pista pista = CircuitHandler.getInstance().getPistaByID(id);
+		if(pista == null)return false;
+		Integer numKarts = daoPista.getNumKartsByPista(id);
+		if(numKarts <0)return false;
+		return (pista.getMaxKarts() >numKarts);
+	}
+	
 	/**
 	 * Obtiene la dificultad sabiendo el idPista
 	 * @param idPista
@@ -247,6 +250,14 @@ public class CircuitHandler {
 		return pistasFree;
 	}
 	
+	public ArrayList<Pista> getFreePistas(DificultadPista tipo,LocalDateTime fechaInicio,LocalDateTime fechaFin,Integer numAdults,Integer numChilds){
+		ArrayList<Pista> pistaList = new ArrayList<Pista>();
+		for(PistaDTO it : daoPista.getFreePistas(tipo,fechaInicio,fechaFin,numAdults,numChilds)) {
+			pistaList.add( new Pista(it));
+		}
+		return pistaList;
+	}
+	
 	/**
 	 * Imprimir todos las pistas registradas
 	 * @param 
@@ -288,27 +299,4 @@ public class CircuitHandler {
 		return pistaList;
 	}	
 	
-	
-	/**
-	 * Carga path de karts y pistas
-	 */
-	public static void loadFilesPath() {
-		Properties prop = new Properties();
-		String filename = "src/data.properties";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-			prop.load(reader);
-
-			String path = "datos/";
-			karts_file = path + prop.getProperty("karts_file");
-			pistas_file = path + prop.getProperty("pistas_file");
-
-			// Captura de excepciones
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: No se ha encontrado el fichero \"" + filename + "\"");
-		} catch (IOException e) {
-			System.out.println("ERROR: No se ha podido leer el fichero");
-		}
-	}
-
 }

@@ -7,11 +7,13 @@ public class BonoDTO {
 	private Integer id;
 	private LocalDate expirationDate;
 	private ArrayList<Integer> reserves;
+	private String idUser;
 	
-	public BonoDTO(Integer id, LocalDate expirationDate) {
+	public BonoDTO(Integer id, LocalDate expirationDate,String idUser) {
 		super();
 		this.id = id;
 		this.expirationDate = expirationDate;
+		this.idUser = idUser;
 	}
 
 	public Integer getId() {
@@ -37,6 +39,15 @@ public class BonoDTO {
 	public void setReserves(ArrayList<Integer> reserves) {
 		this.reserves = reserves;
 	}
+
+	public String getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(String idUser) {
+		this.idUser = idUser;
+	}
+	
 	
 
 }

@@ -1,11 +1,12 @@
 package es.uco.pw.data.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -86,13 +87,13 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setString(1, a.getIdUser());
 			st.setInt(2, a.getIdPista());
 			st.setFloat(3, a.getPrice());
-			st.setString(4,a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
-			st.setInt(5, a.getTime());
-			st.setString(6, a.getTipo());
-			st.setInt(7, a.getNumAdultos());
-			st.setInt(8, a.getNumMenores());
-			st.setInt(9, a.getId());
-
+			st.setFloat(4, a.getDiscount());
+			st.setString(5,a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+":00");
+			st.setInt(6, a.getTime());
+			st.setString(7, a.getTipo());
+			st.setInt(8, a.getNumAdultos());
+			st.setInt(9, a.getNumMenores());
+			st.setInt(10, a.getId());
 			return st.executeUpdate() == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -119,6 +120,23 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public boolean hasBono(Integer id) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_RESERVE_IF_BONO");
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if (rs.next())
+				return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public Integer getNextReserveByUser(String email) {
@@ -148,7 +166,7 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setString(1,email);
 			ResultSet rs = st.executeQuery();
 			if (rs.next())
-				return  rs.getInt("num");
+				return  rs.getInt(1);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -185,8 +203,34 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			st.setString(1, idUser);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
+				array.add(new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")), rs.getInt("duracion"),
+						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
+						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
+
+			}
+			return array;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<ReserveDTO> geReservesByUserByDates(LocalDate fechaInicio,LocalDate fechaFin,String idUser) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_RESERVE_BY_USER_BY_DATE");
+		ArrayList<ReserveDTO> array = new ArrayList<ReserveDTO>();
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setString(1, idUser);
+			st.setDate(2, Date.valueOf(fechaInicio));
+			st.setDate(3, Date.valueOf(fechaFin));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
 				
-				array.add( new ReserveDTO(rs.getString("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
+				array.add(new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")), rs.getInt("duracion"),
 						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
 						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
 			}
@@ -196,6 +240,32 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 		}
 		return null;
 	}
+	
+	
+	public ArrayList<ReserveDTO> geFutureReservesByUser(String idUser) {
+		Conexion conexController = Conexion.getInstance();
+		Connection conex = conexController.getConnection();
+		String query = conexController.getSql().getProperty("SELECT_FUTURE_RESERVE_BY_USER");
+		ArrayList<ReserveDTO> array = new ArrayList<ReserveDTO>();
+		try {
+			PreparedStatement st = conex.prepareStatement(query);
+			st.setString(1, idUser);
+			st.setDate(2, Date.valueOf(LocalDate.now().plusDays(1)));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				
+				array.add(new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")), rs.getInt("duracion"),
+						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
+						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
+			}
+			return array;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public ArrayList<ReserveDTO> getAllReservesByPista(Integer idPista) {
 		Conexion conexController = Conexion.getInstance();
@@ -208,7 +278,8 @@ public class ReserveDAO implements DAO<ReserveDTO, Integer> {
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				
-				array.add( new ReserveDTO(rs.getString("idUser"), rs.getDate("fecha").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), rs.getInt("duracion"),
+				array.add(new ReserveDTO(rs.getString("idUser"),LocalDateTime.parse(rs.getString("fecha"),
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00.0")), rs.getInt("duracion"),
 						rs.getInt("idPista"), rs.getFloat("precio"), rs.getFloat("descuento"), rs.getInt("id"),
 						rs.getString("tipo"), rs.getInt("numAdultos"), rs.getInt("numMenores")));
 			}
